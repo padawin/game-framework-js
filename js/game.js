@@ -3,8 +3,7 @@
 		canvasContext = canvas.getContext('2d'),
 		fps = 30,
 		ball,
-		paddle,
-		paddleX = 400;
+		paddle;
 
 	const PADDLE_WIDTH = 100;
 	const PADDLE_THICKNESS = 10;
@@ -53,7 +52,7 @@
 
 
 	ball = new Ball(100, 100, 5, 7);
-	paddle = new Paddle(paddleX, paddleY);
+	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
 
 	function moveAll () {
 		ball.updatePosition();
