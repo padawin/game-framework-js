@@ -62,7 +62,6 @@
 	};
 	/* End Paddle Class */
 
-
 	ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 7);
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
 
