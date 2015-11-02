@@ -2,7 +2,12 @@
 	var canvas = document.getElementById('game-canvas'),
 		canvasContext = canvas.getContext('2d'),
 		fps = 30,
-		ball;
+		ball,
+		paddle,
+		paddleX = 400;
+
+	const PADDLE_WIDTH = 100;
+	const PADDLE_THICKNESS = 10;
 
 	setInterval(updateAll, 1000 / fps);
 
