@@ -36,8 +36,24 @@
 	};
 	/* End Ball Class */
 
+	/* Paddle Class */
+	var Paddle = function (x, y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	Paddle.prototype.updatePosition = function (x) {
+		this.x = x;
+	};
+
+	Paddle.prototype.draw = function () {
+		drawRectangle(this.x, this.y, PADDLE_WIDTH, PADDLE_THICKNESS, 'white');
+	};
+	/* End Paddle Class */
+
 
 	ball = new Ball(100, 100, 5, 7);
+	paddle = new Paddle(paddleX, paddleY);
 
 	function moveAll () {
 		ball.updatePosition();
