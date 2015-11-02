@@ -14,8 +14,8 @@
 
 	/* Ball Class */
 	var Ball = function (x, y, speedX, speedY) {
-		this.x = x;
-		this.y = y;
+		this.x  = this.originalX = x;
+		this.y = this.originalY = y;
 		this.speedX = speedX;
 		this.speedY = speedY;
 	};
