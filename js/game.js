@@ -25,6 +25,10 @@
 		_update(this, 'x', 'speedX', canvas.width);
 		_update(this, 'y', 'speedY', canvas.height);
 	};
+
+	Ball.prototype.draw = function () {
+		drawCircle(this.x, this.y, 10, 'white');
+	};
 	/* End Ball Class */
 
 
@@ -48,7 +52,7 @@
 
 	function drawAll () {
 		drawRectangle(0, 0, canvas.width, canvas.height, 'black');
-		drawCircle(ball.x, ball.y, 10, 'white');
+		ball.draw();
 	}
 
 	function updateAll () {
