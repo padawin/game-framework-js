@@ -26,13 +26,13 @@
 		this.y += this.speedY;
 
 		// This deals with the screen's edges
-		if (this.x < 0 || this.x > canvas.width) {
+		if (this.x - BALL_RADIUS < 0 || this.x + BALL_RADIUS > canvas.width) {
 			this.speedX *= -1;
 		}
-		if (this.y < 0) {
+		if (this.y - BALL_RADIUS < 0) {
 			this.speedY *= -1;
 		}
-		if (this.y > canvas.height) {
+		if (this.y + BALL_RADIUS > canvas.height) {
 			this.reset();
 		}
 	};
