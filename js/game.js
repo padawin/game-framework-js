@@ -21,20 +21,19 @@
 	};
 
 	Ball.prototype.updatePosition = function () {
-		function _update(ball, coord, speed, boundary) {
-			ball[coord] += ball[speed];
-			if (ball[coord] > boundary || ball[coord] < 0) {
-				if (coord == 'y' && ball[coord] > boundary) {
-					ball.reset();
-				}
-				else {
-					ball[speed] *= -1;
-				}
-			}
-		}
+		this.x += this.speedX;
+		this.y += this.speedY;
 
-		_update(this, 'x', 'speedX', canvas.width);
-		_update(this, 'y', 'speedY', canvas.height);
+		// This deals with the screen's edges
+		if (this.x < 0 || this.x > canvas.width) {
+			this.speedX *= -1;
+		}
+		if (this.y < 0) {
+			this.speedY *= -1;
+		}
+		if (this.y > canvas.height) {
+			this.reset();
+		}
 	};
 
 	Ball.prototype.reset = function () {
