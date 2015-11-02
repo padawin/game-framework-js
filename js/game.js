@@ -84,6 +84,9 @@
 		ball.updatePosition();
 	}
 
+	/**
+	 * Methods to draw stuff
+	 */
 	function drawRectangle (x, y, width, height, color) {
 		canvasContext.fillStyle = color;
 		canvasContext.fillRect(x, y, width, height);
