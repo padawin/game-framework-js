@@ -29,7 +29,10 @@
 		if (this.x - BALL_RADIUS < 0 || this.x + BALL_RADIUS > canvas.width) {
 			this.speedX *= -1;
 		}
-		if (this.y - BALL_RADIUS < 0) {
+		if (this.y - BALL_RADIUS < 0 ||
+			this.y > paddle.y &&
+			this.y < paddle.y + PADDLE_THICKNESS &&
+			this.x > paddle.x && this.x < paddle.x + PADDLE_WIDTH) {
 			this.speedY *= -1;
 		}
 		if (this.y + BALL_RADIUS > canvas.height) {
