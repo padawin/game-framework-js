@@ -10,6 +10,8 @@
 
 	setInterval(updateAll, 1000 / fps);
 
+	canvas.addEventListener('mousemove', mouseMovedEvent);
+
 	/* Ball Class */
 	var Ball = function (x, y, speedX, speedY) {
 		this.x = x;
@@ -53,6 +55,30 @@
 
 	ball = new Ball(100, 100, 5, 7);
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
+
+	/**
+	 * EVENT FOR THE MOUSE
+	 */
+	function mouseMovedEvent (e) {
+		var rect = canvas.getBoundingClientRect(),
+			root = document.documentElement;
+
+		// position of the mouse in the canvas, taking in account the scroll
+		// and position of the canvas in the page
+		var mouseX = e.clientX - rect.left - root.scrollLeft;
+
+		if (mouseX > PADDLE_WIDTH / 2 && mouseX < canvas.width - PADDLE_WIDTH / 2) {
+			paddle.updatePosition(
+				Math.min(
+					Math.max(
+						0,
+						mouseX - PADDLE_WIDTH / 2
+					),
+					canvas.width - PADDLE_WIDTH / 2
+				)
+			);
+		}
+	}
 
 	function moveAll () {
 		ball.updatePosition();
