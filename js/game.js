@@ -34,13 +34,21 @@
 		ball.updatePosition();
 	}
 
-	function drawAll () {
-		canvasContext.fillStyle = 'black';
-		canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-		canvasContext.fillStyle = 'white';
+	function drawRectangle (x, y, width, height, color) {
+		canvasContext.fillStyle = color;
+		canvasContext.fillRect(x, y, width, height);
+	}
+
+	function drawCircle (x, y, radius, color) {
+		canvasContext.fillStyle = color;
 		canvasContext.beginPath();
-		canvasContext.arc(ball.x, ball.y, 10, 0, Math.PI * 2, true);
+		canvasContext.arc(x, y, radius, 0, Math.PI * 2, true);
 		canvasContext.fill();
+	}
+
+	function drawAll () {
+		drawRectangle(0, 0, canvas.width, canvas.height, 'black');
+		drawCircle(ball.x, ball.y, 10, 'white');
 	}
 
 	function updateAll () {
