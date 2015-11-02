@@ -29,13 +29,22 @@
 
 
 	ball = new Ball(100, 100, 5, 7);
-	function updateAll () {
+
+	function moveAll () {
+		ball.updatePosition();
+	}
+
+	function drawAll () {
 		canvasContext.fillStyle = 'black';
 		canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 		canvasContext.fillStyle = 'white';
 		canvasContext.beginPath();
 		canvasContext.arc(ball.x, ball.y, 10, 0, Math.PI * 2, true);
 		canvasContext.fill();
-		ball.updatePosition();
+	}
+
+	function updateAll () {
+		moveAll();
+		drawAll();
 	}
 })();
