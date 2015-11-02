@@ -24,7 +24,12 @@
 		function _update(ball, coord, speed, boundary) {
 			ball[coord] += ball[speed];
 			if (ball[coord] > boundary || ball[coord] < 0) {
-				ball[speed] *= -1;
+				if (coord == 'y' && ball[coord] > boundary) {
+					ball.reset();
+				}
+				else {
+					ball[speed] *= -1;
+				}
 			}
 		}
 
