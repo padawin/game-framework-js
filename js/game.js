@@ -7,6 +7,7 @@
 
 	const PADDLE_WIDTH = 100;
 	const PADDLE_THICKNESS = 10;
+	const BALL_RADIUS = 10;
 
 	setInterval(updateAll, 1000 / fps);
 
@@ -42,7 +43,7 @@
 	};
 
 	Ball.prototype.draw = function () {
-		drawCircle(this.x, this.y, 10, 'white');
+		drawCircle(this.x, this.y, BALL_RADIUS, 'white');
 	};
 	/* End Ball Class */
 
