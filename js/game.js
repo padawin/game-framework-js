@@ -73,6 +73,7 @@
 	function drawAll () {
 		drawRectangle(0, 0, canvas.width, canvas.height, 'black');
 		ball.draw();
+		paddle.draw();
 	}
 
 	function updateAll () {
