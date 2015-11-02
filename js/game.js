@@ -14,8 +14,8 @@
 
 	/* Ball Class */
 	var Ball = function (x, y, speedX, speedY) {
-		this.x = x;
-		this.y = y;
+		this.x  = this.originalX = x;
+		this.y = this.originalY = y;
 		this.speedX = speedX;
 		this.speedY = speedY;
 	};
@@ -24,12 +24,22 @@
 		function _update(ball, coord, speed, boundary) {
 			ball[coord] += ball[speed];
 			if (ball[coord] > boundary || ball[coord] < 0) {
-				ball[speed] *= -1;
+				if (coord == 'y' && ball[coord] > boundary) {
+					ball.reset();
+				}
+				else {
+					ball[speed] *= -1;
+				}
 			}
 		}
 
 		_update(this, 'x', 'speedX', canvas.width);
 		_update(this, 'y', 'speedY', canvas.height);
+	};
+
+	Ball.prototype.reset = function () {
+		this.x  = this.originalX;
+		this.y = this.originalY;
 	};
 
 	Ball.prototype.draw = function () {
@@ -52,8 +62,7 @@
 	};
 	/* End Paddle Class */
 
-
-	ball = new Ball(100, 100, 5, 7);
+	ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 7);
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
 
 	/**
