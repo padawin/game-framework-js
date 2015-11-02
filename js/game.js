@@ -40,7 +40,7 @@
 	Ball.prototype.reset = function () {
 		this.x  = this.originalX;
 		this.y = this.originalY;
-	}
+	};
 
 	Ball.prototype.draw = function () {
 		drawCircle(this.x, this.y, 10, 'white');
