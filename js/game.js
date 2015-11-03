@@ -14,8 +14,8 @@
 	const PADDLE_THICKNESS = 10;
 	const BALL_RADIUS = 10;
 
-	const BRICK_WIDTH = 100;
-	const BRICK_HEIGHT = 50;
+	const BRICK_WIDTH = 50;
+	const BRICK_HEIGHT = 25;
 	const BRICK_STATE_ACTIVE = 1;
 	const BRICK_STATE_INACTIVE = 2;
 
