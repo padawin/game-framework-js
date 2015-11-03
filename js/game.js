@@ -99,12 +99,17 @@
 	var Brick = function (x, y, destructible, state) {
 		this.x = x;
 		this.y = y;
-		this.state = state;
-		this.destructible = destructible;
+		this.state = this.originalState = state;
+		this.destructible = this.originalDestructible = destructible;
 	}
 
 	Brick.prototype.draw = function () {
 		drawRectangle(this.x, this.y, BRICK_WIDTH, BRICK_HEIGHT, 'red');
+	};
+
+	Brick.prototype.reset = function () {
+		this.state = this.originalState;
+		this.destructible = this.originalDestructible;
 	};
 	/* End Brick Class */
 
