@@ -7,6 +7,7 @@
 
 	const PADDLE_WIDTH = 100;
 	const PADDLE_THICKNESS = 10;
+	const BALL_RADIUS = 10;
 
 	setInterval(updateAll, 1000 / fps);
 
@@ -16,34 +17,49 @@
 	var Ball = function (x, y, speedX, speedY) {
 		this.x  = this.originalX = x;
 		this.y = this.originalY = y;
-		this.speedX = speedX;
-		this.speedY = speedY;
+		this.speedX = this.originalSpeedX = speedX;
+		this.speedY = this.originalSpeedY = speedY;
 	};
 
 	Ball.prototype.updatePosition = function () {
-		function _update(ball, coord, speed, boundary) {
-			ball[coord] += ball[speed];
-			if (ball[coord] > boundary || ball[coord] < 0) {
-				if (coord == 'y' && ball[coord] > boundary) {
-					ball.reset();
-				}
-				else {
-					ball[speed] *= -1;
-				}
-			}
+		this.x += this.speedX;
+		this.y += this.speedY;
+
+		// This deals with the screen's edges
+		if (this.x - BALL_RADIUS < 0 || this.x + BALL_RADIUS > canvas.width) {
+			this.speedX *= -1;
+		}
+		if (this.y - BALL_RADIUS < 0) {
+			this.speedY *= -1;
+		}
+		if (this.y + BALL_RADIUS > canvas.height) {
+			this.reset();
 		}
 
-		_update(this, 'x', 'speedX', canvas.width);
-		_update(this, 'y', 'speedY', canvas.height);
+		if (this.y + BALL_RADIUS > paddle.y &&
+			this.y - BALL_RADIUS < paddle.y + PADDLE_THICKNESS &&
+			this.x  + BALL_RADIUS > paddle.x &&
+			this.x - BALL_RADIUS < paddle.x + PADDLE_WIDTH
+		) {
+			this.speedY *= -1;
+
+			var centerPaddleX = paddle.x + PADDLE_WIDTH / 2,
+				distFromPaddleCenter = ball.x - centerPaddleX;
+
+			this.speedX = distFromPaddleCenter * 0.35;
+		}
+
 	};
 
 	Ball.prototype.reset = function () {
 		this.x  = this.originalX;
 		this.y = this.originalY;
+		this.speedX = this.originalSpeedX;
+		this.speedY = this.originalSpeedY;
 	};
 
 	Ball.prototype.draw = function () {
-		drawCircle(this.x, this.y, 10, 'white');
+		drawCircle(this.x, this.y, BALL_RADIUS, 'white');
 	};
 	/* End Ball Class */
 
