@@ -13,6 +13,9 @@
 	const PADDLE_THICKNESS = 10;
 	const BALL_RADIUS = 10;
 
+	const BRICK_WIDTH = 100;
+	const BRICK_HEIGHT = 50;
+
 	const DEBUG = true;
 
 	setInterval(updateAll, 1000 / fps);
