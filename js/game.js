@@ -49,8 +49,10 @@
 		if (this.y - BALL_RADIUS < 0) {
 			this.speedY *= -1;
 		}
+		// The ball touches the bottom screen
 		if (this.y + BALL_RADIUS > canvas.height) {
 			this.reset();
+			resetBricks(bricks);
 		}
 
 		if (this.y + BALL_RADIUS > paddle.y &&
@@ -132,8 +134,6 @@
 			bricks[b].state = Math.random() < 0.5 ? BRICK_STATE_ACTIVE : BRICK_STATE_INACTIVE;
 		}
 	}
-
-	resetBricks(bricks);
 
 	/**
 	 * EVENT FOR THE MOUSE
