@@ -160,7 +160,9 @@
 		paddle.draw();
 
 		for (var b in bricks) {
-			bricks[b].draw();
+			if (bricks[b].state == BRICK_STATE_ACTIVE) {
+				bricks[b].draw();
+			}
 		}
 
 		if (DEBUG) {
