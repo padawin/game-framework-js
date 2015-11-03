@@ -129,10 +129,19 @@
 		canvasContext.fill();
 	}
 
+	function drawText (text, x, y, color) {
+		canvasContext.fillStyle = color;
+		canvasContext.fillText(text, x, y);
+	}
+
 	function drawAll () {
 		drawRectangle(0, 0, canvas.width, canvas.height, 'black');
 		ball.draw();
 		paddle.draw();
+
+		if (DEBUG) {
+			drawText('(' + mouseX + ', ' + mouseY + ')', mouseX, mouseY, 'white');
+		}
 	}
 
 	function updateAll () {
