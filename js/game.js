@@ -17,8 +17,8 @@
 	var Ball = function (x, y, speedX, speedY) {
 		this.x  = this.originalX = x;
 		this.y = this.originalY = y;
-		this.speedX = speedX;
-		this.speedY = speedY;
+		this.speedX = this.originalSpeedX = speedX;
+		this.speedY = this.originalSpeedY = speedY;
 	};
 
 	Ball.prototype.updatePosition = function () {
@@ -54,6 +54,8 @@
 	Ball.prototype.reset = function () {
 		this.x  = this.originalX;
 		this.y = this.originalY;
+		this.speedX = this.originalSpeedX;
+		this.speedY = this.originalSpeedY;
 	};
 
 	Ball.prototype.draw = function () {
