@@ -4,6 +4,7 @@
 		fps = 30,
 		ball,
 		paddle,
+		bricks = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
@@ -12,6 +13,16 @@
 	const PADDLE_WIDTH = 100;
 	const PADDLE_THICKNESS = 10;
 	const BALL_RADIUS = 10;
+
+	const BRICK_WIDTH = 50;
+	const BRICK_HEIGHT = 25;
+	const BRICK_SPACE_WIDTH = BRICK_WIDTH + 5;
+	const BRICK_SPACE_HEIGHT = BRICK_HEIGHT + 5;
+	const BRICK_STATE_ACTIVE = 1;
+	const BRICK_STATE_INACTIVE = 2;
+	const BRICK_GRID_WIDTH = 14;
+	const BRICK_GRID_HEIGHT = 7;
+	const BRICKS_NUMBER = BRICK_GRID_WIDTH * BRICK_GRID_HEIGHT;
 
 	const DEBUG = true;
 
@@ -38,8 +49,10 @@
 		if (this.y - BALL_RADIUS < 0) {
 			this.speedY *= -1;
 		}
+		// The ball touches the bottom screen
 		if (this.y + BALL_RADIUS > canvas.height) {
 			this.reset();
+			resetBricks(bricks);
 		}
 
 		if (this.y + BALL_RADIUS > paddle.y &&
@@ -84,8 +97,43 @@
 	};
 	/* End Paddle Class */
 
+	/* Brick Class */
+	var Brick = function (x, y, destructible, state) {
+		this.x = x;
+		this.y = y;
+		this.state = this.originalState = state;
+		this.destructible = this.originalDestructible = destructible;
+	}
+
+	Brick.prototype.draw = function () {
+		drawRectangle(this.x, this.y, BRICK_WIDTH, BRICK_HEIGHT, 'red');
+	};
+
+	Brick.prototype.reset = function () {
+		this.state = this.originalState;
+		this.destructible = this.originalDestructible;
+	};
+	/* End Brick Class */
+
 	ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 7);
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
+
+	for (var b = 0; b < BRICKS_NUMBER; b++) {
+		bricks.push(new Brick(
+			// 10 is the initial left margin, 5 is the space between the bricks
+			10 + BRICK_SPACE_WIDTH * (b % BRICK_GRID_WIDTH),
+			10 + BRICK_SPACE_HEIGHT * parseInt(b / BRICK_GRID_WIDTH),
+			true, BRICK_STATE_ACTIVE
+		));
+	}
+
+	// @TODO put that somewhere
+	function resetBricks (bricks) {
+		for (var b = 0; b < BRICKS_NUMBER; b++) {
+			bricks[b].reset();
+			bricks[b].state = Math.random() < 0.5 ? BRICK_STATE_ACTIVE : BRICK_STATE_INACTIVE;
+		}
+	}
 
 	/**
 	 * EVENT FOR THE MOUSE
@@ -138,6 +186,12 @@
 		drawRectangle(0, 0, canvas.width, canvas.height, 'black');
 		ball.draw();
 		paddle.draw();
+
+		for (var b in bricks) {
+			if (bricks[b].state == BRICK_STATE_ACTIVE) {
+				bricks[b].draw();
+			}
+		}
 
 		if (DEBUG) {
 			drawText('(' + mouseX + ', ' + mouseY + ')', mouseX, mouseY, 'white');
