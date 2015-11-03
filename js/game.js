@@ -3,11 +3,17 @@
 		canvasContext = canvas.getContext('2d'),
 		fps = 30,
 		ball,
-		paddle;
+		paddle,
+		// position of the mouse in the canvas, taking in account the scroll
+		// and position of the canvas in the page
+		mouseX,
+		mouseY;
 
 	const PADDLE_WIDTH = 100;
 	const PADDLE_THICKNESS = 10;
 	const BALL_RADIUS = 10;
+
+	const DEBUG = true;
 
 	setInterval(updateAll, 1000 / fps);
 
@@ -88,9 +94,8 @@
 		var rect = canvas.getBoundingClientRect(),
 			root = document.documentElement;
 
-		// position of the mouse in the canvas, taking in account the scroll
-		// and position of the canvas in the page
-		var mouseX = e.clientX - rect.left - root.scrollLeft;
+			mouseX = e.clientX - rect.left - root.scrollLeft;
+			mouseY = e.clientY- rect.top - root.scrollTop;
 
 		if (mouseX > PADDLE_WIDTH / 2 && mouseX < canvas.width - PADDLE_WIDTH / 2) {
 			paddle.updatePosition(
@@ -124,10 +129,19 @@
 		canvasContext.fill();
 	}
 
+	function drawText (text, x, y, color) {
+		canvasContext.fillStyle = color;
+		canvasContext.fillText(text, x, y);
+	}
+
 	function drawAll () {
 		drawRectangle(0, 0, canvas.width, canvas.height, 'black');
 		ball.draw();
 		paddle.draw();
+
+		if (DEBUG) {
+			drawText('(' + mouseX + ', ' + mouseY + ')', mouseX, mouseY, 'white');
+		}
 	}
 
 	function updateAll () {
