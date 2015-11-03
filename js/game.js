@@ -36,10 +36,10 @@
 			this.reset();
 		}
 
-		// @TODO check the ball edges vs the paddle edge
-		if (this.y > paddle.y &&
-			this.y < paddle.y + PADDLE_THICKNESS &&
-			this.x > paddle.x && this.x < paddle.x + PADDLE_WIDTH
+		if (this.y + BALL_RADIUS > paddle.y &&
+			this.y - BALL_RADIUS < paddle.y + PADDLE_THICKNESS &&
+			this.x  + BALL_RADIUS > paddle.x &&
+			this.x - BALL_RADIUS < paddle.x + PADDLE_WIDTH
 		) {
 			this.speedY *= -1;
 
