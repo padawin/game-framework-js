@@ -42,7 +42,13 @@
 			this.x > paddle.x && this.x < paddle.x + PADDLE_WIDTH
 		) {
 			this.speedY *= -1;
+
+			var centerPaddleX = paddle.x + PADDLE_WIDTH / 2,
+				distFromPaddleCenter = ball.x - centerPaddleX;
+
+			this.speedX = distFromPaddleCenter * 0.35;
 		}
+
 	};
 
 	Ball.prototype.reset = function () {
