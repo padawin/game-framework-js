@@ -89,6 +89,19 @@
 	};
 	/* End Paddle Class */
 
+	/* Brick Class */
+	var Brick = function (x, y, destructible) {
+		this.x = x;
+		this.y = y;
+		this.state = BRICK_STATE_ACTIVE;
+		this.destructible = destructible;
+	}
+
+	Brick.prototype.draw = function () {
+		drawRectangle(this.x, this.y, BRICK_WIDTH, BRICK_HEIGHT, 'red');
+	};
+	/* End Brick Class */
+
 	ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 7);
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
 
