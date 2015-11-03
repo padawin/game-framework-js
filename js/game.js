@@ -16,8 +16,13 @@
 
 	const BRICK_WIDTH = 50;
 	const BRICK_HEIGHT = 25;
+	const BRICK_SPACE_WIDTH = BRICK_WIDTH + 5;
+	const BRICK_SPACE_HEIGHT = BRICK_HEIGHT + 5;
 	const BRICK_STATE_ACTIVE = 1;
 	const BRICK_STATE_INACTIVE = 2;
+	const BRICK_GRID_WIDTH = 14;
+	const BRICK_GRID_HEIGHT = 7;
+	const BRICKS_NUMBER = BRICK_GRID_WIDTH * BRICK_GRID_HEIGHT;
 
 	const DEBUG = true;
 
@@ -105,7 +110,15 @@
 
 	ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 7);
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
-	bricks.push(new Brick(100, 100, true));
+
+	for (var b = 0; b < BRICKS_NUMBER; b++) {
+		bricks.push(new Brick(
+			// 10 is the initial left margin, 5 is the space between the bricks
+			10 + BRICK_SPACE_WIDTH * (b % BRICK_GRID_WIDTH),
+			10 + BRICK_SPACE_HEIGHT * parseInt(b / BRICK_GRID_WIDTH),
+			true
+		));
+	}
 
 	/**
 	 * EVENT FOR THE MOUSE
