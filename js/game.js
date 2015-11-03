@@ -15,6 +15,8 @@
 
 	const BRICK_WIDTH = 100;
 	const BRICK_HEIGHT = 50;
+	const BRICK_STATE_ACTIVE = 1;
+	const BRICK_STATE_INACTIVE = 2;
 
 	const DEBUG = true;
 
