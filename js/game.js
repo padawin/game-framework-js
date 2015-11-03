@@ -96,10 +96,10 @@
 	/* End Paddle Class */
 
 	/* Brick Class */
-	var Brick = function (x, y, destructible) {
+	var Brick = function (x, y, destructible, state) {
 		this.x = x;
 		this.y = y;
-		this.state = BRICK_STATE_ACTIVE;
+		this.state = state;
 		this.destructible = destructible;
 	}
 
@@ -116,7 +116,7 @@
 			// 10 is the initial left margin, 5 is the space between the bricks
 			10 + BRICK_SPACE_WIDTH * (b % BRICK_GRID_WIDTH),
 			10 + BRICK_SPACE_HEIGHT * parseInt(b / BRICK_GRID_WIDTH),
-			true
+			true, BRICK_STATE_ACTIVE
 		));
 	}
 
