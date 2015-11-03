@@ -9,6 +9,8 @@
 	const PADDLE_THICKNESS = 10;
 	const BALL_RADIUS = 10;
 
+	const DEBUG = true;
+
 	setInterval(updateAll, 1000 / fps);
 
 	canvas.addEventListener('mousemove', mouseMovedEvent);
