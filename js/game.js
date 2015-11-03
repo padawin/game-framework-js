@@ -4,6 +4,7 @@
 		fps = 30,
 		ball,
 		paddle,
+		bricks = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
@@ -104,6 +105,7 @@
 
 	ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 7);
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
+	bricks.push(new Brick(100, 100, true));
 
 	/**
 	 * EVENT FOR THE MOUSE
@@ -156,6 +158,10 @@
 		drawRectangle(0, 0, canvas.width, canvas.height, 'black');
 		ball.draw();
 		paddle.draw();
+
+		for (var b in bricks) {
+			bricks[b].draw();
+		}
 
 		if (DEBUG) {
 			drawText('(' + mouseX + ', ' + mouseY + ')', mouseX, mouseY, 'white');
