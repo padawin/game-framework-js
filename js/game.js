@@ -55,11 +55,7 @@
 			resetBricks(bricks);
 		}
 
-		if (this.y + BALL_RADIUS > paddle.y &&
-			this.y - BALL_RADIUS < paddle.y + PADDLE_THICKNESS &&
-			this.x  + BALL_RADIUS > paddle.x &&
-			this.x - BALL_RADIUS < paddle.x + PADDLE_WIDTH
-		) {
+		if (this.isCollidingWithRectangle(paddle)) {
 			this.speedY *= -1;
 
 			var centerPaddleX = paddle.x + PADDLE_WIDTH / 2,
@@ -67,7 +63,13 @@
 
 			this.speedX = distFromPaddleCenter * 0.35;
 		}
+	};
 
+	Ball.prototype.isCollidingWithRectangle = function (rectangle) {
+		return this.y + BALL_RADIUS > rectangle.y &&
+			this.y - BALL_RADIUS < rectangle.y + rectangle.h &&
+			this.x  + BALL_RADIUS > rectangle.x &&
+			this.x - BALL_RADIUS < rectangle.x + rectangle.w;
 	};
 
 	Ball.prototype.reset = function () {
