@@ -15,13 +15,13 @@
 	const BALL_RADIUS = 10;
 
 	const BRICK_WIDTH = 49;
-	const BRICK_HEIGHT = 20;
+	const BRICK_HEIGHT = 40;
 	const BRICK_SPACE_WIDTH = BRICK_WIDTH + 5;
 	const BRICK_SPACE_HEIGHT = BRICK_HEIGHT + 5;
 	const BRICK_STATE_ACTIVE = 1;
 	const BRICK_STATE_INACTIVE = 2;
 	const BRICK_GRID_COL = 15;
-	const BRICK_GRID_ROW = 7;
+	const BRICK_GRID_ROW = 4;
 	const BRICKS_NUMBER = BRICK_GRID_COL * BRICK_GRID_ROW;
 
 	const DEBUG = true;
@@ -161,7 +161,6 @@
 	function resetBricks (bricks) {
 		for (var b = 0; b < BRICKS_NUMBER; b++) {
 			bricks[b].reset();
-			bricks[b].state = Math.random() < 0.5 ? BRICK_STATE_ACTIVE : BRICK_STATE_INACTIVE;
 		}
 	}
 
