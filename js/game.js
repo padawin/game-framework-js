@@ -83,9 +83,11 @@
 	/* End Ball Class */
 
 	/* Paddle Class */
-	var Paddle = function (x, y) {
+	var Paddle = function (x, y, w, h) {
 		this.x = x;
 		this.y = y;
+		this.w = w;
+		this.h = h;
 	}
 
 	Paddle.prototype.updatePosition = function (x) {
@@ -93,20 +95,22 @@
 	};
 
 	Paddle.prototype.draw = function () {
-		drawRectangle(this.x, this.y, PADDLE_WIDTH, PADDLE_THICKNESS, 'white');
+		drawRectangle(this.x, this.y, this.w, this.h, 'white');
 	};
 	/* End Paddle Class */
 
 	/* Brick Class */
-	var Brick = function (x, y, destructible, state) {
+	var Brick = function (x, y, w, h, destructible, state) {
 		this.x = x;
 		this.y = y;
+		this.w = w;
+		this.h = h;
 		this.state = this.originalState = state;
 		this.destructible = this.originalDestructible = destructible;
 	}
 
 	Brick.prototype.draw = function () {
-		drawRectangle(this.x, this.y, BRICK_WIDTH, BRICK_HEIGHT, 'red');
+		drawRectangle(this.x, this.y, this.w, this.h, 'red');
 	};
 
 	Brick.prototype.reset = function () {
@@ -120,7 +124,11 @@
 	/* End Brick Class */
 
 	ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 7);
-	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
+	paddle = new Paddle(
+		(canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100,
+		PADDLE_WIDTH,
+		PADDLE_THICKNESS
+	);
 
 	var col, row;
 	for (row = 0; row < BRICK_GRID_ROW; row++ ) {
@@ -129,6 +137,8 @@
 				// 5 is the initial left margin
 				BRICK_SPACE_WIDTH * col,
 				BRICK_SPACE_HEIGHT * row,
+				BRICK_WIDTH,
+				BRICK_HEIGHT,
 				true, BRICK_STATE_ACTIVE
 			));
 		}
