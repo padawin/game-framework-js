@@ -161,7 +161,6 @@
 	function resetBricks (bricks) {
 		for (var b = 0; b < BRICKS_NUMBER; b++) {
 			bricks[b].reset();
-			bricks[b].state = Math.random() < 0.5 ? BRICK_STATE_ACTIVE : BRICK_STATE_INACTIVE;
 		}
 	}
 
