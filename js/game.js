@@ -167,6 +167,14 @@
 
 	function moveAll () {
 		ball.updatePosition();
+
+		var brickIndex = Brick.colRowToIndex(
+			Math.floor(mouseX / BRICK_SPACE_WIDTH),
+			Math.floor(mouseY / BRICK_SPACE_HEIGHT)
+		);
+		if (0 <= brickIndex && brickIndex < BRICKS_NUMBER) {
+			bricks[brickIndex].state = BRICK_STATE_INACTIVE;
+		}
 	}
 
 	/**
