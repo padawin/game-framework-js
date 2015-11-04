@@ -14,7 +14,7 @@
 	const PADDLE_THICKNESS = 10;
 	const BALL_RADIUS = 10;
 
-	const BRICK_WIDTH = 48;
+	const BRICK_WIDTH = 49;
 	const BRICK_HEIGHT = 20;
 	const BRICK_SPACE_WIDTH = BRICK_WIDTH + 5;
 	const BRICK_SPACE_HEIGHT = BRICK_HEIGHT + 5;
@@ -123,8 +123,8 @@
 		for (col = 0; col < BRICK_GRID_HEIGHT; col++ ) {
 			bricks.push(new Brick(
 				// 5 is the initial left margin
-				5 + BRICK_SPACE_WIDTH * row,
-				5 + BRICK_SPACE_HEIGHT * col,
+				BRICK_SPACE_WIDTH * row,
+				BRICK_SPACE_HEIGHT * col,
 				true, BRICK_STATE_ACTIVE
 			));
 		}
