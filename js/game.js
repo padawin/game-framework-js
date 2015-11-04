@@ -123,12 +123,12 @@
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
 
 	var col, row;
-	for (row = 0; row < BRICK_GRID_COL; row++ ) {
-		for (col = 0; col < BRICK_GRID_ROW; col++ ) {
+	for (row = 0; row < BRICK_GRID_ROW; row++ ) {
+		for (col = 0; col < BRICK_GRID_COL; col++ ) {
 			bricks.push(new Brick(
 				// 5 is the initial left margin
-				BRICK_SPACE_WIDTH * row,
-				BRICK_SPACE_HEIGHT * col,
+				BRICK_SPACE_WIDTH * col,
+				BRICK_SPACE_HEIGHT * row,
 				true, BRICK_STATE_ACTIVE
 			));
 		}
