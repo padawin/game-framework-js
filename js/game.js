@@ -201,7 +201,10 @@
 		}
 
 		if (DEBUG) {
-			drawText('(' + mouseX + ', ' + mouseY + ')', mouseX, mouseY, 'white');
+			drawText('(' +
+				Math.floor(mouseX / BRICK_SPACE_WIDTH) + ', ' +
+				Math.floor(mouseY / BRICK_SPACE_HEIGHT) + ', ' +
+				Brick.colRowToIndex(Math.floor(mouseX / BRICK_SPACE_WIDTH), Math.floor(mouseY / BRICK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
 		}
 	}
 
