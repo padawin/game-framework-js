@@ -113,6 +113,10 @@
 		this.state = this.originalState;
 		this.destructible = this.originalDestructible;
 	};
+
+	Brick.colRowToIndex = function (col, row) {
+		return col + BRICK_GRID_WIDTH * row;
+	};
 	/* End Brick Class */
 
 	ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 7);
