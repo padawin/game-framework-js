@@ -20,9 +20,9 @@
 	const BRICK_SPACE_HEIGHT = BRICK_HEIGHT + 5;
 	const BRICK_STATE_ACTIVE = 1;
 	const BRICK_STATE_INACTIVE = 2;
-	const BRICK_GRID_WIDTH = 15;
-	const BRICK_GRID_HEIGHT = 7;
-	const BRICKS_NUMBER = BRICK_GRID_WIDTH * BRICK_GRID_HEIGHT;
+	const BRICK_GRID_COL = 15;
+	const BRICK_GRID_ROW = 7;
+	const BRICKS_NUMBER = BRICK_GRID_COL * BRICK_GRID_ROW;
 
 	const DEBUG = true;
 
@@ -115,7 +115,7 @@
 	};
 
 	Brick.colRowToIndex = function (col, row) {
-		return col + BRICK_GRID_WIDTH * row;
+		return col + BRICK_GRID_COL * row;
 	};
 	/* End Brick Class */
 
@@ -123,8 +123,8 @@
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
 
 	var col, row;
-	for (row = 0; row < BRICK_GRID_WIDTH; row++ ) {
-		for (col = 0; col < BRICK_GRID_HEIGHT; col++ ) {
+	for (row = 0; row < BRICK_GRID_COL; row++ ) {
+		for (col = 0; col < BRICK_GRID_ROW; col++ ) {
 			bricks.push(new Brick(
 				// 5 is the initial left margin
 				BRICK_SPACE_WIDTH * row,
