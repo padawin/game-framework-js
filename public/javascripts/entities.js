@@ -32,15 +32,9 @@ function (canvas, B) {
 		// The ball touches the bottom screen
 		if (this.y + BALL_RADIUS > canvas.height()) {
 			this.reset();
+			console.log('fire lost');
 			B.Events.fire('lost');
 		}
-	};
-
-	Ball.prototype.isCollidingWithRectangle = function (rectangle) {
-		return this.y + BALL_RADIUS > rectangle.y &&
-			this.y - BALL_RADIUS < rectangle.y + rectangle.h &&
-			this.x  + BALL_RADIUS > rectangle.x &&
-			this.x - BALL_RADIUS < rectangle.x + rectangle.w;
 	};
 
 	Ball.prototype.reset = function () {

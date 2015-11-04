@@ -3,8 +3,8 @@ if (typeof (require) != 'undefined') {
 }
 
 loader.executeModule('main',
-'B', 'Canvas', 'Entities',
-function (B, canvas, Entities) {
+'B', 'Canvas', 'Entities', 'Physics',
+function (B, canvas, Entities, Physics) {
 	var ball,
 		paddle,
 		bricks = [],
@@ -25,9 +25,13 @@ function (B, canvas, Entities) {
 		PADDLE_THICKNESS
 	);
 
+	Physics.addObject('ball', ball);
+	Physics.addObject('paddle', paddle);
+
 	B.Events.on('lost', null, function () {
 		resetBricks(bricks);
 	});
+
 	B.Events.on('mouse-moved', null, function (mX, mY) {
 		mouseX = mX;
 		mouseY = mY;
@@ -79,7 +83,7 @@ function (B, canvas, Entities) {
 			ball.speedY *= -1;
 		}
 
-		if (ball.isCollidingWithRectangle(paddle)) {
+		if (Physics.sphereCollidesWithRect('ball', 'paddle')) {
 			ball.speedY *= -1;
 
 			var centerPaddleX = paddle.x + PADDLE_WIDTH / 2,
