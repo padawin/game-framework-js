@@ -59,7 +59,9 @@
 			Math.floor(ball.x / BRICK_SPACE_WIDTH),
 			Math.floor(ball.y / BRICK_SPACE_HEIGHT)
 		);
-		if (0 <= brickIndex && brickIndex < BRICKS_NUMBER) {
+		if (0 <= brickIndex && brickIndex < BRICKS_NUMBER
+			&& bricks[brickIndex].state == BRICK_STATE_ACTIVE
+		) {
 			bricks[brickIndex].state = BRICK_STATE_INACTIVE;
 		}
 
