@@ -1,7 +1,7 @@
 {
-  "name": "%TBD%",
+  "name": "brick-game",
   "version": "0.0.1",
-  "description": "%TBD%",
+  "description": "brick-game",
   "main": "app.js",
   "private": true,
   "scripts": {
@@ -10,14 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "%TBD%"
+    "url": "git@bitbucket.org:padawin/game-programming-lesson.git"
   },
   "keywords": [],
   "author": "Ghislain Rodrigues",
   "license": "MIT",
-  "bugs": {
-    "url": "%TBD%"
-  },
   "dependencies": {
     "Butterfly-js": "github:padawin/Butterfly-js",
     "body-parser": "~1.13.2",

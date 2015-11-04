@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
-	secret: '%TBD%',
+	secret: '-[gx>j@nl41tL=eL3*C0{<On3t)xN-1_>5wvSgDxkbnRO9B;7Fa&}.qp<Nt_xjA/&D4{"vTJ~[@hUqta_oj/NlrcEbrw1jCJq[',
 	resave: true,
 	saveUninitialized: true
 }));
