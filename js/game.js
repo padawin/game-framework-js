@@ -63,6 +63,7 @@
 			&& bricks[brickIndex].state == BRICK_STATE_ACTIVE
 		) {
 			bricks[brickIndex].state = BRICK_STATE_INACTIVE;
+			this.speedY *= -1;
 		}
 
 		if (this.isCollidingWithRectangle(paddle)) {
