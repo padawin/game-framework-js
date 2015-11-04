@@ -118,13 +118,16 @@
 	ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 7);
 	paddle = new Paddle((canvas.width - PADDLE_WIDTH) / 2, canvas.height - 100);
 
-	for (var b = 0; b < BRICKS_NUMBER; b++) {
-		bricks.push(new Brick(
-			// 10 is the initial left margin, 5 is the space between the bricks
-			10 + BRICK_SPACE_WIDTH * (b % BRICK_GRID_WIDTH),
-			10 + BRICK_SPACE_HEIGHT * parseInt(b / BRICK_GRID_WIDTH),
-			true, BRICK_STATE_ACTIVE
-		));
+	var col, row;
+	for (row = 0; row < BRICK_GRID_WIDTH; row++ ) {
+		for (col = 0; col < BRICK_GRID_HEIGHT; col++ ) {
+			bricks.push(new Brick(
+				// 10 is the initial left margin, 5 is the space between the bricks
+				10 + BRICK_SPACE_WIDTH * row,
+				10 + BRICK_SPACE_HEIGHT * col,
+				true, BRICK_STATE_ACTIVE
+			));
+		}
 	}
 
 	// @TODO put that somewhere
