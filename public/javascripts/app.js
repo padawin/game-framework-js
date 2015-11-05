@@ -85,16 +85,11 @@ function (B, canvas, Entities, Physics) {
 			&& bricks[brickIndex].state == BRICK_STATE_ACTIVE
 		) {
 			bricks[brickIndex].state = BRICK_STATE_INACTIVE;
-			ball.speedY *= -1;
+			Physics.sphereBounceAgainstStaticRectangle(ball, bricks[brickIndex]);
 		}
 
 		if (Physics.sphereCollidesWithRect('ball', 'paddle')) {
-			ball.speedY *= -1;
-
-			var centerPaddleX = paddle.x + PADDLE_WIDTH / 2,
-				distFromPaddleCenter = ball.x - centerPaddleX;
-
-			ball.speedX = distFromPaddleCenter * 0.35;
+			Physics.sphereBounceAgainstRectangle(ball, paddle);
 		}
 	}
 

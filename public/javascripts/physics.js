@@ -21,6 +21,19 @@ function () {
 			sphere.x - BALL_RADIUS < rectangle.x + rectangle.w;
 	};
 
+	physics.sphereBounceAgainstStaticRectangle = function (sphere, rectangle) {
+		sphere.speedY *= -1;
+	};
+
+	physics.sphereBounceAgainstRectangle = function (sphere, rectangle) {
+		physics.sphereBounceAgainstStaticRectangle(sphere, rectangle);
+
+		var centerPaddleX = rectangle.x + rectangle.w / 2,
+			distFromPaddleCenter = sphere.x - centerPaddleX;
+
+		sphere.speedX = distFromPaddleCenter * 0.35;
+	};
+
 	return physics;
 });
 
