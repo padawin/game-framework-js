@@ -80,6 +80,7 @@ function (B, canvas, Entities, Physics) {
 			brickCol,
 			brickRow
 		);
+		// if the ball is on an active brick
 		if (0 <= brickCol && brickCol < BRICK_GRID_COL
 			&& 0 <= brickRow && brickRow < BRICK_GRID_ROW
 			&& bricks[brickIndex].state == BRICK_STATE_ACTIVE
@@ -88,6 +89,7 @@ function (B, canvas, Entities, Physics) {
 			Physics.sphereBounceAgainstGridRectangle(ball, bricks[brickIndex]);
 		}
 
+		// if the ball is colliding with the paddle
 		if (Physics.sphereCollidesWithRectangle('ball', 'paddle')) {
 			Physics.sphereBounceAgainstRectangle(ball, paddle);
 		}
