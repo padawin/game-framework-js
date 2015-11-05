@@ -88,7 +88,7 @@ function (B, canvas, Entities, Physics) {
 			Physics.sphereBounceAgainstStaticRectangle(ball, bricks[brickIndex]);
 		}
 
-		if (Physics.sphereCollidesWithRect('ball', 'paddle')) {
+		if (Physics.sphereCollidesWithRectangle('ball', 'paddle')) {
 			Physics.sphereBounceAgainstRectangle(ball, paddle);
 		}
 	}

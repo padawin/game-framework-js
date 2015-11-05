@@ -11,7 +11,7 @@ function () {
 		objects[objectId] = object;
 	};
 
-	physics.sphereCollidesWithRect = function (sphereId, rectId) {
+	physics.sphereCollidesWithRectangle = function (sphereId, rectId) {
 		var sphere = objects[sphereId],
 			rectangle = objects[rectId];
 
