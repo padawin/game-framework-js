@@ -85,7 +85,7 @@ function (B, canvas, Entities, Physics) {
 			&& bricks[brickIndex].state == BRICK_STATE_ACTIVE
 		) {
 			bricks[brickIndex].state = BRICK_STATE_INACTIVE;
-			Physics.sphereBounceAgainstStaticRectangle(ball, bricks[brickIndex]);
+			Physics.sphereBounceAgainstGridRectangle(ball, bricks[brickIndex]);
 		}
 
 		if (Physics.sphereCollidesWithRectangle('ball', 'paddle')) {

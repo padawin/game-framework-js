@@ -21,12 +21,12 @@ function () {
 			sphere.x - BALL_RADIUS < rectangle.x + rectangle.w;
 	};
 
-	physics.sphereBounceAgainstStaticRectangle = function (sphere, rectangle) {
+	physics.sphereBounceAgainstGridRectangle = function (sphere, rectangle) {
 		sphere.speedY *= -1;
 	};
 
 	physics.sphereBounceAgainstRectangle = function (sphere, rectangle) {
-		physics.sphereBounceAgainstStaticRectangle(sphere, rectangle);
+		physics.sphereBounceAgainstGridRectangle(sphere, rectangle);
 
 		var centerPaddleX = rectangle.x + rectangle.w / 2,
 			distFromPaddleCenter = sphere.x - centerPaddleX;
