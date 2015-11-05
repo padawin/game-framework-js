@@ -16,11 +16,19 @@ function (canvas, B) {
 		this.y = this.originalY = y;
 		this.speedX = this.originalSpeedX = speedX;
 		this.speedY = this.originalSpeedY = speedY;
+
+		this.gridCellCol = Math.floor(this.x / BRICK_SPACE_WIDTH);
+		this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
 	};
 
 	Ball.prototype.updatePosition = function () {
 		this.x += this.speedX;
 		this.y += this.speedY;
+
+		this.oldGridCellCol = this.gridCellCol;
+		this.oldGridCellRow = this.gridCellRow;
+		this.gridCellCol = Math.floor(this.x / BRICK_SPACE_WIDTH);
+		this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
 
 		// This deals with the screen's edges
 		if (this.x - BALL_RADIUS < 0 || this.x + BALL_RADIUS > canvas.width()) {
