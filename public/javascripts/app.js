@@ -72,11 +72,16 @@ function (B, canvas, Entities, Physics) {
 	function moveAll () {
 		ball.updatePosition();
 
-		var brickIndex = Entities.Brick.colRowToIndex(
-			Math.floor(ball.x / BRICK_SPACE_WIDTH),
-			Math.floor(ball.y / BRICK_SPACE_HEIGHT)
+		var brickCol = Math.floor(ball.x / BRICK_SPACE_WIDTH),
+			brickRow = Math.floor(ball.y / BRICK_SPACE_HEIGHT),
+			brickIndex;
+
+		brickIndex = Entities.Brick.colRowToIndex(
+			brickCol,
+			brickRow
 		);
-		if (0 <= brickIndex && brickIndex < BRICKS_NUMBER
+		if (0 <= brickCol && brickCol < BRICK_GRID_COL
+			&& 0 <= brickRow && brickRow < BRICK_GRID_ROW
 			&& bricks[brickIndex].state == BRICK_STATE_ACTIVE
 		) {
 			bricks[brickIndex].state = BRICK_STATE_INACTIVE;
