@@ -22,11 +22,19 @@ function () {
 	};
 
 	physics.sphereBounceAgainstGridRectangle = function (sphere, rectangle) {
-		sphere.speedY *= -1;
+		// hit the rectangle from top or bottom
+		if (sphere.oldGridCellRow != sphere.gridCellRow) {
+			sphere.speedY *= -1;
+		}
+		// hit the rectangle from side
+		if (sphere.oldGridCellCol != sphere.gridCellCol) {
+			sphere.speedX *= -1;
+		}
 	};
 
 	physics.sphereBounceAgainstRectangle = function (sphere, rectangle) {
-		physics.sphereBounceAgainstGridRectangle(sphere, rectangle);
+		// to change with actual physics
+		sphere.speedY *= -1;
 
 		var centerPaddleX = rectangle.x + rectangle.w / 2,
 			distFromPaddleCenter = sphere.x - centerPaddleX;
