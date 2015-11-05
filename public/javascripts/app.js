@@ -72,20 +72,20 @@ function (B, canvas, Entities, Physics) {
 	function moveAll () {
 		ball.updatePosition();
 
-		var brickIndex;
+		var brick;
 
-		brickIndex = Entities.Brick.colRowToIndex(
+		brick = bricks[Entities.Brick.colRowToIndex(
 			ball.gridCellCol,
 			ball.gridCellRow
-		);
+		)];
 
 		// if the ball is on an active brick
 		if (0 <= ball.gridCellCol && ball.gridCellCol < BRICK_GRID_COL
 			&& 0 <= ball.gridCellRow && ball.gridCellRow < BRICK_GRID_ROW
-			&& bricks[brickIndex].state == BRICK_STATE_ACTIVE
+			&& brick.state == BRICK_STATE_ACTIVE
 		) {
-			bricks[brickIndex].state = BRICK_STATE_INACTIVE;
-			Physics.sphereBounceAgainstGridRectangle(ball, bricks[brickIndex]);
+			brick.state = BRICK_STATE_INACTIVE;
+			Physics.sphereBounceAgainstGridRectangle(ball, brick);
 		}
 
 		// if the ball is colliding with the paddle
