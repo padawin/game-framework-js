@@ -46,6 +46,13 @@ function (B, canvas, Entities, Physics) {
 				)
 			);
 		}
+
+		if (DEBUG) {
+			ball.x = mouseX;
+			ball.y = mouseY;
+			ball.speedX = BALL_SPEED_X;
+			ball.speedY = BALL_SPEED_Y * -1;
+		}
 	});
 
 	var col, row;
@@ -110,6 +117,9 @@ function (B, canvas, Entities, Physics) {
 				Math.floor(mouseX / BRICK_SPACE_WIDTH) + ', ' +
 				Math.floor(mouseY / BRICK_SPACE_HEIGHT) + ', ' +
 				Entities.Brick.colRowToIndex(Math.floor(mouseX / BRICK_SPACE_WIDTH), Math.floor(mouseY / BRICK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
+
+
+			canvas.line([ball.x, ball.y], [ball.x + ball.speedX * 30, ball.y + ball.speedY * 30]);
 		}
 	}
 
