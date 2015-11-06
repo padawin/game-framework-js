@@ -2,10 +2,16 @@ if (typeof (require) != 'undefined') {
 	var loader = require('./loader.js').loader;
 }
 
+/**
+ * Module to deal with physics calculations and collisions
+ */
 loader.addModule('Physics',
 function () {
 	var physics = {};
 
+	/**
+	 * Method to know if a sphere collides with a rectangle
+	 */
 	physics.sphereCollidesWithRectangle = function (sphere, rectangle) {
 		return sphere.y + BALL_RADIUS > rectangle.y &&
 			sphere.y - BALL_RADIUS < rectangle.y + rectangle.h &&
@@ -58,6 +64,8 @@ function () {
 	};
 
 	/**
+	 * Make a moving sphere bouncing against a rectangle
+	 *
 	 * @TODO this might be too game-related
 	 */
 	physics.sphereBounceAgainstRectangle = function (sphere, rectangle) {

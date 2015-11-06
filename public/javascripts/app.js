@@ -2,6 +2,10 @@ if (typeof (require) != 'undefined') {
 	var loader = require('./loader.js').loader;
 }
 
+/**
+ * Entry point of the game, contains some part of the game engine and deals with
+ * the different entities
+ */
 loader.executeModule('main',
 'B', 'Canvas', 'Entities', 'Physics',
 function (B, canvas, Entities, Physics) {
@@ -14,26 +18,32 @@ function (B, canvas, Entities, Physics) {
 		mouseY,
 		fps = 30;
 
+	// Init the view
 	canvas.init(document.getElementById('game-canvas'));
-
 	setInterval(updateAll, 1000 / fps);
 
+	// Init the ball
 	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_SPEED_X, BALL_SPEED_Y);
+	// Init the paddle at the middle of the game view, 100px above the bottom
 	paddle = new Entities.Paddle(
 		(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
 		PADDLE_WIDTH,
 		PADDLE_THICKNESS
 	);
 
+	/* Events */
+	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
 		resetBricks(bricks);
 		ball.reset();
 	});
 
+	// Event to execute when the player loses
 	B.Events.on('lost', null, function () {
 		resetBricks(bricks);
 	});
 
+	// Event to execute when the mouse move
 	B.Events.on('mouse-moved', null, function (mX, mY) {
 		mouseX = mX;
 		mouseY = mY;
@@ -57,7 +67,15 @@ function (B, canvas, Entities, Physics) {
 			ball.speedY = BALL_SPEED_Y * -1;
 		}
 	});
+	/* End of Events */
 
+	/*
+	 * Create the bricks, The whole game is a grid and bricks are on the grid
+	 * The bricks are organised on a rectangle of the grid started at the
+	 * position (BRICK_GRID_START_COL, BRICK_GRID_START_COL) and ends at the
+	 * position (BRICK_GRID_COL, BRICK_GRID_ROW)
+	 * Each brick is an instance of the class Entities.Brick
+	 */
 	var col, row;
 	for (row = BRICK_GRID_START_ROW; row < BRICK_GRID_ROW; row++ ) {
 		for (col = BRICK_GRID_START_COL; col < BRICK_GRID_COL; col++ ) {
@@ -73,23 +91,34 @@ function (B, canvas, Entities, Physics) {
 		}
 	}
 
+	// Set the number of remaining bricks to destroy
 	var remainingBricks = BRICKS_NUMBER;
 
 	// @TODO put that somewhere
+	// Reset the bricks to the original state (all active)
 	function resetBricks (bricks) {
 		for (var b = 0; b < BRICKS_NUMBER; b++) {
 			bricks[b].reset();
 		}
 	}
 
+	/**
+	 * Method to convert a pair of coordinates to the index of the cell in the
+	 * grid the coordinates are in
+	 */
 	colRowToGridIndex = function (col, row) {
 		return col - BRICK_GRID_START_COL +
 			(BRICK_GRID_COL - BRICK_GRID_START_COL) * (row - BRICK_GRID_START_ROW);
 	};
 
+	/**
+	 * Method to update the game state and the objects's position
+	 */
 	function moveAll () {
+		// Update the ball position
 		ball.updatePosition();
 
+		/* Ball and active brick collision */
 		var brick,
 			brickSide,
 			brickTopBot;
@@ -119,12 +148,20 @@ function (B, canvas, Entities, Physics) {
 			brickTopBot = bricks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 		}
+		/* End of Ball and active brick collision */
 
+		/* Ball and paddle collision */
 		// if the ball is colliding with the paddle
 		if (Physics.sphereCollidesWithRectangle(ball, paddle)) {
 			Physics.sphereBounceAgainstRectangle(ball, paddle);
 		}
+		/* Ball and paddle collision */
 	}
+
+	/**
+	 * Method to execute on each frame to update the game state and the
+	 * objects's position and then redraw the canvas
+	 */
 	function updateAll () {
 		moveAll();
 		canvas.drawAll([ball, paddle, bricks]);

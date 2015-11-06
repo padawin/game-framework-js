@@ -10,6 +10,9 @@ function (B) {
 		canvasModule;
 
 	canvasModule = {
+		/**
+		 * Method to initialise the canvas and set the mouse events
+		 */
 		init: function (element) {
 			canvas = document.getElementById('game-canvas');
 			canvasContext = canvas.getContext('2d');
@@ -31,25 +34,33 @@ function (B) {
 		},
 
 		/**
-		 * Methods to draw stuff
+		 * Method to draw a rectangle
 		 */
 		drawRectangle: function (x, y, width, height, color) {
 			canvasContext.fillStyle = color;
 			canvasContext.fillRect(x, y, width, height);
 		},
 
+		/**
+		 * Method to draw a circle
+		 */
 		drawCircle: function (x, y, radius, color) {
 			canvasContext.fillStyle = color;
 			canvasContext.beginPath();
 			canvasContext.arc(x, y, radius, 0, Math.PI * 2, true);
 			canvasContext.fill();
 		},
-
+		/**
+		 * Method to draw some text
+		 */
 		drawText: function (text, x, y, color) {
 			canvasContext.fillStyle = color;
 			canvasContext.fillText(text, x, y);
 		},
 
+		/**
+		 * Method to draw a line
+		 */
 		line: function (from, to) {
 			canvasContext.strokeStyle = 'white';
 			canvasContext.beginPath();
@@ -58,10 +69,16 @@ function (B) {
 			canvasContext.stroke();
 		},
 
+		/**
+		 * Method to get the canvas's width
+		 */
 		width: function () {
 			return canvas.width;
 		},
 
+		/**
+		 * Method to get the canvas's height
+		 */
 		height: function () {
 			return canvas.height;
 		},
