@@ -6,9 +6,10 @@ loader.addModule('Canvas',
 'B',
 function (B) {
 	var canvas,
-		canvasContext;
+		canvasContext,
+		canvasModule;
 
-	return {
+	canvasModule = {
 		init: function (element) {
 			canvas = document.getElementById('game-canvas');
 			canvasContext = canvas.getContext('2d');
@@ -66,5 +67,5 @@ function (B) {
 		}
 	}
 
-	return canvas;
+	return canvasModule;
 });
