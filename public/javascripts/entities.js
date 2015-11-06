@@ -32,9 +32,11 @@ function (canvas, B) {
 
 		// This deals with the screen's edges
 		if (this.x - BALL_RADIUS < 0 || this.x + BALL_RADIUS > canvas.width()) {
+			this.x = Math.min(Math.max(BALL_RADIUS, this.x), canvas.width() - BALL_RADIUS);
 			this.speedX *= -1;
 		}
 		if (this.y - BALL_RADIUS < 0) {
+			this.y = BALL_RADIUS;
 			this.speedY *= -1;
 		}
 		// The ball touches the bottom screen
