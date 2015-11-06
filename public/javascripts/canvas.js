@@ -64,6 +64,24 @@ function (B) {
 
 		height: function () {
 			return canvas.height;
+		},
+
+		drawAll: function (all) {
+			canvasModule.drawRectangle(0, 0, canvas.width, canvas.height, 'black');
+
+			function _subDrawAll (all) {
+				var a, subA;
+				for (a = 0; a < all.length; a++) {
+					if (all[a].length) {
+						_subDrawAll(all[a]);
+					}
+					else {
+						all[a].draw();
+					}
+				}
+			}
+
+			_subDrawAll(all);
 		}
 	}
 

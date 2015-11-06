@@ -121,15 +121,9 @@ function (B, canvas, Entities, Physics) {
 			Physics.sphereBounceAgainstRectangle(ball, paddle);
 		}
 	}
-
-	function drawAll () {
-		canvas.drawRectangle(0, 0, canvas.width(), canvas.height(), 'black');
-		ball.draw();
-		paddle.draw();
-
-		for (var b in bricks) {
-			bricks[b].draw();
-		}
+	function updateAll () {
+		moveAll();
+		canvas.drawAll([ball, paddle, bricks]);
 
 		if (DEBUG) {
 			canvas.drawText('(' +
@@ -140,10 +134,5 @@ function (B, canvas, Entities, Physics) {
 
 			canvas.line([ball.x, ball.y], [ball.x + ball.speedX * 30, ball.y + ball.speedY * 30]);
 		}
-	}
-
-	function updateAll () {
-		moveAll();
-		drawAll();
 	}
 });
