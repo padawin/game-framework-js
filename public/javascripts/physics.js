@@ -46,12 +46,22 @@ function () {
 	 */
 	physics.sphereBounceAgainstGridRectangle = function (sphere, rectangle, rectangleSide, rectangleTopBot) {
 		// hit the rectangle from top or bottom
-		if (sphere.oldGridCellRow != sphere.gridCellRow) {
+		// hit from the side
+		if (rectangle != rectangleSide && rectangle == rectangleTopBot) {
+			sphere.speedX *= -1;
+		}
+		// hit from above or below
+		else if (rectangle == rectangleSide && rectangle != rectangleTopBot) {
 			sphere.speedY *= -1;
 		}
-		// hit the rectangle from side
-		if (sphere.oldGridCellCol != sphere.gridCellCol) {
-			sphere.speedX *= -1;
+		// hit on a corner
+		else if (rectangle != rectangleSide && rectangle != rectangleTopBot) {
+			if (!(rectangleSide && rectangleSide.state === BRICK_STATE_ACTIVE && rectangleTopBot && rectangleTopBot.state === BRICK_STATE_INACTIVE)) {
+				sphere.speedX *= -1;
+			}
+			if (!(rectangleSide && rectangleSide.state === BRICK_STATE_INACTIVE && rectangleTopBot && rectangleTopBot.state === BRICK_STATE_ACTIVE)) {
+				sphere.speedY *= -1;
+			}
 		}
 	};
 
