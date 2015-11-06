@@ -80,6 +80,11 @@ function (B, canvas, Entities, Physics) {
 		}
 	}
 
+	colRowToGridIndex = function (col, row) {
+		return col - BRICK_GRID_START_COL +
+			(BRICK_GRID_COL - BRICK_GRID_START_COL) * (row - BRICK_GRID_START_ROW);
+	};
+
 	function moveAll () {
 		ball.updatePosition();
 
@@ -87,7 +92,7 @@ function (B, canvas, Entities, Physics) {
 			brickSide,
 			brickTopBot;
 
-		brick = bricks[Entities.Brick.colRowToIndex(
+		brick = bricks[colRowToGridIndex(
 			ball.gridCellCol,
 			ball.gridCellRow
 		)];
@@ -107,9 +112,9 @@ function (B, canvas, Entities, Physics) {
 			}
 
 			// brick next to the current one, according to ball's old position
-			brickSide = bricks[Entities.Brick.colRowToIndex(ball.oldGridCellCol, ball.gridCellRow)];
+			brickSide = bricks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
 			// brick under or above to the current one, according to ball's old position
-			brickTopBot = bricks[Entities.Brick.colRowToIndex(ball.gridCellCol, ball.oldGridCellRow)];
+			brickTopBot = bricks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 		}
 
@@ -126,7 +131,7 @@ function (B, canvas, Entities, Physics) {
 			canvas.drawText('(' +
 				Math.floor(mouseX / BRICK_SPACE_WIDTH) + ', ' +
 				Math.floor(mouseY / BRICK_SPACE_HEIGHT) + ', ' +
-				Entities.Brick.colRowToIndex(Math.floor(mouseX / BRICK_SPACE_WIDTH), Math.floor(mouseY / BRICK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
+				colRowToGridIndex(Math.floor(mouseX / BRICK_SPACE_WIDTH), Math.floor(mouseY / BRICK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
 
 
 			canvas.line([ball.x, ball.y], [ball.x + ball.speedX * 30, ball.y + ball.speedY * 30]);

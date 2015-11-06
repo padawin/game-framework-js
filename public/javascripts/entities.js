@@ -96,11 +96,6 @@ function (canvas, B) {
 		this.state = this.originalState;
 		this.destructible = this.originalDestructible;
 	};
-
-	Brick.colRowToIndex = function (col, row) {
-		return col - BRICK_GRID_START_COL +
-			(BRICK_GRID_COL - BRICK_GRID_START_COL) * (row - BRICK_GRID_START_ROW);
-	};
 	/* End Brick Class */
 
 	entities.Ball = Ball;
