@@ -2,19 +2,17 @@ if (typeof (require) != 'undefined') {
 	var loader = require('./loader.js').loader;
 }
 
+/**
+ * Module to deal with physics calculations and collisions
+ */
 loader.addModule('Physics',
 function () {
-	var physics = {},
-		objects = {};
+	var physics = {};
 
-	physics.addObject = function (objectId, object) {
-		objects[objectId] = object;
-	};
-
-	physics.sphereCollidesWithRectangle = function (sphereId, rectId) {
-		var sphere = objects[sphereId],
-			rectangle = objects[rectId];
-
+	/**
+	 * Method to know if a sphere collides with a rectangle
+	 */
+	physics.sphereCollidesWithRectangle = function (sphere, rectangle) {
 		return sphere.y + BALL_RADIUS > rectangle.y &&
 			sphere.y - BALL_RADIUS < rectangle.y + rectangle.h &&
 			sphere.x  + BALL_RADIUS > rectangle.x &&
@@ -65,6 +63,11 @@ function () {
 		}
 	};
 
+	/**
+	 * Make a moving sphere bouncing against a rectangle
+	 *
+	 * @TODO this might be too game-related
+	 */
 	physics.sphereBounceAgainstRectangle = function (sphere, rectangle) {
 		// to change with actual physics
 		sphere.speedY *= -1;
