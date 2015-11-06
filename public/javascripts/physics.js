@@ -21,7 +21,30 @@ function () {
 			sphere.x - BALL_RADIUS < rectangle.x + rectangle.w;
 	};
 
-	physics.sphereBounceAgainstGridRectangle = function (sphere, rectangle) {
+	/**
+	 * site and topbot are used in case of a diagonal hit, to know where
+	 * the sphere has to bounce:
+	 *
+	 * +---++---+
+	 * | S  | R |
+	 * +---++---+
+	 *      +---+
+	 *   O  | T |
+	 *      +---+
+	 *
+	 * where O = sphere, R = hit rectangle, S = Side (side rectangle of
+	 * the hit one) and T = topbot (top or bottom rectangle of the hit
+	 * one)
+	 * Side is the rectangle at the previous position X of the mouse and
+	 * its current Y
+	 * TopBot is the rectangle at the previous position Y of the mouse and
+	 * its current X
+	 *
+	 * if the sphere hit a rectangle next to it, TopBot === rectangle
+	 * if the sphere hit a rectangle above or bellow to it, Side === rectangle
+	 * if the sphere hit a rectangle in a diagonal, The 3 will be different
+	 */
+	physics.sphereBounceAgainstGridRectangle = function (sphere, rectangle, rectangleSide, rectangleTopBot) {
 		// hit the rectangle from top or bottom
 		if (sphere.oldGridCellRow != sphere.gridCellRow) {
 			sphere.speedY *= -1;

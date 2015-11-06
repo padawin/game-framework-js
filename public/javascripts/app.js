@@ -79,7 +79,9 @@ function (B, canvas, Entities, Physics) {
 	function moveAll () {
 		ball.updatePosition();
 
-		var brick;
+		var brick,
+			brickSide,
+			brickTopBot;
 
 		brick = bricks[Entities.Brick.colRowToIndex(
 			ball.gridCellCol,
@@ -92,7 +94,7 @@ function (B, canvas, Entities, Physics) {
 			&& brick.state == BRICK_STATE_ACTIVE
 		) {
 			brick.state = BRICK_STATE_INACTIVE;
-			Physics.sphereBounceAgainstGridRectangle(ball, brick);
+			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 		}
 
 		// if the ball is colliding with the paddle
