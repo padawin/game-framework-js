@@ -49,6 +49,14 @@ function (B) {
 			canvasContext.fillText(text, x, y);
 		},
 
+		line: function (from, to) {
+			canvasContext.strokeStyle = 'white';
+			canvasContext.beginPath();
+			canvasContext.moveTo(from[0], from[1]);
+			canvasContext.lineTo(to[0], to[1]);
+			canvasContext.stroke();
+		},
+
 		width: function () {
 			return canvas.width;
 		},
