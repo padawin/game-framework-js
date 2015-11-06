@@ -94,6 +94,18 @@ function (B, canvas, Entities, Physics) {
 	// Set the number of remaining bricks to destroy
 	var remainingBricks = BRICKS_NUMBER;
 
+	function getUrlParams () {
+		var query = window.location.search.substring(1).split("&"),
+			i,
+			param,
+			params = {};
+		for (i = 0; i < query.length; i++) {
+			param = query[i].split('=');
+			params[param[0]] = param[1];
+		}
+		return params;
+	}
+
 	// @TODO put that somewhere
 	// Reset the bricks to the original state (all active)
 	function resetBricks (bricks) {
