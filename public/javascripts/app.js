@@ -69,6 +69,8 @@ function (B, canvas, Entities, Physics) {
 		}
 	}
 
+	var remainingBricks = BRICKS_NUMBER;
+
 	// @TODO put that somewhere
 	function resetBricks (bricks) {
 		for (var b = 0; b < BRICKS_NUMBER; b++) {
@@ -94,6 +96,7 @@ function (B, canvas, Entities, Physics) {
 			&& brick.state == BRICK_STATE_ACTIVE
 		) {
 			brick.state = BRICK_STATE_INACTIVE;
+			remainingBricks--;
 
 			// brick next to the current one, according to ball's old position
 			brickSide = bricks[Entities.Brick.colRowToIndex(ball.oldGridCellCol, ball.gridCellRow)];
