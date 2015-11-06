@@ -56,8 +56,8 @@ function (B, canvas, Entities, Physics) {
 	});
 
 	var col, row;
-	for (row = 0; row < BRICK_GRID_ROW; row++ ) {
-		for (col = 0; col < BRICK_GRID_COL; col++ ) {
+	for (row = BRICK_GRID_START_COL; row < BRICK_GRID_ROW; row++ ) {
+		for (col = BRICK_GRID_START_COL; col < BRICK_GRID_COL; col++ ) {
 			bricks.push(new Entities.Brick(
 				// 5 is the initial left margin
 				BRICK_SPACE_WIDTH * col,
@@ -89,8 +89,8 @@ function (B, canvas, Entities, Physics) {
 		)];
 
 		// if the ball is on an active brick
-		if (0 <= ball.gridCellCol && ball.gridCellCol < BRICK_GRID_COL
-			&& 0 <= ball.gridCellRow && ball.gridCellRow < BRICK_GRID_ROW
+		if (BRICK_GRID_START_COL <= ball.gridCellCol && ball.gridCellCol < BRICK_GRID_COL
+			&& BRICK_GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < BRICK_GRID_ROW
 			&& brick.state == BRICK_STATE_ACTIVE
 		) {
 			brick.state = BRICK_STATE_INACTIVE;
