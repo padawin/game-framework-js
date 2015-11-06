@@ -16,17 +16,27 @@ function (canvas, B) {
 		this.y = this.originalY = y;
 		this.speedX = this.originalSpeedX = speedX;
 		this.speedY = this.originalSpeedY = speedY;
+
+		this.gridCellCol = Math.floor(this.x / BRICK_SPACE_WIDTH);
+		this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
 	};
 
 	Ball.prototype.updatePosition = function () {
 		this.x += this.speedX;
 		this.y += this.speedY;
 
+		this.oldGridCellCol = this.gridCellCol;
+		this.oldGridCellRow = this.gridCellRow;
+		this.gridCellCol = Math.floor(this.x / BRICK_SPACE_WIDTH);
+		this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
+
 		// This deals with the screen's edges
 		if (this.x - BALL_RADIUS < 0 || this.x + BALL_RADIUS > canvas.width()) {
+			this.x = Math.min(Math.max(BALL_RADIUS, this.x), canvas.width() - BALL_RADIUS);
 			this.speedX *= -1;
 		}
 		if (this.y - BALL_RADIUS < 0) {
+			this.y = BALL_RADIUS;
 			this.speedY *= -1;
 		}
 		// The ball touches the bottom screen
@@ -86,7 +96,8 @@ function (canvas, B) {
 	};
 
 	Brick.colRowToIndex = function (col, row) {
-		return col + BRICK_GRID_COL * row;
+		return col - BRICK_GRID_START_COL +
+			(BRICK_GRID_COL - BRICK_GRID_START_COL) * (row - BRICK_GRID_START_ROW);
 	};
 	/* End Brick Class */
 

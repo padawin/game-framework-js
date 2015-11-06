@@ -18,7 +18,7 @@ function (B, canvas, Entities, Physics) {
 
 	setInterval(updateAll, 1000 / fps);
 
-	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 2, 5, 7);
+	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_SPEED_X, BALL_SPEED_Y);
 	paddle = new Entities.Paddle(
 		(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
 		PADDLE_WIDTH,
@@ -46,11 +46,18 @@ function (B, canvas, Entities, Physics) {
 				)
 			);
 		}
+
+		if (DEBUG) {
+			ball.x = mouseX;
+			ball.y = mouseY;
+			ball.speedX = BALL_SPEED_X;
+			ball.speedY = BALL_SPEED_Y * -1;
+		}
 	});
 
 	var col, row;
-	for (row = 0; row < BRICK_GRID_ROW; row++ ) {
-		for (col = 0; col < BRICK_GRID_COL; col++ ) {
+	for (row = BRICK_GRID_START_COL; row < BRICK_GRID_ROW; row++ ) {
+		for (col = BRICK_GRID_START_COL; col < BRICK_GRID_COL; col++ ) {
 			bricks.push(new Entities.Brick(
 				// 5 is the initial left margin
 				BRICK_SPACE_WIDTH * col,
@@ -72,29 +79,32 @@ function (B, canvas, Entities, Physics) {
 	function moveAll () {
 		ball.updatePosition();
 
-		var brickCol = Math.floor(ball.x / BRICK_SPACE_WIDTH),
-			brickRow = Math.floor(ball.y / BRICK_SPACE_HEIGHT),
-			brickIndex;
+		var brick,
+			brickSide,
+			brickTopBot;
 
-		brickIndex = Entities.Brick.colRowToIndex(
-			brickCol,
-			brickRow
-		);
-		if (0 <= brickCol && brickCol < BRICK_GRID_COL
-			&& 0 <= brickRow && brickRow < BRICK_GRID_ROW
-			&& bricks[brickIndex].state == BRICK_STATE_ACTIVE
+		brick = bricks[Entities.Brick.colRowToIndex(
+			ball.gridCellCol,
+			ball.gridCellRow
+		)];
+
+		// if the ball is on an active brick
+		if (BRICK_GRID_START_COL <= ball.gridCellCol && ball.gridCellCol < BRICK_GRID_COL
+			&& BRICK_GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < BRICK_GRID_ROW
+			&& brick.state == BRICK_STATE_ACTIVE
 		) {
-			bricks[brickIndex].state = BRICK_STATE_INACTIVE;
-			ball.speedY *= -1;
+			brick.state = BRICK_STATE_INACTIVE;
+
+			// brick next to the current one, according to ball's old position
+			brickSide = bricks[Entities.Brick.colRowToIndex(ball.oldGridCellCol, ball.gridCellRow)];
+			// brick under or above to the current one, according to ball's old position
+			brickTopBot = bricks[Entities.Brick.colRowToIndex(ball.gridCellCol, ball.oldGridCellRow)];
+			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 		}
 
-		if (Physics.sphereCollidesWithRect('ball', 'paddle')) {
-			ball.speedY *= -1;
-
-			var centerPaddleX = paddle.x + PADDLE_WIDTH / 2,
-				distFromPaddleCenter = ball.x - centerPaddleX;
-
-			ball.speedX = distFromPaddleCenter * 0.35;
+		// if the ball is colliding with the paddle
+		if (Physics.sphereCollidesWithRectangle('ball', 'paddle')) {
+			Physics.sphereBounceAgainstRectangle(ball, paddle);
 		}
 	}
 
@@ -114,6 +124,9 @@ function (B, canvas, Entities, Physics) {
 				Math.floor(mouseX / BRICK_SPACE_WIDTH) + ', ' +
 				Math.floor(mouseY / BRICK_SPACE_HEIGHT) + ', ' +
 				Entities.Brick.colRowToIndex(Math.floor(mouseX / BRICK_SPACE_WIDTH), Math.floor(mouseY / BRICK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
+
+
+			canvas.line([ball.x, ball.y], [ball.x + ball.speedX * 30, ball.y + ball.speedY * 30]);
 		}
 	}
 
