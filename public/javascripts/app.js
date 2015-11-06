@@ -25,9 +25,6 @@ function (B, canvas, Entities, Physics) {
 		PADDLE_THICKNESS
 	);
 
-	Physics.addObject('ball', ball);
-	Physics.addObject('paddle', paddle);
-
 	B.Events.on('win', null, function () {
 		resetBricks(bricks);
 		ball.reset();
@@ -117,7 +114,7 @@ function (B, canvas, Entities, Physics) {
 		}
 
 		// if the ball is colliding with the paddle
-		if (Physics.sphereCollidesWithRectangle('ball', 'paddle')) {
+		if (Physics.sphereCollidesWithRectangle(ball, paddle)) {
 			Physics.sphereBounceAgainstRectangle(ball, paddle);
 		}
 	}

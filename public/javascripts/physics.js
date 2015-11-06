@@ -4,17 +4,9 @@ if (typeof (require) != 'undefined') {
 
 loader.addModule('Physics',
 function () {
-	var physics = {},
-		objects = {};
+	var physics = {};
 
-	physics.addObject = function (objectId, object) {
-		objects[objectId] = object;
-	};
-
-	physics.sphereCollidesWithRectangle = function (sphereId, rectId) {
-		var sphere = objects[sphereId],
-			rectangle = objects[rectId];
-
+	physics.sphereCollidesWithRectangle = function (sphere, rectangle) {
 		return sphere.y + BALL_RADIUS > rectangle.y &&
 			sphere.y - BALL_RADIUS < rectangle.y + rectangle.h &&
 			sphere.x  + BALL_RADIUS > rectangle.x &&
