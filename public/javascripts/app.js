@@ -128,9 +128,7 @@ function (B, canvas, Entities, Physics) {
 		paddle.draw();
 
 		for (var b in bricks) {
-			if (bricks[b].state == BRICK_STATE_ACTIVE) {
-				bricks[b].draw();
-			}
+			bricks[b].draw();
 		}
 
 		if (DEBUG) {
