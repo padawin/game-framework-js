@@ -21,30 +21,35 @@ function (canvas, B) {
 		this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
 	};
 
+	function _ballDetectScreenEdgeCollision (ball) {
+		ball.oldGridCellCol = ball.gridCellCol;
+		ball.oldGridCellRow = ball.gridCellRow;
+		ball.gridCellCol = Math.floor(ball.x / BRICK_SPACE_WIDTH);
+		ball.gridCellRow = Math.floor(ball.y / BRICK_SPACE_HEIGHT);
+
+		// This deals with the screen's edges
+		if (ball.x - BALL_RADIUS < 0 || ball.x + BALL_RADIUS > canvas.width()) {
+			ball.x = Math.min(Math.max(BALL_RADIUS, ball.x), canvas.width() - BALL_RADIUS);
+			ball.speedX *= -1;
+		}
+		if (ball.y - BALL_RADIUS < 0) {
+			ball.y = BALL_RADIUS;
+			ball.speedY *= -1;
+		}
+		// The ball touches the bottom screen
+		if (ball.y + BALL_RADIUS > canvas.height()) {
+			ball.reset();
+			console.log('fire lost');
+			B.Events.fire('lost');
+		}
+	}
+
 	Ball.prototype.updatePosition = function () {
 		this.x += this.speedX;
 		this.y += this.speedY;
 
-		this.oldGridCellCol = this.gridCellCol;
-		this.oldGridCellRow = this.gridCellRow;
-		this.gridCellCol = Math.floor(this.x / BRICK_SPACE_WIDTH);
-		this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
-
-		// This deals with the screen's edges
-		if (this.x - BALL_RADIUS < 0 || this.x + BALL_RADIUS > canvas.width()) {
-			this.x = Math.min(Math.max(BALL_RADIUS, this.x), canvas.width() - BALL_RADIUS);
-			this.speedX *= -1;
-		}
-		if (this.y - BALL_RADIUS < 0) {
-			this.y = BALL_RADIUS;
-			this.speedY *= -1;
-		}
-		// The ball touches the bottom screen
-		if (this.y + BALL_RADIUS > canvas.height()) {
-			this.reset();
-			console.log('fire lost');
-			B.Events.fire('lost');
-		}
+		// Update the ball's speed if it collides with the screen edges
+		_ballDetectScreenEdgeCollision(this);
 	};
 
 	Ball.prototype.reset = function () {
