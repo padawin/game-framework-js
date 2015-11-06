@@ -94,6 +94,11 @@ function (B, canvas, Entities, Physics) {
 			&& brick.state == BRICK_STATE_ACTIVE
 		) {
 			brick.state = BRICK_STATE_INACTIVE;
+
+			// brick next to the current one, according to ball's old position
+			brickSide = bricks[Entities.Brick.colRowToIndex(ball.oldGridCellCol, ball.gridCellRow)];
+			// brick under or above to the current one, according to ball's old position
+			brickTopBot = bricks[Entities.Brick.colRowToIndex(ball.gridCellCol, ball.oldGridCellRow)];
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 		}
 
