@@ -57,6 +57,9 @@ function () {
 		}
 	};
 
+	/**
+	 * @TODO this might be too game-related
+	 */
 	physics.sphereBounceAgainstRectangle = function (sphere, rectangle) {
 		// to change with actual physics
 		sphere.speedY *= -1;

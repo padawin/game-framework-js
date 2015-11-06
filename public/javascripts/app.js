@@ -37,6 +37,7 @@ function (B, canvas, Entities, Physics) {
 	B.Events.on('mouse-moved', null, function (mX, mY) {
 		mouseX = mX;
 		mouseY = mY;
+		// @TODO move that in the paddle logic
 		if (mouseX > PADDLE_WIDTH / 2 && mouseX < canvas.width() - PADDLE_WIDTH / 2) {
 			paddle.updatePosition(
 				Math.min(
@@ -66,6 +67,7 @@ function (B, canvas, Entities, Physics) {
 				BRICK_SPACE_HEIGHT * row,
 				BRICK_WIDTH,
 				BRICK_HEIGHT,
+				// @TODO remove destructable field
 				true, BRICK_STATE_ACTIVE
 			));
 		}
