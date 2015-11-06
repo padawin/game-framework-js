@@ -28,6 +28,11 @@ function (B, canvas, Entities, Physics) {
 	Physics.addObject('ball', ball);
 	Physics.addObject('paddle', paddle);
 
+	B.Events.on('win', null, function () {
+		resetBricks(bricks);
+		ball.reset();
+	});
+
 	B.Events.on('lost', null, function () {
 		resetBricks(bricks);
 	});
@@ -97,6 +102,12 @@ function (B, canvas, Entities, Physics) {
 		) {
 			brick.state = BRICK_STATE_INACTIVE;
 			remainingBricks--;
+
+			if (remainingBricks == 0) {
+				console.log('win');
+				B.Events.fire('win');
+				return;
+			}
 
 			// brick next to the current one, according to ball's old position
 			brickSide = bricks[Entities.Brick.colRowToIndex(ball.oldGridCellCol, ball.gridCellRow)];
