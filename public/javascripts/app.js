@@ -58,7 +58,7 @@ function (B, canvas, Entities, Physics) {
 	});
 
 	var col, row;
-	for (row = BRICK_GRID_START_COL; row < BRICK_GRID_ROW; row++ ) {
+	for (row = BRICK_GRID_START_ROW; row < BRICK_GRID_ROW; row++ ) {
 		for (col = BRICK_GRID_START_COL; col < BRICK_GRID_COL; col++ ) {
 			bricks.push(new Entities.Brick(
 				// 5 is the initial left margin
