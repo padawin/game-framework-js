@@ -16,7 +16,11 @@ function (B, canvas, Entities, Physics) {
 		// and position of the canvas in the page
 		mouseX,
 		mouseY,
-		fps = 30;
+		fps = 30,
+		urlParams = getUrlParams();
+
+	const DEBUG = urlParams.debug || NO_DEBUG;
+	console.log(DEBUG);
 
 	// Init the view
 	canvas.init(document.getElementById('game-canvas'));
