@@ -87,7 +87,9 @@ function (canvas, B) {
 	}
 
 	Brick.prototype.draw = function () {
-		canvas.drawRectangle(this.x, this.y, this.w, this.h, 'red');
+		if (this.state == BRICK_STATE_ACTIVE) {
+			canvas.drawRectangle(this.x, this.y, this.w, this.h, 'red');
+		}
 	};
 
 	Brick.prototype.reset = function () {
