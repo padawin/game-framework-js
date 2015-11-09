@@ -1,0 +1,10 @@
+{
+  "name": "brickbreaker-tests",
+  "version": "0.0.0",
+  "description": "Tests for the brickbreaker game",
+  "main": "tests-cli.js",
+  "scripts": {
+    "test": "node tests-cli.js"
+  },
+  "author": "Ghislain Rodrigues"
+}
