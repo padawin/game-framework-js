@@ -10,7 +10,7 @@ loader.executeModule('main',
 'B', 'Canvas', 'Entities', 'Physics', 'Utils',
 function (B, canvas, Entities, Physics, Utils) {
 	var ball,
-		bricks = [],
+		tracks = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
@@ -28,18 +28,18 @@ function (B, canvas, Entities, Physics, Utils) {
 	// Init the ball
 	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
 	// Position of the ball in the grid
-	ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
+	ball.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		resetBricks(bricks);
+		resetTracks(tracks);
 		ball.reset();
 	});
 
 	// Event to execute when the player loses
 	B.Events.on('lost', null, function () {
-		resetBricks(bricks);
+		resetTracks(tracks);
 	});
 
 	// Event to execute when the mouse move
@@ -57,35 +57,35 @@ function (B, canvas, Entities, Physics, Utils) {
 	/* End of Events */
 
 	/*
-	 * Create the bricks, The whole game is a grid and bricks are on the grid
-	 * The bricks are organised on a rectangle of the grid started at the
-	 * position (BRICK_GRID_START_COL, BRICK_GRID_START_COL) and ends at the
-	 * position (BRICK_GRID_COL, BRICK_GRID_ROW)
-	 * Each brick is an instance of the class Entities.Brick
+	 * Create the tracks, The whole game is a grid and tracks are on the grid
+	 * The tracks are organised on a rectangle of the grid started at the
+	 * position (TRACK_GRID_START_COL, TRACK_GRID_START_COL) and ends at the
+	 * position (TRACK_GRID_COL, TRACK_GRID_ROW)
+	 * Each track is an instance of the class Entities.Track
 	 */
 	var col, row;
-	for (row = BRICK_GRID_START_ROW; row < BRICK_GRID_ROW; row++ ) {
-		for (col = BRICK_GRID_START_COL; col < BRICK_GRID_COL; col++ ) {
-			bricks.push(new Entities.Brick(
+	for (row = TRACK_GRID_START_ROW; row < TRACK_GRID_ROW; row++ ) {
+		for (col = TRACK_GRID_START_COL; col < TRACK_GRID_COL; col++ ) {
+			tracks.push(new Entities.Track(
 				// 5 is the initial left margin
-				BRICK_SPACE_WIDTH * col,
-				BRICK_SPACE_HEIGHT * row,
-				BRICK_WIDTH,
-				BRICK_HEIGHT,
+				TRACK_SPACE_WIDTH * col,
+				TRACK_SPACE_HEIGHT * row,
+				TRACK_WIDTH,
+				TRACK_HEIGHT,
 				// @TODO remove destructable field
-				true, Entities.Brick.STATE_ACTIVE
+				true, Entities.Track.STATE_ACTIVE
 			));
 		}
 	}
 
-	// Set the number of remaining bricks to destroy
-	var remainingBricks = BRICKS_NUMBER;
+	// Set the number of remaining tracks to destroy
+	var remainingTracks = TRACKS_NUMBER;
 
 	// @TODO put that somewhere
-	// Reset the bricks to the original state (all active)
-	function resetBricks (bricks) {
-		for (var b = 0; b < BRICKS_NUMBER; b++) {
-			bricks[b].reset();
+	// Reset the tracks to the original state (all active)
+	function resetTracks (tracks) {
+		for (var b = 0; b < TRACKS_NUMBER; b++) {
+			tracks[b].reset();
 		}
 	}
 
@@ -94,8 +94,8 @@ function (B, canvas, Entities, Physics, Utils) {
 	 * grid the coordinates are in
 	 */
 	colRowToGridIndex = function (col, row) {
-		return col - BRICK_GRID_START_COL +
-			(BRICK_GRID_COL - BRICK_GRID_START_COL) * (row - BRICK_GRID_START_ROW);
+		return col - TRACK_GRID_START_COL +
+			(TRACK_GRID_COL - TRACK_GRID_START_COL) * (row - TRACK_GRID_START_ROW);
 	};
 
 	/**
@@ -104,7 +104,7 @@ function (B, canvas, Entities, Physics, Utils) {
 	function moveAll () {
 		// Update the ball position
 		ball.updatePosition();
-		ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
+		ball.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 
 		/* Ball and edges collision*/
 		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(ball, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
@@ -115,41 +115,41 @@ function (B, canvas, Entities, Physics, Utils) {
 		}
 		/* End of Ball and edges collision*/
 
-		/* Ball and active brick collision */
-		var brick,
-			brickSide,
-			brickTopBot;
+		/* Ball and active track collision */
+		var track,
+			trackSide,
+			trackTopBot;
 
-		brick = bricks[colRowToGridIndex(
+		track = tracks[colRowToGridIndex(
 			ball.gridCellCol,
 			ball.gridCellRow
 		)];
 
-		// if the ball is on an active brick
-		if (BRICK_GRID_START_COL <= ball.gridCellCol && ball.gridCellCol < BRICK_GRID_COL
-			&& BRICK_GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < BRICK_GRID_ROW
-			&& brick.state == Entities.Brick.STATE_ACTIVE
+		// if the ball is on an active track
+		if (TRACK_GRID_START_COL <= ball.gridCellCol && ball.gridCellCol < TRACK_GRID_COL
+			&& TRACK_GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < TRACK_GRID_ROW
+			&& track.state == Entities.Track.STATE_ACTIVE
 		) {
-			// brick next to the current one, according to ball's old position
-			brickSide = bricks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
-			brickSide = brickSide && brickSide.state == Entities.Brick.STATE_ACTIVE && brickSide || undefined;
+			// track next to the current one, according to ball's old position
+			trackSide = tracks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
+			trackSide = trackSide && trackSide.state == Entities.Track.STATE_ACTIVE && trackSide || undefined;
 
-			// brick under or above to the current one, according to ball's old position
-			brickTopBot = bricks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
-			brickTopBot = brickTopBot && brickTopBot.state == Entities.Brick.STATE_ACTIVE && brickTopBot || undefined;
+			// track under or above to the current one, according to ball's old position
+			trackTopBot = tracks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
+			trackTopBot = trackTopBot && trackTopBot.state == Entities.Track.STATE_ACTIVE && trackTopBot || undefined;
 
-			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
+			Physics.sphereBounceAgainstGridRectangle(ball, track, trackSide, trackTopBot);
 
-			brick.state = Entities.Brick.STATE_INACTIVE;
-			remainingBricks--;
+			track.state = Entities.Track.STATE_INACTIVE;
+			remainingTracks--;
 
-			if (remainingBricks == 0) {
+			if (remainingTracks == 0) {
 				console.log('win');
 				B.Events.fire('win');
 				return;
 			}
 		}
-		/* End of Ball and active brick collision */
+		/* End of Ball and active track collision */
 	}
 
 	/**
@@ -158,13 +158,13 @@ function (B, canvas, Entities, Physics, Utils) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([ball, bricks]);
+		canvas.drawAll([ball, tracks]);
 
 		if (DEBUG) {
 			canvas.drawText('(' +
-				Math.floor(mouseX / BRICK_SPACE_WIDTH) + ', ' +
-				Math.floor(mouseY / BRICK_SPACE_HEIGHT) + ', ' +
-				colRowToGridIndex(Math.floor(mouseX / BRICK_SPACE_WIDTH), Math.floor(mouseY / BRICK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
+				Math.floor(mouseX / TRACK_SPACE_WIDTH) + ', ' +
+				Math.floor(mouseY / TRACK_SPACE_HEIGHT) + ', ' +
+				colRowToGridIndex(Math.floor(mouseX / TRACK_SPACE_WIDTH), Math.floor(mouseY / TRACK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
 
 
 			canvas.line([ball.x, ball.y], [ball.x + ball.speedX * 30, ball.y + ball.speedY * 30]);

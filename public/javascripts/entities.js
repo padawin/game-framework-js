@@ -3,14 +3,14 @@ if (typeof (require) != 'undefined') {
 }
 
 /**
- * This module contains the definition of the Ball, Paddle and Brick entities
+ * This module contains the definition of the Ball, Paddle and Track entities
  */
 loader.addModule('Entities',
 'Canvas', 'B',
 function (canvas, B) {
 	var entities = {},
 		Ball,
-		Brick,
+		Track,
 		Paddle;
 
 	(function () {
@@ -61,8 +61,8 @@ function (canvas, B) {
 	})();
 
 	(function () {
-		/* Brick Class */
-		Brick = function (x, y, w, h, destructible, state) {
+		/* Track Class */
+		Track = function (x, y, w, h, destructible, state) {
 			this.x = x;
 			this.y = y;
 			this.w = w;
@@ -72,31 +72,31 @@ function (canvas, B) {
 		}
 
 		/**
-		 * Draw the brick on the screen
+		 * Draw the track on the screen
 		 */
-		Brick.prototype.draw = function () {
-			if (this.state == Brick.STATE_ACTIVE) {
+		Track.prototype.draw = function () {
+			if (this.state == Track.STATE_ACTIVE) {
 				canvas.drawRectangle(this.x, this.y, this.w, this.h, 'red');
 			}
 		};
 
 		/**
-		 * Reset the brick to its original values
+		 * Reset the track to its original values
 		 */
-		Brick.prototype.reset = function () {
+		Track.prototype.reset = function () {
 			this.state = this.originalState;
 			this.destructible = this.originalDestructible;
 		};
 
-		Brick.STATE_INACTIVE = 0;
-		Brick.STATE_ACTIVE = 1;
-		Brick.STATE_START = 2;
-		/* End Brick Class */
+		Track.STATE_INACTIVE = 0;
+		Track.STATE_ACTIVE = 1;
+		Track.STATE_START = 2;
+		/* End Track Class */
 	})();
 
 	entities.Ball = Ball;
 	entities.Paddle = Paddle;
-	entities.Brick = Brick;
+	entities.Track = Track;
 
 	return entities;
 });
