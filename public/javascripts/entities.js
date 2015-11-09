@@ -61,31 +61,6 @@ function (canvas, B) {
 	})();
 
 	(function () {
-		/* Paddle Class */
-		Paddle = function (x, y, w, h) {
-			this.x = x;
-			this.y = y;
-			this.w = w;
-			this.h = h;
-		}
-
-		/**
-		 * Method to update the ball position according to a given x position
-		 */
-		Paddle.prototype.updatePosition = function (x) {
-			this.x = x;
-		};
-
-		/**
-		 * Draw the paddle on the screen
-		 */
-		Paddle.prototype.draw = function () {
-			canvas.drawRectangle(this.x, this.y, this.w, this.h, 'white');
-		};
-		/* End Paddle Class */
-	})();
-
-	(function () {
 		/* Brick Class */
 		Brick = function (x, y, w, h, destructible, state) {
 			this.x = x;

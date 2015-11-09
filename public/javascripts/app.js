@@ -10,7 +10,6 @@ loader.executeModule('main',
 'B', 'Canvas', 'Entities', 'Physics', 'Utils',
 function (B, canvas, Entities, Physics, Utils) {
 	var ball,
-		paddle,
 		bricks = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
@@ -30,12 +29,6 @@ function (B, canvas, Entities, Physics, Utils) {
 	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
 	// Position of the ball in the grid
 	ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
-	// Init the paddle at the middle of the game view, 100px above the bottom
-	paddle = new Entities.Paddle(
-		(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
-		PADDLE_WIDTH,
-		PADDLE_THICKNESS
-	);
 
 	/* Events */
 	// Event to execute when the player wins
@@ -53,18 +46,6 @@ function (B, canvas, Entities, Physics, Utils) {
 	B.Events.on('mouse-moved', null, function (mX, mY) {
 		mouseX = mX;
 		mouseY = mY;
-		// @TODO move that in the paddle logic
-		if (mouseX > PADDLE_WIDTH / 2 && mouseX < canvas.width() - PADDLE_WIDTH / 2) {
-			paddle.updatePosition(
-				Math.min(
-					Math.max(
-						0,
-						mouseX - PADDLE_WIDTH / 2
-					),
-					canvas.width() - PADDLE_WIDTH / 2
-				)
-			);
-		}
 
 		if (DEBUG) {
 			ball.x = mouseX;
@@ -169,13 +150,6 @@ function (B, canvas, Entities, Physics, Utils) {
 			}
 		}
 		/* End of Ball and active brick collision */
-
-		/* Ball and paddle collision */
-		// if the ball is colliding with the paddle
-		if (Physics.sphereCollidesWithRectangle(ball, paddle)) {
-			Physics.sphereBounceAgainstRectangle(ball, paddle);
-		}
-		/* Ball and paddle collision */
 	}
 
 	/**
@@ -184,7 +158,7 @@ function (B, canvas, Entities, Physics, Utils) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([ball, paddle, bricks]);
+		canvas.drawAll([ball, bricks]);
 
 		if (DEBUG) {
 			canvas.drawText('(' +
