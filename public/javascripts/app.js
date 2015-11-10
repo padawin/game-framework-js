@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils',
-function (B, canvas, Entities, Physics, Utils) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps',
+function (B, canvas, Entities, Physics, Utils, Maps) {
 	var ball,
 		tracks = [],
 		// position of the mouse in the canvas, taking in account the scroll
@@ -33,13 +33,11 @@ function (B, canvas, Entities, Physics, Utils) {
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		resetTracks(tracks);
 		ball.reset();
 	});
 
 	// Event to execute when the player loses
 	B.Events.on('lost', null, function () {
-		resetTracks(tracks);
 	});
 
 	// Event to execute when the mouse move
@@ -63,30 +61,21 @@ function (B, canvas, Entities, Physics, Utils) {
 	 * position (TRACK_GRID_COL, TRACK_GRID_ROW)
 	 * Each track is an instance of the class Entities.Track
 	 */
-	var col, row;
-	for (row = TRACK_GRID_START_ROW; row < TRACK_GRID_ROW; row++ ) {
-		for (col = TRACK_GRID_START_COL; col < TRACK_GRID_COL; col++ ) {
+	var col, row,
+		trackWidth = canvas.width() / Maps[0].width,
+		trackHeight = canvas.height() / Maps[0].height;
+	for (row = 0; row < Maps[0].height; row++ ) {
+		for (col = 0; col < Maps[0].width; col++ ) {
 			tracks.push(new Entities.Track(
 				// 5 is the initial left margin
-				TRACK_SPACE_WIDTH * col,
-				TRACK_SPACE_HEIGHT * row,
-				TRACK_WIDTH,
-				TRACK_HEIGHT,
+				trackWidth * col, trackHeight * row,
+				trackWidth, trackHeight,
 				// @TODO remove destructable field
-				true, Entities.Track.STATE_ACTIVE
+				true, Maps[0].map[row][col] ? Entities.Track.STATE_ACTIVE : Entities.Track.STATE_INACTIVE
 			));
 		}
 	}
 
-	// Set the number of remaining tracks to destroy
-	var remainingTracks = TRACKS_NUMBER;
-
-	// @TODO put that somewhere
-	// Reset the tracks to the original state (all active)
-	function resetTracks (tracks) {
-		for (var b = 0; b < TRACKS_NUMBER; b++) {
-			tracks[b].reset();
-		}
 	}
 
 	/**
@@ -139,15 +128,6 @@ function (B, canvas, Entities, Physics, Utils) {
 			trackTopBot = trackTopBot && trackTopBot.state == Entities.Track.STATE_ACTIVE && trackTopBot || undefined;
 
 			Physics.sphereBounceAgainstGridRectangle(ball, track, trackSide, trackTopBot);
-
-			track.state = Entities.Track.STATE_INACTIVE;
-			remainingTracks--;
-
-			if (remainingTracks == 0) {
-				console.log('win');
-				B.Events.fire('win');
-				return;
-			}
 		}
 		/* End of Ball and active track collision */
 	}
