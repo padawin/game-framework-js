@@ -22,8 +22,7 @@ function (canvas, B) {
 			this.speedY = this.originalSpeedY = speedY;
 
 			// Position of the ball in the grid
-			this.gridCellCol = Math.floor(this.x / BRICK_SPACE_WIDTH);
-			this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
+			this.setGridCoordinates();
 		};
 
 		/**
@@ -33,8 +32,7 @@ function (canvas, B) {
 		function _ballDetectScreenEdgeCollision (ball) {
 			ball.oldGridCellCol = ball.gridCellCol;
 			ball.oldGridCellRow = ball.gridCellRow;
-			ball.gridCellCol = Math.floor(ball.x / BRICK_SPACE_WIDTH);
-			ball.gridCellRow = Math.floor(ball.y / BRICK_SPACE_HEIGHT);
+			ball.setGridCoordinates();
 
 			// This deals with the screen's edges
 			if (ball.x - BALL_RADIUS < 0 || ball.x + BALL_RADIUS > canvas.width()) {
@@ -52,6 +50,14 @@ function (canvas, B) {
 				B.Events.fire('lost');
 			}
 		}
+
+		/**
+		 * From the ball coordinates, set
+		 */
+		Ball.prototype.setGridCoordinates = function () {
+			this.gridCellCol = Math.floor(this.x / BRICK_SPACE_WIDTH);
+			this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
+		};
 
 		/**
 		 * Method to update the ball position according to its speed
