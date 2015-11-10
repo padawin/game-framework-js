@@ -60,6 +60,13 @@ function (B) {
 		},
 
 		/**
+		 * Method to draw an image
+		 */
+		drawImage: function (image, x, y) {
+			canvasContext.drawImage(image, x, y);
+		},
+
+		/**
 		 * Method to draw a line
 		 */
 		line: function (from, to) {
