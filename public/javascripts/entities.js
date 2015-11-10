@@ -24,28 +24,6 @@ function (canvas, B) {
 		};
 
 		/**
-		 * Method to detect if the ball hits one of the screen's edge.
-		 * If it does, its speed is changed accordingly
-		 */
-		function _ballDetectScreenEdgeCollision (ball) {
-			// This deals with the screen's edges
-			if (ball.x - ball.r < 0 || ball.x + ball.r > canvas.width()) {
-				ball.x = Math.min(Math.max(ball.r, ball.x), canvas.width() - ball.r);
-				ball.speedX *= -1;
-			}
-			if (ball.y - ball.r < 0) {
-				ball.y = ball.r;
-				ball.speedY *= -1;
-			}
-			// The ball touches the bottom screen
-			if (ball.y + ball.r > canvas.height()) {
-				ball.reset();
-				console.log('fire lost');
-				B.Events.fire('lost');
-			}
-		}
-
-		/**
 		 * From the ball coordinates, set
 		 */
 		Ball.prototype.setGridCoordinates = function (gridCellWidth, gridCellHeight) {
@@ -61,9 +39,6 @@ function (canvas, B) {
 		Ball.prototype.updatePosition = function () {
 			this.x += this.speedX;
 			this.y += this.speedY;
-
-			// Update the ball's speed if it collides with the screen edges
-			_ballDetectScreenEdgeCollision(this);
 		};
 
 		/**

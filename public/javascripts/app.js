@@ -125,6 +125,23 @@ function (B, canvas, Entities, Physics, Utils) {
 		ball.updatePosition();
 		ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
 
+		/* Ball and edges collision*/
+		if (ball.x - ball.r < 0 || ball.x + ball.r > canvas.width()) {
+			ball.x = Math.min(Math.max(ball.r, ball.x), canvas.width() - ball.r);
+			ball.speedX *= -1;
+		}
+		if (ball.y - ball.r < 0) {
+			ball.y = ball.r;
+			ball.speedY *= -1;
+		}
+		// The ball touches the bottom screen
+		if (ball.y + ball.r > canvas.height()) {
+			ball.reset();
+			console.log('fire lost');
+			B.Events.fire('lost');
+		}
+		/* End of Ball and edges collision*/
+
 		/* Ball and active brick collision */
 		var brick,
 			brickSide,
