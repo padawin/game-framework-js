@@ -33,13 +33,11 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		resetTracks(tracks);
 		ball.reset();
 	});
 
 	// Event to execute when the player loses
 	B.Events.on('lost', null, function () {
-		resetTracks(tracks);
 	});
 
 	// Event to execute when the mouse move
@@ -78,15 +76,6 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 		}
 	}
 
-	// Set the number of remaining tracks to destroy
-	var remainingTracks = TRACKS_NUMBER;
-
-	// @TODO put that somewhere
-	// Reset the tracks to the original state (all active)
-	function resetTracks (tracks) {
-		for (var b = 0; b < TRACKS_NUMBER; b++) {
-			tracks[b].reset();
-		}
 	}
 
 	/**
@@ -139,15 +128,6 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 			trackTopBot = trackTopBot && trackTopBot.state == Entities.Track.STATE_ACTIVE && trackTopBot || undefined;
 
 			Physics.sphereBounceAgainstGridRectangle(ball, track, trackSide, trackTopBot);
-
-			track.state = Entities.Track.STATE_INACTIVE;
-			remainingTracks--;
-
-			if (remainingTracks == 0) {
-				console.log('win');
-				B.Events.fire('win');
-				return;
-			}
 		}
 		/* End of Ball and active track collision */
 	}
