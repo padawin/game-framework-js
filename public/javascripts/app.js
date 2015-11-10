@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics',
-function (B, canvas, Entities, Physics) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils',
+function (B, canvas, Entities, Physics, Utils) {
 	var ball,
 		paddle,
 		bricks = [],
@@ -17,7 +17,7 @@ function (B, canvas, Entities, Physics) {
 		mouseX,
 		mouseY,
 		fps = 30,
-		urlParams = getUrlParams();
+		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 	console.log(DEBUG);
@@ -99,18 +99,6 @@ function (B, canvas, Entities, Physics) {
 
 	// Set the number of remaining bricks to destroy
 	var remainingBricks = BRICKS_NUMBER;
-
-	function getUrlParams () {
-		var query = window.location.search.substring(1).split("&"),
-			i,
-			param,
-			params = {};
-		for (i = 0; i < query.length; i++) {
-			param = query[i].split('=');
-			params[param[0]] = param[1];
-		}
-		return params;
-	}
 
 	// @TODO put that somewhere
 	// Reset the bricks to the original state (all active)
