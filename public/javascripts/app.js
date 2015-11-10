@@ -78,7 +78,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	}
 
 	// Init the ball
-	ball = new Entities.Ball(startX, startY, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+	ball = new Entities.Ball(startX, startY, BALL_RADIUS, 0, 0);
 	// Position of the ball in the grid
 	ball.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 
