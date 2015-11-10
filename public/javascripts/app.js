@@ -71,7 +71,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 				trackWidth * col, trackHeight * row,
 				trackWidth, trackHeight,
 				// @TODO remove destructable field
-				true, Maps[0].map[row][col] ? Entities.Track.STATE_ACTIVE : Entities.Track.STATE_INACTIVE
+				true, Maps[0].map[row][col]
 			));
 		}
 	}
