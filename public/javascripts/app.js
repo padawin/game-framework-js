@@ -71,8 +71,8 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 			));
 
 			if (Maps[0].map[row][col] == TRACK_STATE_START) {
-				startX = trackWidth * col;
-				startY = trackHeight * row;
+				startX = trackWidth * col + trackWidth / 2;
+				startY = trackHeight * row + trackHeight / 2;
 			}
 		}
 	}
