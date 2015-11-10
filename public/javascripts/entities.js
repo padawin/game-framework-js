@@ -31,10 +31,6 @@ function (canvas, B) {
 		 * If it does, its speed is changed accordingly
 		 */
 		function _ballDetectScreenEdgeCollision (ball) {
-			ball.oldGridCellCol = ball.gridCellCol;
-			ball.oldGridCellRow = ball.gridCellRow;
-			ball.setGridCoordinates();
-
 			// This deals with the screen's edges
 			if (ball.x - ball.r < 0 || ball.x + ball.r > canvas.width()) {
 				ball.x = Math.min(Math.max(ball.r, ball.x), canvas.width() - ball.r);
@@ -56,6 +52,8 @@ function (canvas, B) {
 		 * From the ball coordinates, set
 		 */
 		Ball.prototype.setGridCoordinates = function () {
+			this.oldGridCellCol = this.gridCellCol;
+			this.oldGridCellRow = this.gridCellRow;
 			this.gridCellCol = Math.floor(this.x / BRICK_SPACE_WIDTH);
 			this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
 		};
@@ -69,6 +67,7 @@ function (canvas, B) {
 
 			// Update the ball's speed if it collides with the screen edges
 			_ballDetectScreenEdgeCollision(this);
+			this.setGridCoordinates();
 		};
 
 		/**
