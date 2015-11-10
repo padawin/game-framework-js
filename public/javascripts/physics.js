@@ -13,10 +13,10 @@ function () {
 	 * Method to know if a sphere collides with a rectangle
 	 */
 	physics.sphereCollidesWithRectangle = function (sphere, rectangle) {
-		return sphere.y + BALL_RADIUS > rectangle.y &&
-			sphere.y - BALL_RADIUS < rectangle.y + rectangle.h &&
-			sphere.x  + BALL_RADIUS > rectangle.x &&
-			sphere.x - BALL_RADIUS < rectangle.x + rectangle.w;
+		return sphere.y + sphere.r > rectangle.y &&
+			sphere.y - sphere.r < rectangle.y + rectangle.h &&
+			sphere.x  + sphere.r > rectangle.x &&
+			sphere.x - sphere.r < rectangle.x + rectangle.w;
 	};
 
 	/**

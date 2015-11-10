@@ -27,7 +27,7 @@ function (B, canvas, Entities, Physics) {
 	setInterval(updateAll, 1000 / fps);
 
 	// Init the ball
-	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_SPEED_X, BALL_SPEED_Y);
+	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
 	// Init the paddle at the middle of the game view, 100px above the bottom
 	paddle = new Entities.Paddle(
 		(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,

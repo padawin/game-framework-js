@@ -15,9 +15,10 @@ function (canvas, B) {
 
 	(function () {
 		/* Ball Class */
-		Ball = function (x, y, speedX, speedY) {
+		Ball = function (x, y, r, speedX, speedY) {
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
+			this.r = r;
 			this.speedX = this.originalSpeedX = speedX;
 			this.speedY = this.originalSpeedY = speedY;
 
@@ -35,16 +36,16 @@ function (canvas, B) {
 			ball.setGridCoordinates();
 
 			// This deals with the screen's edges
-			if (ball.x - BALL_RADIUS < 0 || ball.x + BALL_RADIUS > canvas.width()) {
-				ball.x = Math.min(Math.max(BALL_RADIUS, ball.x), canvas.width() - BALL_RADIUS);
+			if (ball.x - ball.r < 0 || ball.x + ball.r > canvas.width()) {
+				ball.x = Math.min(Math.max(ball.r, ball.x), canvas.width() - ball.r);
 				ball.speedX *= -1;
 			}
-			if (ball.y - BALL_RADIUS < 0) {
-				ball.y = BALL_RADIUS;
+			if (ball.y - ball.r < 0) {
+				ball.y = ball.r;
 				ball.speedY *= -1;
 			}
 			// The ball touches the bottom screen
-			if (ball.y + BALL_RADIUS > canvas.height()) {
+			if (ball.y + ball.r > canvas.height()) {
 				ball.reset();
 				console.log('fire lost');
 				B.Events.fire('lost');
@@ -84,7 +85,7 @@ function (canvas, B) {
 		 * Draw the ball on the screen
 		 */
 		Ball.prototype.draw = function () {
-			canvas.drawCircle(this.x, this.y, BALL_RADIUS, 'white');
+			canvas.drawCircle(this.x, this.y, this.r, 'white');
 		};
 		/* End Ball Class */
 	})();
