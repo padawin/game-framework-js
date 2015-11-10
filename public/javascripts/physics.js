@@ -54,15 +54,10 @@ function () {
 		}
 		// hit on a corner
 		else if (rectangle != rectangleSide && rectangle != rectangleTopBot) {
-			var rectangleSideIsActive = rectangleSide !== undefined && rectangleSide.state === BRICK_STATE_ACTIVE,
-				rectangleSideIsInactive = rectangleSide === undefined || rectangleSide.state === BRICK_STATE_INACTIVE,
-				rectangleTopBotIsActive = rectangleTopBot !== undefined && rectangleTopBot.state === BRICK_STATE_ACTIVE,
-				rectangleTopBotIsInactive = rectangleTopBot === undefined || rectangleTopBot.state === BRICK_STATE_INACTIVE;
-
-			if (!(rectangleSideIsActive && rectangleTopBotIsInactive)) {
+			if (!(rectangleSide !== undefined && rectangleTopBot === undefined)) {
 				sphere.speedX *= -1;
 			}
-			if (!(rectangleSideIsInactive && rectangleTopBotIsActive)) {
+			if (!(rectangleSide === undefined && rectangleTopBot !== undefined)) {
 				sphere.speedY *= -1;
 			}
 		}

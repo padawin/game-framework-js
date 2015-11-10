@@ -149,6 +149,16 @@ function (B, canvas, Entities, Physics) {
 			&& BRICK_GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < BRICK_GRID_ROW
 			&& brick.state == BRICK_STATE_ACTIVE
 		) {
+			// brick next to the current one, according to ball's old position
+			brickSide = bricks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
+			brickSide = brickSide && brickSide.state == BRICK_STATE_ACTIVE && brickSide || undefined;
+
+			// brick under or above to the current one, according to ball's old position
+			brickTopBot = bricks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
+			brickTopBot = brickTopBot && brickTopBot.state == BRICK_STATE_ACTIVE && brickTopBot || undefined;
+
+			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
+
 			brick.state = BRICK_STATE_INACTIVE;
 			remainingBricks--;
 
@@ -157,12 +167,6 @@ function (B, canvas, Entities, Physics) {
 				B.Events.fire('win');
 				return;
 			}
-
-			// brick next to the current one, according to ball's old position
-			brickSide = bricks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
-			// brick under or above to the current one, according to ball's old position
-			brickTopBot = bricks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
-			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 		}
 		/* End of Ball and active brick collision */
 
