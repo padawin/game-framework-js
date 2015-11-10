@@ -64,7 +64,14 @@ function (canvas, B) {
 		 * Draw the car on the screen
 		 */
 		Car.prototype.draw = function () {
-			canvas.drawCircle(this.x, this.y, this.r, 'white');
+			if (this.graphicLoaded) {
+				canvas.drawImage(
+					this.graphic,
+					this.x - this.graphic.width / 2,
+					this.y - this.graphic.height / 2)
+				;
+			}
+
 		};
 		/* End Car Class */
 	})();
