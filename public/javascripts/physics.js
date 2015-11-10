@@ -13,10 +13,20 @@ function () {
 	 * Method to know if a sphere collides with a rectangle
 	 */
 	physics.sphereCollidesWithRectangle = function (sphere, rectangle) {
-		return sphere.y + BALL_RADIUS > rectangle.y &&
-			sphere.y - BALL_RADIUS < rectangle.y + rectangle.h &&
-			sphere.x  + BALL_RADIUS > rectangle.x &&
-			sphere.x - BALL_RADIUS < rectangle.x + rectangle.w;
+		return sphere.y + sphere.r > rectangle.y &&
+			sphere.y - sphere.r < rectangle.y + rectangle.h &&
+			sphere.x  + sphere.r > rectangle.x &&
+			sphere.x - sphere.r < rectangle.x + rectangle.w;
+	};
+
+	/**
+	 * Method to know if a sphere collides with a rectangle
+	 */
+	physics.sphereCollidesWithOuterRectangle = function (sphere, rectangle) {
+		return sphere.y + sphere.r > rectangle.y + rectangle.h &&
+			sphere.y - sphere.r < rectangle.y &&
+			sphere.x  + sphere.r > rectangle.x + rectangle.w &&
+			sphere.x - sphere.r < rectangle.x;
 	};
 
 	/**
@@ -54,15 +64,10 @@ function () {
 		}
 		// hit on a corner
 		else if (rectangle != rectangleSide && rectangle != rectangleTopBot) {
-			var rectangleSideIsActive = rectangleSide !== undefined && rectangleSide.state === BRICK_STATE_ACTIVE,
-				rectangleSideIsInactive = rectangleSide === undefined || rectangleSide.state === BRICK_STATE_INACTIVE,
-				rectangleTopBotIsActive = rectangleTopBot !== undefined && rectangleTopBot.state === BRICK_STATE_ACTIVE,
-				rectangleTopBotIsInactive = rectangleTopBot === undefined || rectangleTopBot.state === BRICK_STATE_INACTIVE;
-
-			if (!(rectangleSideIsActive && rectangleTopBotIsInactive)) {
+			if (!(rectangleSide !== undefined && rectangleTopBot === undefined)) {
 				sphere.speedX *= -1;
 			}
-			if (!(rectangleSideIsInactive && rectangleTopBotIsActive)) {
+			if (!(rectangleSide === undefined && rectangleTopBot !== undefined)) {
 				sphere.speedY *= -1;
 			}
 		}
@@ -81,6 +86,30 @@ function () {
 			distFromPaddleCenter = sphere.x - centerPaddleX;
 
 		sphere.speedX = distFromPaddleCenter * 0.35;
+	};
+
+	physics.sphereBounceAgainstInnerRectangle = function (sphere, rectangle) {
+		if (sphere.x - sphere.r < rectangle.x) {
+			sphere.x = rectangle.x + sphere.r;
+			sphere.speedX *= -1;
+			return 'left';
+		}
+		else if (sphere.x + sphere.r > rectangle.x + rectangle.w) {
+			sphere.x = rectangle.x + rectangle.w - sphere.r;
+			sphere.speedX *= -1;
+			return 'right';
+		}
+		else if (sphere.y - sphere.r < rectangle.y) {
+			sphere.y = rectangle.y + sphere.r;
+			sphere.speedY *= -1;
+			return 'up';
+		}
+		// The sphere touches the bottom screen
+		else if (sphere.y + sphere.r > rectangle.y + rectangle.h) {
+			sphere.y = rectangle.y + rectangle.h - sphere.r;
+			sphere.speedY *= -1;
+			return 'down';
+		}
 	};
 
 	return physics;

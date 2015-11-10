@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics',
-function (B, canvas, Entities, Physics) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils',
+function (B, canvas, Entities, Physics, Utils) {
 	var ball,
 		paddle,
 		bricks = [],
@@ -17,7 +17,7 @@ function (B, canvas, Entities, Physics) {
 		mouseX,
 		mouseY,
 		fps = 30,
-		urlParams = getUrlParams();
+		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 	console.log(DEBUG);
@@ -27,7 +27,9 @@ function (B, canvas, Entities, Physics) {
 	setInterval(updateAll, 1000 / fps);
 
 	// Init the ball
-	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_SPEED_X, BALL_SPEED_Y);
+	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+	// Position of the ball in the grid
+	ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
 	// Init the paddle at the middle of the game view, 100px above the bottom
 	paddle = new Entities.Paddle(
 		(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
@@ -90,25 +92,13 @@ function (B, canvas, Entities, Physics) {
 				BRICK_WIDTH,
 				BRICK_HEIGHT,
 				// @TODO remove destructable field
-				true, BRICK_STATE_ACTIVE
+				true, Entities.Brick.STATE_ACTIVE
 			));
 		}
 	}
 
 	// Set the number of remaining bricks to destroy
 	var remainingBricks = BRICKS_NUMBER;
-
-	function getUrlParams () {
-		var query = window.location.search.substring(1).split("&"),
-			i,
-			param,
-			params = {};
-		for (i = 0; i < query.length; i++) {
-			param = query[i].split('=');
-			params[param[0]] = param[1];
-		}
-		return params;
-	}
 
 	// @TODO put that somewhere
 	// Reset the bricks to the original state (all active)
@@ -133,6 +123,16 @@ function (B, canvas, Entities, Physics) {
 	function moveAll () {
 		// Update the ball position
 		ball.updatePosition();
+		ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
+
+		/* Ball and edges collision*/
+		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(ball, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
+		if (wallBounded == 'down') {
+			ball.reset();
+			console.log('fire lost');
+			B.Events.fire('lost');
+		}
+		/* End of Ball and edges collision*/
 
 		/* Ball and active brick collision */
 		var brick,
@@ -147,9 +147,19 @@ function (B, canvas, Entities, Physics) {
 		// if the ball is on an active brick
 		if (BRICK_GRID_START_COL <= ball.gridCellCol && ball.gridCellCol < BRICK_GRID_COL
 			&& BRICK_GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < BRICK_GRID_ROW
-			&& brick.state == BRICK_STATE_ACTIVE
+			&& brick.state == Entities.Brick.STATE_ACTIVE
 		) {
-			brick.state = BRICK_STATE_INACTIVE;
+			// brick next to the current one, according to ball's old position
+			brickSide = bricks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
+			brickSide = brickSide && brickSide.state == Entities.Brick.STATE_ACTIVE && brickSide || undefined;
+
+			// brick under or above to the current one, according to ball's old position
+			brickTopBot = bricks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
+			brickTopBot = brickTopBot && brickTopBot.state == Entities.Brick.STATE_ACTIVE && brickTopBot || undefined;
+
+			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
+
+			brick.state = Entities.Brick.STATE_INACTIVE;
 			remainingBricks--;
 
 			if (remainingBricks == 0) {
@@ -157,12 +167,6 @@ function (B, canvas, Entities, Physics) {
 				B.Events.fire('win');
 				return;
 			}
-
-			// brick next to the current one, according to ball's old position
-			brickSide = bricks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
-			// brick under or above to the current one, according to ball's old position
-			brickTopBot = bricks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
-			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 		}
 		/* End of Ball and active brick collision */
 
