@@ -25,11 +25,6 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	canvas.init(document.getElementById('game-canvas'));
 	setInterval(updateAll, 1000 / fps);
 
-	// Init the ball
-	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
-	// Position of the ball in the grid
-	ball.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
-
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
@@ -63,7 +58,8 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	 */
 	var col, row,
 		trackWidth = canvas.width() / Maps[0].width,
-		trackHeight = canvas.height() / Maps[0].height;
+		trackHeight = canvas.height() / Maps[0].height,
+		startX, startY;
 	for (row = 0; row < Maps[0].height; row++ ) {
 		for (col = 0; col < Maps[0].width; col++ ) {
 			tracks.push(new Entities.Track(
@@ -73,10 +69,18 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 				// @TODO remove destructable field
 				true, Maps[0].map[row][col]
 			));
+
+			if (Maps[0].map[row][col] == TRACK_STATE_START) {
+				startX = trackWidth * col;
+				startY = trackHeight * row;
+			}
 		}
 	}
 
-	}
+	// Init the ball
+	ball = new Entities.Ball(startX, startY, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+	// Position of the ball in the grid
+	ball.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 
 	/**
 	 * Method to convert a pair of coordinates to the index of the cell in the
