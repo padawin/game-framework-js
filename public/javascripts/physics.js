@@ -88,6 +88,30 @@ function () {
 		sphere.speedX = distFromPaddleCenter * 0.35;
 	};
 
+	physics.sphereBounceAgainstInnerRectangle = function (sphere, rectangle) {
+		if (sphere.x - sphere.r < rectangle.x) {
+			sphere.x = rectangle.x + sphere.r;
+			sphere.speedX *= -1;
+			return 'left';
+		}
+		else if (sphere.x + sphere.r > rectangle.x + rectangle.w) {
+			sphere.x = rectangle.x + rectangle.w - sphere.r;
+			sphere.speedX *= -1;
+			return 'right';
+		}
+		else if (sphere.y - sphere.r < rectangle.y) {
+			sphere.y = rectangle.y + sphere.r;
+			sphere.speedY *= -1;
+			return 'up';
+		}
+		// The sphere touches the bottom screen
+		else if (sphere.y + sphere.r > rectangle.y + rectangle.h) {
+			sphere.y = rectangle.y + rectangle.h - sphere.r;
+			sphere.speedY *= -1;
+			return 'down';
+		}
+	};
+
 	return physics;
 });
 
