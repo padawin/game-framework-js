@@ -70,7 +70,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 				true, Maps[0].map[row][col]
 			));
 
-			if (Maps[0].map[row][col] == TRACK_STATE_START) {
+			if (Maps[0].map[row][col] == Entities.Track.STATE_START) {
 				startX = trackWidth * col + trackWidth / 2;
 				startY = trackHeight * row + trackHeight / 2;
 			}
