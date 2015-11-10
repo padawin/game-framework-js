@@ -20,6 +20,16 @@ function () {
 	};
 
 	/**
+	 * Method to know if a sphere collides with a rectangle
+	 */
+	physics.sphereCollidesWithOuterRectangle = function (sphere, rectangle) {
+		return sphere.y + sphere.r > rectangle.y + rectangle.h &&
+			sphere.y - sphere.r < rectangle.y &&
+			sphere.x  + sphere.r > rectangle.x + rectangle.w &&
+			sphere.x - sphere.r < rectangle.x;
+	};
+
+	/**
 	 * site and topbot are used in case of a diagonal hit, to know where
 	 * the sphere has to bounce:
 	 *
