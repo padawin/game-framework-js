@@ -21,9 +21,46 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	const DEBUG = urlParams.debug || NO_DEBUG;
 	console.log(DEBUG);
 
-	// Init the view
-	canvas.init(document.getElementById('game-canvas'));
-	setInterval(updateAll, 1000 / fps);
+
+	B.on(window, 'load', function () {
+		// Init the view
+		canvas.init(document.getElementById('game-canvas'));
+
+		setInterval(updateAll, 1000 / fps);
+
+		/*
+		 * Create the tracks, The whole game is a grid and tracks are on the grid
+		 * The tracks are organised on a rectangle of the grid started at the
+		 * position (TRACK_GRID_START_COL, TRACK_GRID_START_COL) and ends at the
+		 * position (TRACK_GRID_COL, TRACK_GRID_ROW)
+		 * Each track is an instance of the class Entities.Track
+		 */
+		var col, row,
+			trackWidth = canvas.width() / Maps[0].width,
+			trackHeight = canvas.height() / Maps[0].height,
+			startX, startY;
+		for (row = 0; row < Maps[0].height; row++ ) {
+			for (col = 0; col < Maps[0].width; col++ ) {
+				tracks.push(new Entities.Track(
+					// 5 is the initial left margin
+					trackWidth * col, trackHeight * row,
+					trackWidth, trackHeight,
+					// @TODO remove destructable field
+					true, Maps[0].map[row][col]
+				));
+
+				if (Maps[0].map[row][col] == Entities.Track.STATE_START) {
+					startX = trackWidth * col + trackWidth / 2;
+					startY = trackHeight * row + trackHeight / 2;
+				}
+			}
+		}
+
+		// Init the car
+		car = new Entities.Car(startX, startY, CAR_RADIUS, 0, 0);
+		// Position of the car in the grid
+		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
+	});
 
 	/* Events */
 	// Event to execute when the player wins
@@ -48,39 +85,6 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 		}
 	});
 	/* End of Events */
-
-	/*
-	 * Create the tracks, The whole game is a grid and tracks are on the grid
-	 * The tracks are organised on a rectangle of the grid started at the
-	 * position (TRACK_GRID_START_COL, TRACK_GRID_START_COL) and ends at the
-	 * position (TRACK_GRID_COL, TRACK_GRID_ROW)
-	 * Each track is an instance of the class Entities.Track
-	 */
-	var col, row,
-		trackWidth = canvas.width() / Maps[0].width,
-		trackHeight = canvas.height() / Maps[0].height,
-		startX, startY;
-	for (row = 0; row < Maps[0].height; row++ ) {
-		for (col = 0; col < Maps[0].width; col++ ) {
-			tracks.push(new Entities.Track(
-				// 5 is the initial left margin
-				trackWidth * col, trackHeight * row,
-				trackWidth, trackHeight,
-				// @TODO remove destructable field
-				true, Maps[0].map[row][col]
-			));
-
-			if (Maps[0].map[row][col] == Entities.Track.STATE_START) {
-				startX = trackWidth * col + trackWidth / 2;
-				startY = trackHeight * row + trackHeight / 2;
-			}
-		}
-	}
-
-	// Init the car
-	car = new Entities.Car(startX, startY, CAR_RADIUS, 0, 0);
-	// Position of the car in the grid
-	car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 
 	/**
 	 * Method to convert a pair of coordinates to the index of the cell in the
