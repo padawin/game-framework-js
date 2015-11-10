@@ -3,30 +3,31 @@ if (typeof (require) != 'undefined') {
 }
 
 /**
- * This module contains the definition of the Ball, Paddle and Track entities
+ * This module contains the definition of the Car, Paddle and Track entities
  */
 loader.addModule('Entities',
 'Canvas', 'B',
 function (canvas, B) {
 	var entities = {},
-		Ball,
+		Car,
 		Track,
 		Paddle;
 
 	(function () {
-		/* Ball Class */
-		Ball = function (x, y, r, speedX, speedY) {
+		/* Car Class */
+		Car = function (x, y, r, speedX, speedY) {
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
 			this.r = r;
 			this.speedX = this.originalSpeedX = speedX;
 			this.speedY = this.originalSpeedY = speedY;
+			this.graphicLoaded = false;
 		};
 
 		/**
-		 * From the ball coordinates, set
+		 * From the car coordinates, set
 		 */
-		Ball.prototype.setGridCoordinates = function (gridCellWidth, gridCellHeight) {
+		Car.prototype.setGridCoordinates = function (gridCellWidth, gridCellHeight) {
 			this.oldGridCellCol = this.gridCellCol;
 			this.oldGridCellRow = this.gridCellRow;
 			this.gridCellCol = Math.floor(this.x / gridCellWidth);
@@ -34,17 +35,25 @@ function (canvas, B) {
 		};
 
 		/**
-		 * Method to update the ball position according to its speed
+		 * Method to update the car position according to its speed
 		 */
-		Ball.prototype.updatePosition = function () {
+		Car.prototype.updatePosition = function () {
 			this.x += this.speedX;
 			this.y += this.speedY;
 		};
 
+		Car.prototype.setGraphic = function (graphic) {
+			this.graphic = graphic;
+		};
+
+		Car.prototype.setGraphicLoaded = function (loaded) {
+			this.graphicLoaded = loaded;
+		};
+
 		/**
-		 * Reset the ball to its original values
+		 * Reset the car to its original values
 		 */
-		Ball.prototype.reset = function () {
+		Car.prototype.reset = function () {
 			this.x  = this.originalX;
 			this.y = this.originalY;
 			this.speedX = this.originalSpeedX;
@@ -52,12 +61,19 @@ function (canvas, B) {
 		};
 
 		/**
-		 * Draw the ball on the screen
+		 * Draw the car on the screen
 		 */
-		Ball.prototype.draw = function () {
-			canvas.drawCircle(this.x, this.y, this.r, 'white');
+		Car.prototype.draw = function () {
+			if (this.graphicLoaded) {
+				canvas.drawImage(
+					this.graphic,
+					this.x - this.graphic.width / 2,
+					this.y - this.graphic.height / 2)
+				;
+			}
+
 		};
-		/* End Ball Class */
+		/* End Car Class */
 	})();
 
 	(function () {
@@ -94,7 +110,7 @@ function (canvas, B) {
 		/* End Track Class */
 	})();
 
-	entities.Ball = Ball;
+	entities.Car = Car;
 	entities.Paddle = Paddle;
 	entities.Track = Track;
 

@@ -50,12 +50,20 @@ function (B) {
 			canvasContext.arc(x, y, radius, 0, Math.PI * 2, true);
 			canvasContext.fill();
 		},
+
 		/**
 		 * Method to draw some text
 		 */
 		drawText: function (text, x, y, color) {
 			canvasContext.fillStyle = color;
 			canvasContext.fillText(text, x, y);
+		},
+
+		/**
+		 * Method to draw an image
+		 */
+		drawImage: function (image, x, y) {
+			canvasContext.drawImage(image, x, y);
 		},
 
 		/**

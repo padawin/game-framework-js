@@ -9,7 +9,7 @@ if (typeof (require) != 'undefined') {
 loader.executeModule('main',
 'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps',
 function (B, canvas, Entities, Physics, Utils, Maps) {
-	var ball,
+	var car,
 		tracks = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
@@ -21,14 +21,57 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	const DEBUG = urlParams.debug || NO_DEBUG;
 	console.log(DEBUG);
 
-	// Init the view
-	canvas.init(document.getElementById('game-canvas'));
-	setInterval(updateAll, 1000 / fps);
+
+	B.on(window, 'load', function () {
+		// Init the view
+		canvas.init(document.getElementById('game-canvas'));
+
+		setInterval(updateAll, 1000 / fps);
+
+		/*
+		 * Create the tracks, The whole game is a grid and tracks are on the grid
+		 * The tracks are organised on a rectangle of the grid started at the
+		 * position (TRACK_GRID_START_COL, TRACK_GRID_START_COL) and ends at the
+		 * position (TRACK_GRID_COL, TRACK_GRID_ROW)
+		 * Each track is an instance of the class Entities.Track
+		 */
+		var col, row,
+			trackWidth = canvas.width() / Maps[0].width,
+			trackHeight = canvas.height() / Maps[0].height,
+			startX, startY;
+		for (row = 0; row < Maps[0].height; row++ ) {
+			for (col = 0; col < Maps[0].width; col++ ) {
+				tracks.push(new Entities.Track(
+					// 5 is the initial left margin
+					trackWidth * col, trackHeight * row,
+					trackWidth, trackHeight,
+					// @TODO remove destructable field
+					true, Maps[0].map[row][col]
+				));
+
+				if (Maps[0].map[row][col] == Entities.Track.STATE_START) {
+					startX = trackWidth * col + trackWidth / 2;
+					startY = trackHeight * row + trackHeight / 2;
+				}
+			}
+		}
+
+		// Init the car
+		car = new Entities.Car(startX, startY, CAR_RADIUS, CAR_SPEED_X, CAR_SPEED_Y);
+		// Position of the car in the grid
+		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
+
+		car.setGraphic(B.create('img'));
+		car.graphic.onload = function () {
+			car.setGraphicLoaded(true);
+		};
+		car.graphic.src = '/images/player1car.png';
+	});
 
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		ball.reset();
+		car.reset();
 	});
 
 	// Event to execute when the player loses
@@ -41,46 +84,13 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 		mouseY = mY;
 
 		if (DEBUG) {
-			ball.x = mouseX;
-			ball.y = mouseY;
-			ball.speedX = BALL_SPEED_X;
-			ball.speedY = BALL_SPEED_Y * -1;
+			car.x = mouseX;
+			car.y = mouseY;
+			car.speedX = CAR_SPEED_X;
+			car.speedY = CAR_SPEED_Y * -1;
 		}
 	});
 	/* End of Events */
-
-	/*
-	 * Create the tracks, The whole game is a grid and tracks are on the grid
-	 * The tracks are organised on a rectangle of the grid started at the
-	 * position (TRACK_GRID_START_COL, TRACK_GRID_START_COL) and ends at the
-	 * position (TRACK_GRID_COL, TRACK_GRID_ROW)
-	 * Each track is an instance of the class Entities.Track
-	 */
-	var col, row,
-		trackWidth = canvas.width() / Maps[0].width,
-		trackHeight = canvas.height() / Maps[0].height,
-		startX, startY;
-	for (row = 0; row < Maps[0].height; row++ ) {
-		for (col = 0; col < Maps[0].width; col++ ) {
-			tracks.push(new Entities.Track(
-				// 5 is the initial left margin
-				trackWidth * col, trackHeight * row,
-				trackWidth, trackHeight,
-				// @TODO remove destructable field
-				true, Maps[0].map[row][col]
-			));
-
-			if (Maps[0].map[row][col] == Entities.Track.STATE_START) {
-				startX = trackWidth * col + trackWidth / 2;
-				startY = trackHeight * row + trackHeight / 2;
-			}
-		}
-	}
-
-	// Init the ball
-	ball = new Entities.Ball(startX, startY, BALL_RADIUS, 0, 0);
-	// Position of the ball in the grid
-	ball.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 
 	/**
 	 * Method to convert a pair of coordinates to the index of the cell in the
@@ -95,45 +105,45 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	 * Method to update the game state and the objects's position
 	 */
 	function moveAll () {
-		// Update the ball position
-		ball.updatePosition();
-		ball.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
+		// Update the car position
+		car.updatePosition();
+		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 
-		/* Ball and edges collision*/
-		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(ball, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
+		/* Car and edges collision*/
+		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
 		if (wallBounded == 'down') {
-			ball.reset();
+			car.reset();
 			console.log('fire lost');
 			B.Events.fire('lost');
 		}
-		/* End of Ball and edges collision*/
+		/* End of Car and edges collision*/
 
-		/* Ball and active track collision */
+		/* Car and active track collision */
 		var track,
 			trackSide,
 			trackTopBot;
 
 		track = tracks[colRowToGridIndex(
-			ball.gridCellCol,
-			ball.gridCellRow
+			car.gridCellCol,
+			car.gridCellRow
 		)];
 
-		// if the ball is on an active track
-		if (TRACK_GRID_START_COL <= ball.gridCellCol && ball.gridCellCol < TRACK_GRID_COL
-			&& TRACK_GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < TRACK_GRID_ROW
+		// if the car is on an active track
+		if (TRACK_GRID_START_COL <= car.gridCellCol && car.gridCellCol < TRACK_GRID_COL
+			&& TRACK_GRID_START_COL <= car.gridCellRow && car.gridCellRow < TRACK_GRID_ROW
 			&& track.state == Entities.Track.STATE_ACTIVE
 		) {
-			// track next to the current one, according to ball's old position
-			trackSide = tracks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
+			// track next to the current one, according to car's old position
+			trackSide = tracks[colRowToGridIndex(car.oldGridCellCol, car.gridCellRow)];
 			trackSide = trackSide && trackSide.state == Entities.Track.STATE_ACTIVE && trackSide || undefined;
 
-			// track under or above to the current one, according to ball's old position
-			trackTopBot = tracks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
+			// track under or above to the current one, according to car's old position
+			trackTopBot = tracks[colRowToGridIndex(car.gridCellCol, car.oldGridCellRow)];
 			trackTopBot = trackTopBot && trackTopBot.state == Entities.Track.STATE_ACTIVE && trackTopBot || undefined;
 
-			Physics.sphereBounceAgainstGridRectangle(ball, track, trackSide, trackTopBot);
+			Physics.sphereBounceAgainstGridRectangle(car, track, trackSide, trackTopBot);
 		}
-		/* End of Ball and active track collision */
+		/* End of Car and active track collision */
 	}
 
 	/**
@@ -142,7 +152,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([ball, tracks]);
+		canvas.drawAll([car, tracks]);
 
 		if (DEBUG) {
 			canvas.drawText('(' +
@@ -151,7 +161,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 				colRowToGridIndex(Math.floor(mouseX / TRACK_SPACE_WIDTH), Math.floor(mouseY / TRACK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
 
 
-			canvas.line([ball.x, ball.y], [ball.x + ball.speedX * 30, ball.y + ball.speedY * 30]);
+			canvas.line([car.x, car.y], [car.x + car.speedX * 30, car.y + car.speedY * 30]);
 		}
 	}
 });
