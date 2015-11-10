@@ -28,6 +28,8 @@ function (B, canvas, Entities, Physics) {
 
 	// Init the ball
 	ball = new Entities.Ball(canvas.width() / 2, canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+	// Position of the ball in the grid
+	ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
 	// Init the paddle at the middle of the game view, 100px above the bottom
 	paddle = new Entities.Paddle(
 		(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
@@ -133,6 +135,7 @@ function (B, canvas, Entities, Physics) {
 	function moveAll () {
 		// Update the ball position
 		ball.updatePosition();
+		ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
 
 		/* Ball and active brick collision */
 		var brick,

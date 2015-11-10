@@ -21,9 +21,6 @@ function (canvas, B) {
 			this.r = r;
 			this.speedX = this.originalSpeedX = speedX;
 			this.speedY = this.originalSpeedY = speedY;
-
-			// Position of the ball in the grid
-			this.setGridCoordinates();
 		};
 
 		/**
@@ -51,11 +48,11 @@ function (canvas, B) {
 		/**
 		 * From the ball coordinates, set
 		 */
-		Ball.prototype.setGridCoordinates = function () {
+		Ball.prototype.setGridCoordinates = function (gridCellWidth, gridCellHeight) {
 			this.oldGridCellCol = this.gridCellCol;
 			this.oldGridCellRow = this.gridCellRow;
-			this.gridCellCol = Math.floor(this.x / BRICK_SPACE_WIDTH);
-			this.gridCellRow = Math.floor(this.y / BRICK_SPACE_HEIGHT);
+			this.gridCellCol = Math.floor(this.x / gridCellWidth);
+			this.gridCellRow = Math.floor(this.y / gridCellHeight);
 		};
 
 		/**
@@ -67,7 +64,6 @@ function (canvas, B) {
 
 			// Update the ball's speed if it collides with the screen edges
 			_ballDetectScreenEdgeCollision(this);
-			this.setGridCoordinates();
 		};
 
 		/**
