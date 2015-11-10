@@ -90,7 +90,7 @@ function (B, canvas, Entities, Physics) {
 				BRICK_WIDTH,
 				BRICK_HEIGHT,
 				// @TODO remove destructable field
-				true, BRICK_STATE_ACTIVE
+				true, Entities.Brick.STATE_ACTIVE
 			));
 		}
 	}
@@ -147,19 +147,19 @@ function (B, canvas, Entities, Physics) {
 		// if the ball is on an active brick
 		if (BRICK_GRID_START_COL <= ball.gridCellCol && ball.gridCellCol < BRICK_GRID_COL
 			&& BRICK_GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < BRICK_GRID_ROW
-			&& brick.state == BRICK_STATE_ACTIVE
+			&& brick.state == Entities.Brick.STATE_ACTIVE
 		) {
 			// brick next to the current one, according to ball's old position
 			brickSide = bricks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
-			brickSide = brickSide && brickSide.state == BRICK_STATE_ACTIVE && brickSide || undefined;
+			brickSide = brickSide && brickSide.state == Entities.Brick.STATE_ACTIVE && brickSide || undefined;
 
 			// brick under or above to the current one, according to ball's old position
 			brickTopBot = bricks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
-			brickTopBot = brickTopBot && brickTopBot.state == BRICK_STATE_ACTIVE && brickTopBot || undefined;
+			brickTopBot = brickTopBot && brickTopBot.state == Entities.Brick.STATE_ACTIVE && brickTopBot || undefined;
 
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 
-			brick.state = BRICK_STATE_INACTIVE;
+			brick.state = Entities.Brick.STATE_INACTIVE;
 			remainingBricks--;
 
 			if (remainingBricks == 0) {

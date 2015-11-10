@@ -130,7 +130,7 @@ function (canvas, B) {
 		 * Draw the brick on the screen
 		 */
 		Brick.prototype.draw = function () {
-			if (this.state == BRICK_STATE_ACTIVE) {
+			if (this.state == Brick.STATE_ACTIVE) {
 				canvas.drawRectangle(this.x, this.y, this.w, this.h, 'red');
 			}
 		};
@@ -142,6 +142,10 @@ function (canvas, B) {
 			this.state = this.originalState;
 			this.destructible = this.originalDestructible;
 		};
+
+		Brick.STATE_INACTIVE = 0;
+		Brick.STATE_ACTIVE = 1;
+		Brick.STATE_START = 2;
 		/* End Brick Class */
 	})();
 
