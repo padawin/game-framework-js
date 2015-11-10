@@ -21,6 +21,7 @@ function (canvas, B) {
 			this.r = r;
 			this.speedX = this.originalSpeedX = speedX;
 			this.speedY = this.originalSpeedY = speedY;
+			this.graphicLoaded = false;
 		};
 
 		/**
@@ -39,6 +40,14 @@ function (canvas, B) {
 		Car.prototype.updatePosition = function () {
 			this.x += this.speedX;
 			this.y += this.speedY;
+		};
+
+		Car.prototype.setGraphic = function (graphic) {
+			this.graphic = graphic;
+		};
+
+		Car.prototype.setGraphicLoaded = function (loaded) {
+			this.graphicLoaded = loaded;
 		};
 
 		/**
