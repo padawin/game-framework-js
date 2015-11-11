@@ -57,7 +57,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 		}
 
 		// Init the car
-		car = new Entities.Car(startX, startY, CAR_RADIUS, 0, CAR_SPEED_X, CAR_SPEED_Y);
+		car = new Entities.Car(startX, startY, CAR_RADIUS, 0, CAR_SPEED);
 		// Position of the car in the grid
 		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 
@@ -86,8 +86,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 		if (DEBUG) {
 			car.x = mouseX;
 			car.y = mouseY;
-			car.speedX = CAR_SPEED_X;
-			car.speedY = CAR_SPEED_Y * -1;
+			car.speed = CAR_SPEED;
 		}
 	});
 	/* End of Events */
@@ -161,7 +160,8 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 				colRowToGridIndex(Math.floor(mouseX / TRACK_SPACE_WIDTH), Math.floor(mouseY / TRACK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
 
 
-			canvas.line([car.x, car.y], [car.x + car.speedX * 30, car.y + car.speedY * 30]);
+			// @TODO adapt with angle
+			// canvas.line([car.x, car.y], [car.x + car.speedX * 30, car.y + car.speedY * 30]);
 		}
 	}
 });
