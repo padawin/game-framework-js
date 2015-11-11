@@ -67,6 +67,17 @@ function (B) {
 		},
 
 		/**
+		 * Method to draw a rotated image
+		 */
+		drawRotatedImage: function (image, x, y, angle) {
+			canvasContext.save();
+			canvasContext.translate(x, y);
+			canvasContext.rotate(angle);
+			canvasContext.drawImage(image, -image.width / 2, -image.height / 2);
+			canvasContext.restore();
+		},
+
+		/**
 		 * Method to draw a line
 		 */
 		line: function (from, to) {
