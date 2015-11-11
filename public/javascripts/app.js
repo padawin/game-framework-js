@@ -127,15 +127,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 			&& TRACK_GRID_START_COL <= car.gridCellRow && car.gridCellRow < TRACK_GRID_ROW
 			&& track.state == Entities.Track.STATE_ACTIVE
 		) {
-			// track next to the current one, according to car's old position
-			trackSide = tracks[colRowToGridIndex(car.oldGridCellCol, car.gridCellRow)];
-			trackSide = trackSide && trackSide.state == Entities.Track.STATE_ACTIVE && trackSide || undefined;
-
-			// track under or above to the current one, according to car's old position
-			trackTopBot = tracks[colRowToGridIndex(car.gridCellCol, car.oldGridCellRow)];
-			trackTopBot = trackTopBot && trackTopBot.state == Entities.Track.STATE_ACTIVE && trackTopBot || undefined;
-
-			Physics.sphereBounceAgainstGridRectangle(car, track, trackSide, trackTopBot);
+			car.speed *= -1;
 		}
 		/* End of Car and active track collision */
 	}
