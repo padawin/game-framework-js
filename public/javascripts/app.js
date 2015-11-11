@@ -110,11 +110,6 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 
 		/* Car and edges collision*/
 		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
-		if (wallBounded == 'down') {
-			car.reset();
-			console.log('fire lost');
-			B.Events.fire('lost');
-		}
 		/* End of Car and edges collision*/
 
 		/* Car and active track collision */
