@@ -15,10 +15,11 @@ function (canvas, B) {
 
 	(function () {
 		/* Car Class */
-		Car = function (x, y, r, speedX, speedY) {
+		Car = function (x, y, r, angle, speedX, speedY) {
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
 			this.r = r;
+			this.angle = angle;
 			this.speedX = this.originalSpeedX = speedX;
 			this.speedY = this.originalSpeedY = speedY;
 			this.graphicLoaded = false;
@@ -65,11 +66,7 @@ function (canvas, B) {
 		 */
 		Car.prototype.draw = function () {
 			if (this.graphicLoaded) {
-				canvas.drawImage(
-					this.graphic,
-					this.x - this.graphic.width / 2,
-					this.y - this.graphic.height / 2)
-				;
+				canvas.drawRotatedImage(this.graphic, this.x, this.y, this.angle);
 			}
 
 		};
