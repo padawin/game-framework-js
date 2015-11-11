@@ -39,8 +39,9 @@ function (canvas, B) {
 		 * Method to update the car position according to its speed
 		 */
 		Car.prototype.updatePosition = function () {
-			this.x += this.speedX;
-			this.y += this.speedY;
+			this.angle += .2;
+			//~ this.x += this.speedX;
+			//~ this.y += this.speedY;
 		};
 
 		Car.prototype.setGraphic = function (graphic) {
