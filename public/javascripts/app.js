@@ -58,7 +58,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		}
 
 		// Init the car
-		car = new Entities.Car(startX, startY, CAR_RADIUS, 0, CAR_SPEED);
+		car = new Entities.Car(startX, startY, CAR_RADIUS, Math.PI / 2, CAR_SPEED);
 		// Position of the car in the grid
 		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 

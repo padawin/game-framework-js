@@ -1,5 +1,5 @@
 const CAR_RADIUS = 10;
-const CAR_SPEED = 5;
+const CAR_SPEED = 0;
 
 const TRACK_WIDTH = 40;
 const TRACK_HEIGHT = 40;
