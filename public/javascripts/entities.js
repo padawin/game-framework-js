@@ -61,16 +61,16 @@ function (canvas, B) {
 		 */
 		Car.prototype.updatePosition = function () {
 			if (this.gas) {
-				this.speed = Math.min(this.speed + .02, this.maxSpeed);
+				this.speed = Math.min(this.speed + 0.2, this.maxSpeed);
 			}
 			if (this.isReversing) {
-				this.speed = Math.max(this.speed - .02, this.minSpeed);
+				this.speed = Math.max(this.speed - 0.2, this.minSpeed);
 			}
 			if (this.isSteeringLeft) {
-				this.angle -= .02;
+				this.angle -= 0.05;
 			}
 			if (this.isSteeringRight) {
-				this.angle += .02;
+				this.angle += .05;
 			}
 
 			this.x += Math.cos(this.angle) * this.speed;
