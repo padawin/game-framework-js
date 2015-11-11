@@ -60,6 +60,11 @@ function (canvas, B) {
 		 * Method to update the car position according to its speed
 		 */
 		Car.prototype.updatePosition = function () {
+			// friction
+			this.speed *= 0.98;
+			if (this.speed < 0.1) {
+				this.speed = 0;
+			}
 			if (this.gas) {
 				this.speed = Math.min(this.speed + 0.2, this.maxSpeed);
 			}
