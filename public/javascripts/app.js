@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps',
-function (B, canvas, Entities, Physics, Utils, Maps) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps', 'Controls',
+function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	var car,
 		tracks = [],
 		// position of the mouse in the canvas, taking in account the scroll
@@ -25,6 +25,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	B.on(window, 'load', function () {
 		// Init the view
 		canvas.init(document.getElementById('game-canvas'));
+		Controls.init();
 
 		setInterval(updateAll, 1000 / fps);
 
