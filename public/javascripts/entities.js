@@ -19,7 +19,7 @@ function (canvas, B) {
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
 			this.r = r;
-			this.angle = angle;
+			this.angle = this.originalAngle = angle;
 			this.speed = this.originalSpeed = speed;
 			this.maxSpeed = 15;
 			this.minSpeed = -15;
@@ -103,6 +103,7 @@ function (canvas, B) {
 		Car.prototype.reset = function () {
 			this.x  = this.originalX;
 			this.y = this.originalY;
+			this.angle = this.originalAngle;
 			this.speed = this.originalSpeed;
 		};
 
