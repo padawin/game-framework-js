@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps',
-function (B, canvas, Entities, Physics, Utils, Maps) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps', 'Controls',
+function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	var car,
 		tracks = [],
 		// position of the mouse in the canvas, taking in account the scroll
@@ -19,12 +19,11 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
-	console.log(DEBUG);
-
 
 	B.on(window, 'load', function () {
 		// Init the view
 		canvas.init(document.getElementById('game-canvas'));
+		Controls.init();
 
 		setInterval(updateAll, 1000 / fps);
 
@@ -57,7 +56,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 		}
 
 		// Init the car
-		car = new Entities.Car(startX, startY, CAR_RADIUS, 0, CAR_SPEED_X, CAR_SPEED_Y);
+		car = new Entities.Car(startX, startY, CAR_RADIUS, Math.PI / 2, CAR_SPEED);
 		// Position of the car in the grid
 		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
 
@@ -66,6 +65,36 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 			car.setGraphicLoaded(true);
 		};
 		car.graphic.src = '/images/player1car.png';
+
+		B.Events.on('keydown', car, function (code) {
+			if (code == KEY_LEFT_ARROW) {
+				car.steerLeft(true);
+			}
+			else if (code == KEY_UP_ARROW) {
+				car.accelerate(true);
+			}
+			else if (code == KEY_RIGHT_ARROW) {
+				car.steerRight(true);
+			}
+			else if (code == KEY_DOWN_ARROW) {
+				car.reverse(true);
+			}
+		});
+
+		B.Events.on('keyup', car, function (code) {
+			if (code == KEY_LEFT_ARROW) {
+				car.steerLeft(false);
+			}
+			else if (code == KEY_UP_ARROW) {
+				car.accelerate(false);
+			}
+			else if (code == KEY_RIGHT_ARROW) {
+				car.steerRight(false);
+			}
+			else if (code == KEY_DOWN_ARROW) {
+				car.reverse(false);
+			}
+		});
 	});
 
 	/* Events */
@@ -86,8 +115,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 		if (DEBUG) {
 			car.x = mouseX;
 			car.y = mouseY;
-			car.speedX = CAR_SPEED_X;
-			car.speedY = CAR_SPEED_Y * -1;
+			car.speed = CAR_SPEED;
 		}
 	});
 	/* End of Events */
@@ -111,11 +139,6 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 
 		/* Car and edges collision*/
 		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
-		if (wallBounded == 'down') {
-			car.reset();
-			console.log('fire lost');
-			B.Events.fire('lost');
-		}
 		/* End of Car and edges collision*/
 
 		/* Car and active track collision */
@@ -133,15 +156,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 			&& TRACK_GRID_START_COL <= car.gridCellRow && car.gridCellRow < TRACK_GRID_ROW
 			&& track.state == Entities.Track.STATE_ACTIVE
 		) {
-			// track next to the current one, according to car's old position
-			trackSide = tracks[colRowToGridIndex(car.oldGridCellCol, car.gridCellRow)];
-			trackSide = trackSide && trackSide.state == Entities.Track.STATE_ACTIVE && trackSide || undefined;
-
-			// track under or above to the current one, according to car's old position
-			trackTopBot = tracks[colRowToGridIndex(car.gridCellCol, car.oldGridCellRow)];
-			trackTopBot = trackTopBot && trackTopBot.state == Entities.Track.STATE_ACTIVE && trackTopBot || undefined;
-
-			Physics.sphereBounceAgainstGridRectangle(car, track, trackSide, trackTopBot);
+			car.bumpBack();
 		}
 		/* End of Car and active track collision */
 	}
@@ -152,7 +167,7 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([car, tracks]);
+		canvas.drawAll([tracks, car]);
 
 		if (DEBUG) {
 			canvas.drawText('(' +
@@ -161,7 +176,8 @@ function (B, canvas, Entities, Physics, Utils, Maps) {
 				colRowToGridIndex(Math.floor(mouseX / TRACK_SPACE_WIDTH), Math.floor(mouseY / TRACK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
 
 
-			canvas.line([car.x, car.y], [car.x + car.speedX * 30, car.y + car.speedY * 30]);
+			// @TODO adapt with angle
+			// canvas.line([car.x, car.y], [car.x + car.speedX * 30, car.y + car.speedY * 30]);
 		}
 	}
 });
