@@ -158,7 +158,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 			&& TRACK_GRID_START_COL <= car.gridCellRow && car.gridCellRow < TRACK_GRID_ROW
 			&& track.state == Entities.Track.STATE_ACTIVE
 		) {
-			car.speed *= -1;
+			car.bumpBack();
 		}
 		/* End of Car and active track collision */
 	}

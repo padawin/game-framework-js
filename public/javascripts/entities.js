@@ -77,6 +77,13 @@ function (canvas, B) {
 			this.y += Math.sin(this.angle) * this.speed;
 		};
 
+		Car.prototype.bumpBack = function () {
+			this.x -= Math.cos(this.angle) * this.speed;
+			this.y -= Math.sin(this.angle) * this.speed;
+
+			this.speed *= -0.5;
+		};
+
 		Car.prototype.setGraphic = function (graphic) {
 			this.graphic = graphic;
 		};
