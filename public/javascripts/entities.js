@@ -15,13 +15,12 @@ function (canvas, B) {
 
 	(function () {
 		/* Car Class */
-		Car = function (x, y, r, angle, speedX, speedY) {
+		Car = function (x, y, r, angle, speed) {
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
 			this.r = r;
 			this.angle = angle;
-			this.speedX = this.originalSpeedX = speedX;
-			this.speedY = this.originalSpeedY = speedY;
+			this.speed = this.originalSpeed = speed;
 			this.graphicLoaded = false;
 		};
 
@@ -39,9 +38,8 @@ function (canvas, B) {
 		 * Method to update the car position according to its speed
 		 */
 		Car.prototype.updatePosition = function () {
-			this.angle += .2;
-			//~ this.x += this.speedX;
-			//~ this.y += this.speedY;
+			this.x += Math.cos(this.angle) * this.speed;
+			this.y += Math.sin(this.angle) * this.speed;
 		};
 
 		Car.prototype.setGraphic = function (graphic) {
@@ -58,8 +56,7 @@ function (canvas, B) {
 		Car.prototype.reset = function () {
 			this.x  = this.originalX;
 			this.y = this.originalY;
-			this.speedX = this.originalSpeedX;
-			this.speedY = this.originalSpeedY;
+			this.speed = this.originalSpeed;
 		};
 
 		/**
