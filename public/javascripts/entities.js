@@ -21,7 +21,13 @@ function (canvas, B) {
 			this.r = r;
 			this.angle = angle;
 			this.speed = this.originalSpeed = speed;
+			this.maxSpeed = 15;
+			this.minSpeed = -15;
 			this.graphicLoaded = false;
+			this.isSteeringLeft = false;
+			this.isSteeringRight = false;
+			this.gas = false;
+			this.isReversing = false;
 		};
 
 		/**
@@ -34,10 +40,39 @@ function (canvas, B) {
 			this.gridCellRow = Math.floor(this.y / gridCellHeight);
 		};
 
+		Car.prototype.steerLeft = function (enable) {
+			this.isSteeringLeft = enable;
+		};
+
+		Car.prototype.steerRight = function (enable) {
+			this.isSteeringRight = enable;
+		};
+
+		Car.prototype.accelerate = function (enable) {
+			this.gas = enable;
+		};
+
+		Car.prototype.reverse = function (enable) {
+			this.isReversing = enable;
+		};
+
 		/**
 		 * Method to update the car position according to its speed
 		 */
 		Car.prototype.updatePosition = function () {
+			if (this.gas) {
+				this.speed = Math.min(this.speed + .02, this.maxSpeed);
+			}
+			if (this.isReversing) {
+				this.speed = Math.max(this.speed - .02, this.minSpeed);
+			}
+			if (this.isSteeringLeft) {
+				this.angle -= .02;
+			}
+			if (this.isSteeringRight) {
+				this.angle += .02;
+			}
+
 			this.x += Math.cos(this.angle) * this.speed;
 			this.y += Math.sin(this.angle) * this.speed;
 		};
