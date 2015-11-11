@@ -7,9 +7,18 @@ if (typeof (require) != 'undefined') {
  */
 loader.addModule('Controls',
 function () {
+	function keyDownEvent (e) {
+		console.log('Key down: ' + e.keyCode);
+	}
+
+	function keyUpEvent (e) {
+		console.log('Key up: ' + e.keyCode);
+	}
+
 	var controls = {
 		init: function () {
-
+			document.addEventListener('keydown', keyDownEvent);
+			document.addEventListener('keyup', keyUpEvent);
 		}
 	};
 
