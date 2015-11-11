@@ -167,7 +167,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([car, tracks]);
+		canvas.drawAll([tracks, car]);
 
 		if (DEBUG) {
 			canvas.drawText('(' +
