@@ -19,8 +19,6 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
-	console.log(DEBUG);
-
 
 	B.on(window, 'load', function () {
 		// Init the view

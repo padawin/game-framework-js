@@ -9,7 +9,6 @@ loader.addModule('Controls',
 'B',
 function (B) {
 	function keyDownEvent (e) {
-		console.log('Key down: ' + e.keyCode);
 		B.Events.fire('keydown', [e.keyCode]);
 		if (~([KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW, KEY_UP_ARROW].indexOf(e.keyCode))) {
 			e.preventDefault();
