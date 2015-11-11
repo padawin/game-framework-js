@@ -67,6 +67,36 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 			car.setGraphicLoaded(true);
 		};
 		car.graphic.src = '/images/player1car.png';
+
+		B.Events.on('keydown', car, function (code) {
+			if (code == KEY_LEFT_ARROW) {
+				car.steerLeft(true);
+			}
+			else if (code == KEY_UP_ARROW) {
+				car.accelerate(true);
+			}
+			else if (code == KEY_RIGHT_ARROW) {
+				car.steerRight(true);
+			}
+			else if (code == KEY_DOWN_ARROW) {
+				car.reverse(true);
+			}
+		});
+
+		B.Events.on('keyup', car, function (code) {
+			if (code == KEY_LEFT_ARROW) {
+				car.steerLeft(false);
+			}
+			else if (code == KEY_UP_ARROW) {
+				car.accelerate(false);
+			}
+			else if (code == KEY_RIGHT_ARROW) {
+				car.steerRight(false);
+			}
+			else if (code == KEY_DOWN_ARROW) {
+				car.reverse(false);
+			}
+		});
 	});
 
 	/* Events */

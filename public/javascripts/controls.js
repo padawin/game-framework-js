@@ -6,13 +6,17 @@ if (typeof (require) != 'undefined') {
  * Module to deal with the game controls on the keyboard
  */
 loader.addModule('Controls',
-function () {
+'B',
+function (B) {
 	function keyDownEvent (e) {
 		console.log('Key down: ' + e.keyCode);
+		B.Events.fire('keydown', [e.keyCode]);
+		e.preventDefault();
 	}
 
 	function keyUpEvent (e) {
-		console.log('Key up: ' + e.keyCode);
+		B.Events.fire('keyup', [e.keyCode]);
+		e.preventDefault();
 	}
 
 	var controls = {
