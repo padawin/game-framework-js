@@ -7,18 +7,17 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps', 'Controls',
-function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps', 'Controls', 'Level',
+function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
 	var car,
+		level,
 		walls = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
 		mouseY,
 		fps = 30,
-		urlParams = Utils.getUrlParams(window.location.search),
-		gridCellWidth,
-		gridCellHeight;
+		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
@@ -29,37 +28,10 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 
 		setInterval(updateAll, 1000 / fps);
 
-		/*
-		 * Create the walls, The whole game is a grid and walls are on the grid
-		 * The walls are organised on a rectangle of the grid started at the
-		 * position (GRID_CELL_GRID_START_COL, GRID_CELL_GRID_START_COL) and ends at the
-		 * position (GRID_CELL_GRID_COL, GRID_CELL_GRID_ROW)
-		 * Each wall is an instance of the class Entities.GridCell
-		 */
-		var col, row,
-			startX, startY;
-
-		gridCellWidth = canvas.width() / Maps[0].width;
-		gridCellHeight = canvas.height() / Maps[0].height;
-		for (row = 0; row < Maps[0].height; row++ ) {
-			for (col = 0; col < Maps[0].width; col++ ) {
-				walls.push(new Entities.GridCell(
-					// 5 is the initial left margin
-					gridCellWidth * col, gridCellHeight * row,
-					gridCellWidth, gridCellHeight,
-					// @TODO remove destructable field
-					true, Maps[0].map[row][col]
-				));
-
-				if (Maps[0].map[row][col] == Entities.GridCell.STATE_START) {
-					startX = gridCellWidth * col + gridCellWidth / 2;
-					startY = gridCellHeight * row + gridCellHeight / 2;
-				}
-			}
-		}
+		level = Level.createLevel(Maps[0]);
 
 		// Init the car
-		car = new Entities.Car(startX, startY, Math.PI / 2, CAR_SPEED);
+		car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
 
 		car.setGraphic(B.create('img'));
 		car.graphic.onload = function () {
@@ -137,15 +109,15 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		// Update the car position
 		car.updatePosition();
 
-		var carGridCellCol = Math.floor(car.x / gridCellWidth),
-			carGridCellRow = Math.floor(car.y / gridCellHeight);
+		var carGridCellCol = Math.floor(car.x / level.gridCellWidth),
+			carGridCellRow = Math.floor(car.y / level.gridCellHeight);
 
 		/* Car and edges collision*/
 		Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
 		/* End of Car and edges collision*/
 
 		/* Car and wall collision */
-		var wall = walls[colRowToGridIndex(
+		var wall = level.cells[colRowToGridIndex(
 			carGridCellCol,
 			carGridCellRow
 		)];
@@ -166,6 +138,6 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([walls, car]);
+		canvas.drawAll([level.cells, car]);
 	}
 });
