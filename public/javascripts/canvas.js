@@ -67,6 +67,15 @@ function (B) {
 		},
 
 		/**
+		 * Method to draw a repeated image
+		 */
+		drawTexture: function (image, x, y, w, h) {
+			var pattern = canvasContext.createPattern(image, 'repeat');
+			canvasContext.fillStyle = pattern;
+			canvasContext.fillRect(x, y, w, h);
+		},
+
+		/**
 		 * Method to draw a rotated image
 		 */
 		drawRotatedImage: function (image, x, y, angle) {
