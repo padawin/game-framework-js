@@ -67,6 +67,15 @@ function (B) {
 		},
 
 		/**
+		 * Method to draw a repeated image
+		 */
+		drawTexture: function (image, x, y, w, h) {
+			var pattern = canvasContext.createPattern(image, 'repeat');
+			canvasContext.fillStyle = pattern;
+			canvasContext.fillRect(x, y, w, h);
+		},
+
+		/**
 		 * Method to draw a rotated image
 		 */
 		drawRotatedImage: function (image, x, y, angle) {
@@ -102,13 +111,7 @@ function (B) {
 			return canvas.height;
 		},
 
-		clearScreen: function () {
-			canvasModule.drawRectangle(0, 0, canvas.width, canvas.height, 'black');
-		},
-
 		drawAll: function (all) {
-			canvasModule.clearScreen();
-
 			function _subDrawAll (all) {
 				var a, subA;
 				for (a = 0; a < all.length; a++) {

@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps', 'Controls', 'Level',
-function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level',
+function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
 	var car,
 		level,
 		walls = [],
@@ -26,14 +26,15 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
 		canvas.init(document.getElementById('game-canvas'));
 		Controls.init();
 
-		setInterval(updateAll, 1000 / fps);
+		loadResources(function () {
+			setInterval(updateAll, 1000 / fps);
 
-		level = Level.createLevel(Maps[0]);
+			level = Level.createLevel(data, 0);
 
-		// Init the car
-		car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
-
-		car.setGraphic(B.create('img'), '/images/player1car.png');
+			// Init the car
+			car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
+			car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
+		});
 
 		B.Events.on('keydown', car, function (code) {
 			if (code == KEY_LEFT_ARROW) {
@@ -89,6 +90,20 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
 	});
 	/* End of Events */
 
+	function loadResources (loadedCallback) {
+		var r, loaded = 0;
+
+		for (r = 0; r < data.resources.length; r++) {
+			data.resources[r].resource = new Image();
+			data.resources[r].resource.onload = function () {
+				if (++loaded == data.nbResources) {
+					loadedCallback();
+				}
+			};
+			data.resources[r].resource.src = data.resources[r].url;
+		}
+	};
+
 	/**
 	 * Method to update the game state and the objects's position
 	 */
@@ -112,7 +127,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
 		// if the car is on a wall
 		if (0 <= carGridCellCol && carGridCellCol < level.width
 			&& 0 <= carGridCellRow && carGridCellRow < level.height
-			&& wall.state == Entities.GridCell.STATE_ACTIVE
+			&& wall.state == data.resourcesMap.TILE_GRASS
 		) {
 			car.bumpBack();
 		}
