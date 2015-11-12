@@ -8,7 +8,13 @@ if (typeof (require) != 'undefined') {
 loader.addModule('Level',
 'Canvas', 'Entities',
 function (canvas, Entities) {
-	var level = {
+	var level, LevelClass;
+
+	LevelClass = function () {
+
+	};
+
+	level = {
 		/**
 		 * Create the walls, The whole game is a grid and walls are on the grid
 		 * The walls are organised on a rectangle of the grid started at the
@@ -18,7 +24,7 @@ function (canvas, Entities) {
 		 */
 		createLevel: function (map) {
 			var col, row,
-				level = {};
+				level = new LevelClass();
 
 			level.gridCellWidth = canvas.width() / map.width;
 			level.gridCellHeight = canvas.height() / map.height;
