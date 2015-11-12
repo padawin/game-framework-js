@@ -90,15 +90,6 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
 	/* End of Events */
 
 	/**
-	 * Method to convert a pair of coordinates to the index of the cell in the
-	 * grid the coordinates are in
-	 */
-	colRowToGridIndex = function (col, row) {
-		return col - GRID_CELL_GRID_START_COL +
-			(GRID_CELL_GRID_COL - GRID_CELL_GRID_START_COL) * (row - GRID_CELL_GRID_START_ROW);
-	};
-
-	/**
 	 * Method to update the game state and the objects's position
 	 */
 	function moveAll () {
@@ -113,14 +104,14 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
 		/* End of Car and edges collision*/
 
 		/* Car and wall collision */
-		var wall = level.cells[colRowToGridIndex(
+		var wall = level.getCell(
 			carGridCellCol,
 			carGridCellRow
-		)];
+		);
 
 		// if the car is on a wall
-		if (GRID_CELL_GRID_START_COL <= carGridCellCol && carGridCellCol < GRID_CELL_GRID_COL
-			&& GRID_CELL_GRID_START_COL <= carGridCellRow && carGridCellRow < GRID_CELL_GRID_ROW
+		if (0 <= carGridCellCol && carGridCellCol < level.width
+			&& 0 <= carGridCellRow && carGridCellRow < level.height
 			&& wall.state == Entities.GridCell.STATE_ACTIVE
 		) {
 			car.bumpBack();
