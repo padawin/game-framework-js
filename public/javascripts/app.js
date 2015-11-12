@@ -33,11 +33,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
 		// Init the car
 		car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
 
-		car.setGraphic(B.create('img'));
-		car.graphic.onload = function () {
-			car.setGraphicLoaded(true);
-		};
-		car.graphic.src = '/images/player1car.png';
+		car.setGraphic(B.create('img'), '/images/player1car.png');
 
 		B.Events.on('keydown', car, function (code) {
 			if (code == KEY_LEFT_ARROW) {
