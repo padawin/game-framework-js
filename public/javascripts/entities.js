@@ -14,6 +14,10 @@ function (canvas, B) {
 		Paddle;
 
 	(function () {
+		var _power = 0.2,
+			_reverse = 0.2,
+			_turnRate = 0.05,
+			_friction = 0.98;
 		/* Car Class */
 		Car = function (x, y, r, angle, speed) {
 			this.x  = this.originalX = x;
@@ -66,16 +70,16 @@ function (canvas, B) {
 				this.speed = 0;
 			}
 			if (this.gas) {
-				this.speed = Math.min(this.speed + 0.2, this.maxSpeed);
+				this.speed = Math.min(this.speed + _power, this.maxSpeed);
 			}
 			if (this.isReversing) {
-				this.speed = Math.max(this.speed - 0.2, this.minSpeed);
+				this.speed = Math.max(this.speed - _reverse, this.minSpeed);
 			}
 			if (this.isSteeringLeft) {
-				this.angle -= 0.05;
+				this.angle -= _turnRate;
 			}
 			if (this.isSteeringRight) {
-				this.angle += .05;
+				this.angle += _turnRate;
 			}
 
 			this.x += Math.cos(this.angle) * this.speed;
