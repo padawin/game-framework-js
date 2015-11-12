@@ -10,7 +10,7 @@ loader.executeModule('main',
 'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps', 'Controls',
 function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	var car,
-		tracks = [],
+		walls = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
@@ -28,8 +28,8 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		setInterval(updateAll, 1000 / fps);
 
 		/*
-		 * Create the tracks, The whole game is a grid and tracks are on the grid
-		 * The tracks are organised on a rectangle of the grid started at the
+		 * Create the walls, The whole game is a grid and walls are on the grid
+		 * The walls are organised on a rectangle of the grid started at the
 		 * position (GRID_CELL_GRID_START_COL, GRID_CELL_GRID_START_COL) and ends at the
 		 * position (GRID_CELL_GRID_COL, GRID_CELL_GRID_ROW)
 		 * Each wall is an instance of the class Entities.GridCell
@@ -40,7 +40,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 			startX, startY;
 		for (row = 0; row < Maps[0].height; row++ ) {
 			for (col = 0; col < Maps[0].width; col++ ) {
-				tracks.push(new Entities.GridCell(
+				walls.push(new Entities.GridCell(
 					// 5 is the initial left margin
 					gridCellWidth * col, gridCellHeight * row,
 					gridCellWidth, gridCellHeight,
@@ -141,20 +141,20 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
 		/* End of Car and edges collision*/
 
-		/* Car and active track collision */
-		var track = tracks[colRowToGridIndex(
+		/* Car and wall collision */
+		var wall = walls[colRowToGridIndex(
 			car.gridCellCol,
 			car.gridCellRow
 		)];
 
-		// if the car is on an active track
+		// if the car is on a wall
 		if (GRID_CELL_GRID_START_COL <= car.gridCellCol && car.gridCellCol < GRID_CELL_GRID_COL
 			&& GRID_CELL_GRID_START_COL <= car.gridCellRow && car.gridCellRow < GRID_CELL_GRID_ROW
-			&& track.state == Entities.GridCell.STATE_ACTIVE
+			&& wall.state == Entities.GridCell.STATE_ACTIVE
 		) {
 			car.bumpBack();
 		}
-		/* End of Car and active track collision */
+		/* End of Car and wall collision */
 	}
 
 	/**
@@ -163,7 +163,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([tracks, car]);
+		canvas.drawAll([walls, car]);
 
 		if (DEBUG) {
 			canvas.drawText('(' +
