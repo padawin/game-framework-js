@@ -10,13 +10,15 @@ loader.executeModule('main',
 'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps', 'Controls',
 function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	var car,
-		tracks = [],
+		walls = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
 		mouseY,
 		fps = 30,
-		urlParams = Utils.getUrlParams(window.location.search);
+		urlParams = Utils.getUrlParams(window.location.search),
+		gridCellWidth,
+		gridCellHeight;
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
@@ -28,37 +30,36 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		setInterval(updateAll, 1000 / fps);
 
 		/*
-		 * Create the tracks, The whole game is a grid and tracks are on the grid
-		 * The tracks are organised on a rectangle of the grid started at the
-		 * position (TRACK_GRID_START_COL, TRACK_GRID_START_COL) and ends at the
-		 * position (TRACK_GRID_COL, TRACK_GRID_ROW)
-		 * Each track is an instance of the class Entities.Track
+		 * Create the walls, The whole game is a grid and walls are on the grid
+		 * The walls are organised on a rectangle of the grid started at the
+		 * position (GRID_CELL_GRID_START_COL, GRID_CELL_GRID_START_COL) and ends at the
+		 * position (GRID_CELL_GRID_COL, GRID_CELL_GRID_ROW)
+		 * Each wall is an instance of the class Entities.GridCell
 		 */
 		var col, row,
-			trackWidth = canvas.width() / Maps[0].width,
-			trackHeight = canvas.height() / Maps[0].height,
 			startX, startY;
+
+		gridCellWidth = canvas.width() / Maps[0].width;
+		gridCellHeight = canvas.height() / Maps[0].height;
 		for (row = 0; row < Maps[0].height; row++ ) {
 			for (col = 0; col < Maps[0].width; col++ ) {
-				tracks.push(new Entities.Track(
+				walls.push(new Entities.GridCell(
 					// 5 is the initial left margin
-					trackWidth * col, trackHeight * row,
-					trackWidth, trackHeight,
+					gridCellWidth * col, gridCellHeight * row,
+					gridCellWidth, gridCellHeight,
 					// @TODO remove destructable field
 					true, Maps[0].map[row][col]
 				));
 
-				if (Maps[0].map[row][col] == Entities.Track.STATE_START) {
-					startX = trackWidth * col + trackWidth / 2;
-					startY = trackHeight * row + trackHeight / 2;
+				if (Maps[0].map[row][col] == Entities.GridCell.STATE_START) {
+					startX = gridCellWidth * col + gridCellWidth / 2;
+					startY = gridCellHeight * row + gridCellHeight / 2;
 				}
 			}
 		}
 
 		// Init the car
-		car = new Entities.Car(startX, startY, CAR_RADIUS, Math.PI / 2, CAR_SPEED);
-		// Position of the car in the grid
-		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
+		car = new Entities.Car(startX, startY, Math.PI / 2, CAR_SPEED);
 
 		car.setGraphic(B.create('img'));
 		car.graphic.onload = function () {
@@ -125,8 +126,8 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	 * grid the coordinates are in
 	 */
 	colRowToGridIndex = function (col, row) {
-		return col - TRACK_GRID_START_COL +
-			(TRACK_GRID_COL - TRACK_GRID_START_COL) * (row - TRACK_GRID_START_ROW);
+		return col - GRID_CELL_GRID_START_COL +
+			(GRID_CELL_GRID_COL - GRID_CELL_GRID_START_COL) * (row - GRID_CELL_GRID_START_ROW);
 	};
 
 	/**
@@ -135,30 +136,28 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	function moveAll () {
 		// Update the car position
 		car.updatePosition();
-		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
+
+		var carGridCellCol = Math.floor(car.x / gridCellWidth),
+			carGridCellRow = Math.floor(car.y / gridCellHeight);
 
 		/* Car and edges collision*/
-		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
+		Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
 		/* End of Car and edges collision*/
 
-		/* Car and active track collision */
-		var track,
-			trackSide,
-			trackTopBot;
-
-		track = tracks[colRowToGridIndex(
-			car.gridCellCol,
-			car.gridCellRow
+		/* Car and wall collision */
+		var wall = walls[colRowToGridIndex(
+			carGridCellCol,
+			carGridCellRow
 		)];
 
-		// if the car is on an active track
-		if (TRACK_GRID_START_COL <= car.gridCellCol && car.gridCellCol < TRACK_GRID_COL
-			&& TRACK_GRID_START_COL <= car.gridCellRow && car.gridCellRow < TRACK_GRID_ROW
-			&& track.state == Entities.Track.STATE_ACTIVE
+		// if the car is on a wall
+		if (GRID_CELL_GRID_START_COL <= carGridCellCol && carGridCellCol < GRID_CELL_GRID_COL
+			&& GRID_CELL_GRID_START_COL <= carGridCellRow && carGridCellRow < GRID_CELL_GRID_ROW
+			&& wall.state == Entities.GridCell.STATE_ACTIVE
 		) {
 			car.bumpBack();
 		}
-		/* End of Car and active track collision */
+		/* End of Car and wall collision */
 	}
 
 	/**
@@ -167,17 +166,6 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([tracks, car]);
-
-		if (DEBUG) {
-			canvas.drawText('(' +
-				Math.floor(mouseX / TRACK_SPACE_WIDTH) + ', ' +
-				Math.floor(mouseY / TRACK_SPACE_HEIGHT) + ', ' +
-				colRowToGridIndex(Math.floor(mouseX / TRACK_SPACE_WIDTH), Math.floor(mouseY / TRACK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
-
-
-			// @TODO adapt with angle
-			// canvas.line([car.x, car.y], [car.x + car.speedX * 30, car.y + car.speedY * 30]);
-		}
+		canvas.drawAll([walls, car]);
 	}
 });

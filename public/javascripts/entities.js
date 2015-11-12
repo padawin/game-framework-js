@@ -3,22 +3,28 @@ if (typeof (require) != 'undefined') {
 }
 
 /**
- * This module contains the definition of the Car, Paddle and Track entities
+ * This module contains the definition of the Car, Paddle and GridCell entities
  */
 loader.addModule('Entities',
 'Canvas', 'B',
 function (canvas, B) {
 	var entities = {},
 		Car,
-		Track,
+		GridCell,
 		Paddle;
 
 	(function () {
+		var _power = 0.2,
+			_reverse = 0.2,
+			_turnRate = 0.05,
+			_friction = 0.98,
+			_radius = 10;
+
 		/* Car Class */
-		Car = function (x, y, r, angle, speed) {
+		Car = function (x, y, angle, speed) {
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
-			this.r = r;
+			this.r = _radius;
 			this.angle = this.originalAngle = angle;
 			this.speed = this.originalSpeed = speed;
 			this.maxSpeed = 15;
@@ -28,16 +34,6 @@ function (canvas, B) {
 			this.isSteeringRight = false;
 			this.gas = false;
 			this.isReversing = false;
-		};
-
-		/**
-		 * From the car coordinates, set
-		 */
-		Car.prototype.setGridCoordinates = function (gridCellWidth, gridCellHeight) {
-			this.oldGridCellCol = this.gridCellCol;
-			this.oldGridCellRow = this.gridCellRow;
-			this.gridCellCol = Math.floor(this.x / gridCellWidth);
-			this.gridCellRow = Math.floor(this.y / gridCellHeight);
 		};
 
 		Car.prototype.steerLeft = function (enable) {
@@ -62,24 +58,25 @@ function (canvas, B) {
 		Car.prototype.updatePosition = function () {
 			// friction
 			this.speed *= 0.98;
-			if (this.speed < 0.1) {
+			if (Math.abs(this.speed) < 0.1) {
 				this.speed = 0;
 			}
 			if (this.gas) {
-				this.speed = Math.min(this.speed + 0.2, this.maxSpeed);
+				this.speed = Math.min(this.speed + _power, this.maxSpeed);
 			}
 			if (this.isReversing) {
-				this.speed = Math.max(this.speed - 0.2, this.minSpeed);
+				this.speed = Math.max(this.speed - _reverse, this.minSpeed);
 			}
 			if (this.isSteeringLeft) {
-				this.angle -= 0.05;
+				this.angle -= _turnRate;
 			}
 			if (this.isSteeringRight) {
-				this.angle += .05;
+				this.angle += _turnRate;
 			}
 
 			this.x += Math.cos(this.angle) * this.speed;
 			this.y += Math.sin(this.angle) * this.speed;
+
 		};
 
 		Car.prototype.bumpBack = function () {
@@ -120,8 +117,8 @@ function (canvas, B) {
 	})();
 
 	(function () {
-		/* Track Class */
-		Track = function (x, y, w, h, destructible, state) {
+		/* GridCell Class */
+		GridCell = function (x, y, w, h, destructible, state) {
 			this.x = x;
 			this.y = y;
 			this.w = w;
@@ -131,31 +128,31 @@ function (canvas, B) {
 		}
 
 		/**
-		 * Draw the track on the screen
+		 * Draw the gridCell on the screen
 		 */
-		Track.prototype.draw = function () {
-			if (this.state == Track.STATE_ACTIVE) {
+		GridCell.prototype.draw = function () {
+			if (this.state == GridCell.STATE_ACTIVE) {
 				canvas.drawRectangle(this.x, this.y, this.w, this.h, 'red');
 			}
 		};
 
 		/**
-		 * Reset the track to its original values
+		 * Reset the gridCell to its original values
 		 */
-		Track.prototype.reset = function () {
+		GridCell.prototype.reset = function () {
 			this.state = this.originalState;
 			this.destructible = this.originalDestructible;
 		};
 
-		Track.STATE_INACTIVE = 0;
-		Track.STATE_ACTIVE = 1;
-		Track.STATE_START = 2;
-		/* End Track Class */
+		GridCell.STATE_INACTIVE = 0;
+		GridCell.STATE_ACTIVE = 1;
+		GridCell.STATE_START = 2;
+		/* End GridCell Class */
 	})();
 
 	entities.Car = Car;
 	entities.Paddle = Paddle;
-	entities.Track = Track;
+	entities.GridCell = GridCell;
 
 	return entities;
 });
