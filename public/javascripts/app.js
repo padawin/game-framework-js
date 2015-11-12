@@ -26,14 +26,16 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
 		canvas.init(document.getElementById('game-canvas'));
 		Controls.init();
 
-		setInterval(updateAll, 1000 / fps);
+		loadResources(function () {
+			setInterval(updateAll, 1000 / fps);
 
-		level = Level.createLevel(data.maps[0]);
+			level = Level.createLevel(data.maps[0]);
 
-		// Init the car
-		car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
+			// Init the car
+			car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
 
-		car.setGraphic(B.create('img'), '/images/player1car.png');
+			car.setGraphic(B.create('img'), '/images/player1car.png');
+		});
 
 		B.Events.on('keydown', car, function (code) {
 			if (code == KEY_LEFT_ARROW) {
