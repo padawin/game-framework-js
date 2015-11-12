@@ -14,6 +14,11 @@ function (canvas, Entities) {
 
 	};
 
+	LevelClass.prototype.getCell = function (col, row) {
+		return this.cells[col - GRID_CELL_GRID_START_COL +
+			(GRID_CELL_GRID_COL - GRID_CELL_GRID_START_COL) * (row - GRID_CELL_GRID_START_ROW)];
+	};
+
 	level = {
 		/**
 		 * Create the walls, The whole game is a grid and walls are on the grid
