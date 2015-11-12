@@ -89,6 +89,20 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
 	});
 	/* End of Events */
 
+	function loadResources (loadedCallback) {
+		var r, loaded = 0;
+
+		for (r = 0; r < data.resources.length; r++) {
+			data.resources[r].resource = new Image();
+			data.resources[r].resource.src = data.resources[r].url;
+			data.resources[r].resource.onload = function () {
+				if (++loaded == data.nbResources) {
+					loadedCallback();
+				}
+			};
+		}
+	};
+
 	/**
 	 * Method to update the game state and the objects's position
 	 */
