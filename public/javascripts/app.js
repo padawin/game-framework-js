@@ -56,7 +56,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		}
 
 		// Init the car
-		Entities.Car.setGridCellDimensions(GRID_CELL_SPACE_WIDTH, GRID_CELL_SPACE_HEIGHT);
+		Entities.Car.setGridCellDimensions(gridCellWidth, gridCellHeight);
 		car = new Entities.Car(startX, startY, Math.PI / 2, CAR_SPEED);
 
 		car.setGraphic(B.create('img'));
@@ -162,16 +162,5 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	function updateAll () {
 		moveAll();
 		canvas.drawAll([walls, car]);
-
-		if (DEBUG) {
-			canvas.drawText('(' +
-				Math.floor(mouseX / GRID_CELL_SPACE_WIDTH) + ', ' +
-				Math.floor(mouseY / GRID_CELL_SPACE_HEIGHT) + ', ' +
-				colRowToGridIndex(Math.floor(mouseX / GRID_CELL_SPACE_WIDTH), Math.floor(mouseY / GRID_CELL_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
-
-
-			// @TODO adapt with angle
-			// canvas.line([car.x, car.y], [car.x + car.speedX * 30, car.y + car.speedY * 30]);
-		}
 	}
 });
