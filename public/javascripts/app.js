@@ -16,7 +16,9 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		mouseX,
 		mouseY,
 		fps = 30,
-		urlParams = Utils.getUrlParams(window.location.search);
+		urlParams = Utils.getUrlParams(window.location.search),
+		gridCellWidth,
+		gridCellHeight;
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
@@ -35,9 +37,10 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		 * Each wall is an instance of the class Entities.GridCell
 		 */
 		var col, row,
-			gridCellWidth = canvas.width() / Maps[0].width,
-			gridCellHeight = canvas.height() / Maps[0].height,
 			startX, startY;
+
+		gridCellWidth = canvas.width() / Maps[0].width;
+		gridCellHeight = canvas.height() / Maps[0].height;
 		for (row = 0; row < Maps[0].height; row++ ) {
 			for (col = 0; col < Maps[0].width; col++ ) {
 				walls.push(new Entities.GridCell(
@@ -56,7 +59,6 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		}
 
 		// Init the car
-		Entities.Car.setGridCellDimensions(gridCellWidth, gridCellHeight);
 		car = new Entities.Car(startX, startY, Math.PI / 2, CAR_SPEED);
 
 		car.setGraphic(B.create('img'));
@@ -135,19 +137,22 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		// Update the car position
 		car.updatePosition();
 
+		var carGridCellCol = Math.floor(car.x / gridCellWidth),
+			carGridCellRow = Math.floor(car.y / gridCellHeight);
+
 		/* Car and edges collision*/
 		Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
 		/* End of Car and edges collision*/
 
 		/* Car and wall collision */
 		var wall = walls[colRowToGridIndex(
-			car.gridCellCol,
-			car.gridCellRow
+			carGridCellCol,
+			carGridCellRow
 		)];
 
 		// if the car is on a wall
-		if (GRID_CELL_GRID_START_COL <= car.gridCellCol && car.gridCellCol < GRID_CELL_GRID_COL
-			&& GRID_CELL_GRID_START_COL <= car.gridCellRow && car.gridCellRow < GRID_CELL_GRID_ROW
+		if (GRID_CELL_GRID_START_COL <= carGridCellCol && carGridCellCol < GRID_CELL_GRID_COL
+			&& GRID_CELL_GRID_START_COL <= carGridCellRow && carGridCellRow < GRID_CELL_GRID_ROW
 			&& wall.state == Entities.GridCell.STATE_ACTIVE
 		) {
 			car.bumpBack();
