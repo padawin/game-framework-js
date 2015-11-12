@@ -56,9 +56,8 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		}
 
 		// Init the car
+		Entities.Car.setGridCellDimensions(GRID_CELL_SPACE_WIDTH, GRID_CELL_SPACE_HEIGHT);
 		car = new Entities.Car(startX, startY, Math.PI / 2, CAR_SPEED);
-		// Position of the car in the grid
-		car.setGridCoordinates(GRID_CELL_SPACE_WIDTH, GRID_CELL_SPACE_HEIGHT);
 
 		car.setGraphic(B.create('img'));
 		car.graphic.onload = function () {
@@ -135,7 +134,6 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	function moveAll () {
 		// Update the car position
 		car.updatePosition();
-		car.setGridCoordinates(GRID_CELL_SPACE_WIDTH, GRID_CELL_SPACE_HEIGHT);
 
 		/* Car and edges collision*/
 		Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});

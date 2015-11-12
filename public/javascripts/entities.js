@@ -18,7 +18,22 @@ function (canvas, B) {
 			_reverse = 0.2,
 			_turnRate = 0.05,
 			_friction = 0.98,
-			_radius = 10;
+			_radius = 10,
+			// the car knows it is in a grid, but does not know anything
+			// about the grid by default
+			_gridCellWidth,
+			_gridCellHeight;
+
+		/**
+		 * Set the car's position in the grid
+		 */
+		function _setGridCoordinates (car) {
+			car.oldGridCellCol = car.gridCellCol;
+			car.oldGridCellRow = car.gridCellRow;
+			car.gridCellCol = Math.floor(car.x / _gridCellWidth);
+			car.gridCellRow = Math.floor(car.y / _gridCellHeight);
+		};
+
 		/* Car Class */
 		Car = function (x, y, angle, speed) {
 			this.x  = this.originalX = x;
@@ -35,14 +50,9 @@ function (canvas, B) {
 			this.isReversing = false;
 		};
 
-		/**
-		 * From the car coordinates, set
-		 */
-		Car.prototype.setGridCoordinates = function (gridCellWidth, gridCellHeight) {
-			this.oldGridCellCol = this.gridCellCol;
-			this.oldGridCellRow = this.gridCellRow;
-			this.gridCellCol = Math.floor(this.x / gridCellWidth);
-			this.gridCellRow = Math.floor(this.y / gridCellHeight);
+		Car.setGridCellDimensions = function (width, height) {
+			_gridCellWidth = width;
+			_gridCellHeight = height;
 		};
 
 		Car.prototype.steerLeft = function (enable) {
@@ -85,6 +95,8 @@ function (canvas, B) {
 
 			this.x += Math.cos(this.angle) * this.speed;
 			this.y += Math.sin(this.angle) * this.speed;
+
+			_setGridCoordinates(this);
 		};
 
 		Car.prototype.bumpBack = function () {
