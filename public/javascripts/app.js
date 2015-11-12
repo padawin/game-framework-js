@@ -33,8 +33,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
 
 			// Init the car
 			car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
-
-			car.setGraphic(B.create('img'), '/images/player1car.png');
+			car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
 		});
 
 		B.Events.on('keydown', car, function (code) {

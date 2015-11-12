@@ -6,8 +6,8 @@ if (typeof (require) != 'undefined') {
  * This module contains the definition of the Car, Paddle and GridCell entities
  */
 loader.addModule('Entities',
-'Canvas', 'B',
-function (canvas, B) {
+'Canvas', 'B', 'data',
+function (canvas, B, data) {
 	var entities = {},
 		Car,
 		GridCell,
@@ -86,16 +86,8 @@ function (canvas, B) {
 			this.speed *= -0.5;
 		};
 
-		Car.prototype.setGraphic = function (graphic, src) {
+		Car.prototype.setGraphic = function (graphic) {
 			this.graphic = graphic;
-			this.graphic.onload = function () {
-				this.setGraphicLoaded(true);
-			}.bind(this);
-			this.graphic.src = src;
-		};
-
-		Car.prototype.setGraphicLoaded = function (loaded) {
-			this.graphicLoaded = loaded;
 		};
 
 		/**
@@ -112,10 +104,7 @@ function (canvas, B) {
 		 * Draw the car on the screen
 		 */
 		Car.prototype.draw = function () {
-			if (this.graphicLoaded) {
-				canvas.drawRotatedImage(this.graphic, this.x, this.y, this.angle);
-			}
-
+			canvas.drawRotatedImage(this.graphic, this.x, this.y, this.angle);
 		};
 		/* End Car Class */
 	})();
