@@ -135,10 +135,6 @@ function (canvas, B, data) {
 			this.state = this.originalState;
 			this.destructible = this.originalDestructible;
 		};
-
-		GridCell.STATE_INACTIVE = 0;
-		GridCell.STATE_ACTIVE = 1;
-		GridCell.STATE_START = 2;
 		/* End GridCell Class */
 	})();
 
