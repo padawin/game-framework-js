@@ -15,16 +15,13 @@ function (canvas, Entities) {
 	};
 
 	LevelClass.prototype.getCell = function (col, row) {
-		return this.cells[col - GRID_CELL_GRID_START_COL +
-			(GRID_CELL_GRID_COL - GRID_CELL_GRID_START_COL) * (row - GRID_CELL_GRID_START_ROW)];
+		return this.cells[col + this.width * row];
 	};
 
 	level = {
 		/**
 		 * Create the walls, The whole game is a grid and walls are on the grid
-		 * The walls are organised on a rectangle of the grid started at the
-		 * position (GRID_CELL_GRID_START_COL, GRID_CELL_GRID_START_COL) and ends at the
-		 * position (GRID_CELL_GRID_COL, GRID_CELL_GRID_ROW)
+		 * The walls are organised on a rectangle of the grid filling the screen
 		 * Each wall is an instance of the class Entities.GridCell
 		 */
 		createLevel: function (map) {

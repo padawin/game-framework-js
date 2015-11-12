@@ -110,8 +110,8 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
 		);
 
 		// if the car is on a wall
-		if (GRID_CELL_GRID_START_COL <= carGridCellCol && carGridCellCol < GRID_CELL_GRID_COL
-			&& GRID_CELL_GRID_START_COL <= carGridCellRow && carGridCellRow < GRID_CELL_GRID_ROW
+		if (0 <= carGridCellCol && carGridCellCol < level.width
+			&& 0 <= carGridCellRow && carGridCellRow < level.height
 			&& wall.state == Entities.GridCell.STATE_ACTIVE
 		) {
 			car.bumpBack();
