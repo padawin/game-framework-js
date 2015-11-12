@@ -24,7 +24,7 @@ function (canvas, Entities) {
 		 * The walls are organised on a rectangle of the grid filling the screen
 		 * Each wall is an instance of the class Entities.GridCell
 		 */
-		createLevel: function (map) {
+		createLevel: function (map, resources) {
 			var col, row,
 				level = new LevelClass();
 
@@ -39,6 +39,7 @@ function (canvas, Entities) {
 						// 5 is the initial left margin
 						level.gridCellWidth * col, level.gridCellHeight * row,
 						level.gridCellWidth, level.gridCellHeight,
+						resources[map.map[row][col]].resource,
 						// @TODO remove destructable field
 						true, map.map[row][col]
 					));

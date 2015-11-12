@@ -111,11 +111,12 @@ function (canvas, B, data) {
 
 	(function () {
 		/* GridCell Class */
-		GridCell = function (x, y, w, h, destructible, state) {
+		GridCell = function (x, y, w, h, texture, destructible, state) {
 			this.x = x;
 			this.y = y;
 			this.w = w;
 			this.h = h;
+			this.texture = texture;
 			this.state = this.originalState = state;
 			this.destructible = this.originalDestructible = destructible;
 		}

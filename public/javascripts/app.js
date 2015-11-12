@@ -29,7 +29,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
 		loadResources(function () {
 			setInterval(updateAll, 1000 / fps);
 
-			level = Level.createLevel(data.maps[0]);
+			level = Level.createLevel(data.maps[0], data.resources);
 
 			// Init the car
 			car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
