@@ -29,6 +29,8 @@ function (canvas, Entities) {
 			level.gridCellWidth = canvas.width() / map.width;
 			level.gridCellHeight = canvas.height() / map.height;
 			level.cells = [];
+			level.width = map.width;
+			level.height = map.height;
 			for (row = 0; row < map.height; row++ ) {
 				for (col = 0; col < map.width; col++ ) {
 					level.cells.push(new Entities.GridCell(
