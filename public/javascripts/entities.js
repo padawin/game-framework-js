@@ -58,7 +58,7 @@ function (canvas, B) {
 		Car.prototype.updatePosition = function () {
 			// friction
 			this.speed *= 0.98;
-			if (this.speed < 0.1) {
+			if (Math.abs(this.speed) < 0.1) {
 				this.speed = 0;
 			}
 			if (this.gas) {
