@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'Maps', 'Controls', 'Level',
-function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level',
+function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
 	var car,
 		level,
 		walls = [],
@@ -28,7 +28,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls, Level) {
 
 		setInterval(updateAll, 1000 / fps);
 
-		level = Level.createLevel(Maps[0]);
+		level = Level.createLevel(data.maps[0]);
 
 		// Init the car
 		car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
