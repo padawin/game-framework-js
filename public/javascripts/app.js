@@ -138,15 +138,11 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		car.setGridCoordinates(GRID_CELL_SPACE_WIDTH, GRID_CELL_SPACE_HEIGHT);
 
 		/* Car and edges collision*/
-		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
+		Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
 		/* End of Car and edges collision*/
 
 		/* Car and active track collision */
-		var track,
-			trackSide,
-			trackTopBot;
-
-		track = tracks[colRowToGridIndex(
+		var track = tracks[colRowToGridIndex(
 			car.gridCellCol,
 			car.gridCellRow
 		)];
