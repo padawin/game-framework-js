@@ -1,4 +1,3 @@
-const CAR_RADIUS = 10;
 const CAR_SPEED = 0;
 
 const GRID_CELL_WIDTH = 40;

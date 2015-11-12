@@ -17,12 +17,13 @@ function (canvas, B) {
 		var _power = 0.2,
 			_reverse = 0.2,
 			_turnRate = 0.05,
-			_friction = 0.98;
+			_friction = 0.98,
+			_radius = 10;
 		/* Car Class */
-		Car = function (x, y, r, angle, speed) {
+		Car = function (x, y, angle, speed) {
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
-			this.r = r;
+			this.r = _radius;
 			this.angle = this.originalAngle = angle;
 			this.speed = this.originalSpeed = speed;
 			this.maxSpeed = 15;
