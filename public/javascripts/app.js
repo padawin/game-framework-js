@@ -30,27 +30,27 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		/*
 		 * Create the tracks, The whole game is a grid and tracks are on the grid
 		 * The tracks are organised on a rectangle of the grid started at the
-		 * position (TRACK_GRID_START_COL, TRACK_GRID_START_COL) and ends at the
-		 * position (TRACK_GRID_COL, TRACK_GRID_ROW)
-		 * Each track is an instance of the class Entities.Track
+		 * position (GRID_CELL_GRID_START_COL, GRID_CELL_GRID_START_COL) and ends at the
+		 * position (GRID_CELL_GRID_COL, GRID_CELL_GRID_ROW)
+		 * Each wall is an instance of the class Entities.GridCell
 		 */
 		var col, row,
-			trackWidth = canvas.width() / Maps[0].width,
-			trackHeight = canvas.height() / Maps[0].height,
+			gridCellWidth = canvas.width() / Maps[0].width,
+			gridCellHeight = canvas.height() / Maps[0].height,
 			startX, startY;
 		for (row = 0; row < Maps[0].height; row++ ) {
 			for (col = 0; col < Maps[0].width; col++ ) {
-				tracks.push(new Entities.Track(
+				tracks.push(new Entities.GridCell(
 					// 5 is the initial left margin
-					trackWidth * col, trackHeight * row,
-					trackWidth, trackHeight,
+					gridCellWidth * col, gridCellHeight * row,
+					gridCellWidth, gridCellHeight,
 					// @TODO remove destructable field
 					true, Maps[0].map[row][col]
 				));
 
-				if (Maps[0].map[row][col] == Entities.Track.STATE_START) {
-					startX = trackWidth * col + trackWidth / 2;
-					startY = trackHeight * row + trackHeight / 2;
+				if (Maps[0].map[row][col] == Entities.GridCell.STATE_START) {
+					startX = gridCellWidth * col + gridCellWidth / 2;
+					startY = gridCellHeight * row + gridCellHeight / 2;
 				}
 			}
 		}
@@ -58,7 +58,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		// Init the car
 		car = new Entities.Car(startX, startY, CAR_RADIUS, Math.PI / 2, CAR_SPEED);
 		// Position of the car in the grid
-		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
+		car.setGridCoordinates(GRID_CELL_SPACE_WIDTH, GRID_CELL_SPACE_HEIGHT);
 
 		car.setGraphic(B.create('img'));
 		car.graphic.onload = function () {
@@ -125,8 +125,8 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	 * grid the coordinates are in
 	 */
 	colRowToGridIndex = function (col, row) {
-		return col - TRACK_GRID_START_COL +
-			(TRACK_GRID_COL - TRACK_GRID_START_COL) * (row - TRACK_GRID_START_ROW);
+		return col - GRID_CELL_GRID_START_COL +
+			(GRID_CELL_GRID_COL - GRID_CELL_GRID_START_COL) * (row - GRID_CELL_GRID_START_ROW);
 	};
 
 	/**
@@ -135,7 +135,7 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 	function moveAll () {
 		// Update the car position
 		car.updatePosition();
-		car.setGridCoordinates(TRACK_SPACE_WIDTH, TRACK_SPACE_HEIGHT);
+		car.setGridCoordinates(GRID_CELL_SPACE_WIDTH, GRID_CELL_SPACE_HEIGHT);
 
 		/* Car and edges collision*/
 		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
@@ -152,9 +152,9 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 		)];
 
 		// if the car is on an active track
-		if (TRACK_GRID_START_COL <= car.gridCellCol && car.gridCellCol < TRACK_GRID_COL
-			&& TRACK_GRID_START_COL <= car.gridCellRow && car.gridCellRow < TRACK_GRID_ROW
-			&& track.state == Entities.Track.STATE_ACTIVE
+		if (GRID_CELL_GRID_START_COL <= car.gridCellCol && car.gridCellCol < GRID_CELL_GRID_COL
+			&& GRID_CELL_GRID_START_COL <= car.gridCellRow && car.gridCellRow < GRID_CELL_GRID_ROW
+			&& track.state == Entities.GridCell.STATE_ACTIVE
 		) {
 			car.bumpBack();
 		}
@@ -171,9 +171,9 @@ function (B, canvas, Entities, Physics, Utils, Maps, Controls) {
 
 		if (DEBUG) {
 			canvas.drawText('(' +
-				Math.floor(mouseX / TRACK_SPACE_WIDTH) + ', ' +
-				Math.floor(mouseY / TRACK_SPACE_HEIGHT) + ', ' +
-				colRowToGridIndex(Math.floor(mouseX / TRACK_SPACE_WIDTH), Math.floor(mouseY / TRACK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
+				Math.floor(mouseX / GRID_CELL_SPACE_WIDTH) + ', ' +
+				Math.floor(mouseY / GRID_CELL_SPACE_HEIGHT) + ', ' +
+				colRowToGridIndex(Math.floor(mouseX / GRID_CELL_SPACE_WIDTH), Math.floor(mouseY / GRID_CELL_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
 
 
 			// @TODO adapt with angle

@@ -3,14 +3,14 @@ if (typeof (require) != 'undefined') {
 }
 
 /**
- * This module contains the definition of the Car, Paddle and Track entities
+ * This module contains the definition of the Car, Paddle and GridCell entities
  */
 loader.addModule('Entities',
 'Canvas', 'B',
 function (canvas, B) {
 	var entities = {},
 		Car,
-		Track,
+		GridCell,
 		Paddle;
 
 	(function () {
@@ -124,8 +124,8 @@ function (canvas, B) {
 	})();
 
 	(function () {
-		/* Track Class */
-		Track = function (x, y, w, h, destructible, state) {
+		/* GridCell Class */
+		GridCell = function (x, y, w, h, destructible, state) {
 			this.x = x;
 			this.y = y;
 			this.w = w;
@@ -135,31 +135,31 @@ function (canvas, B) {
 		}
 
 		/**
-		 * Draw the track on the screen
+		 * Draw the gridCell on the screen
 		 */
-		Track.prototype.draw = function () {
-			if (this.state == Track.STATE_ACTIVE) {
+		GridCell.prototype.draw = function () {
+			if (this.state == GridCell.STATE_ACTIVE) {
 				canvas.drawRectangle(this.x, this.y, this.w, this.h, 'red');
 			}
 		};
 
 		/**
-		 * Reset the track to its original values
+		 * Reset the gridCell to its original values
 		 */
-		Track.prototype.reset = function () {
+		GridCell.prototype.reset = function () {
 			this.state = this.originalState;
 			this.destructible = this.originalDestructible;
 		};
 
-		Track.STATE_INACTIVE = 0;
-		Track.STATE_ACTIVE = 1;
-		Track.STATE_START = 2;
-		/* End Track Class */
+		GridCell.STATE_INACTIVE = 0;
+		GridCell.STATE_ACTIVE = 1;
+		GridCell.STATE_START = 2;
+		/* End GridCell Class */
 	})();
 
 	entities.Car = Car;
 	entities.Paddle = Paddle;
-	entities.Track = Track;
+	entities.GridCell = GridCell;
 
 	return entities;
 });
