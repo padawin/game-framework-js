@@ -95,12 +95,12 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
 
 		for (r = 0; r < data.resources.length; r++) {
 			data.resources[r].resource = new Image();
-			data.resources[r].resource.src = data.resources[r].url;
 			data.resources[r].resource.onload = function () {
 				if (++loaded == data.nbResources) {
 					loadedCallback();
 				}
 			};
+			data.resources[r].resource.src = data.resources[r].url;
 		}
 	};
 
