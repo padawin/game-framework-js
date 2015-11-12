@@ -86,8 +86,12 @@ function (canvas, B) {
 			this.speed *= -0.5;
 		};
 
-		Car.prototype.setGraphic = function (graphic) {
+		Car.prototype.setGraphic = function (graphic, src) {
 			this.graphic = graphic;
+			this.graphic.onload = function () {
+				this.setGraphicLoaded(true);
+			}.bind(this);
+			this.graphic.src = src;
 		};
 
 		Car.prototype.setGraphicLoaded = function (loaded) {
