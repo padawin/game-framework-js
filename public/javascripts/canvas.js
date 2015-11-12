@@ -111,13 +111,7 @@ function (B) {
 			return canvas.height;
 		},
 
-		clearScreen: function () {
-			canvasModule.drawRectangle(0, 0, canvas.width, canvas.height, 'black');
-		},
-
 		drawAll: function (all) {
-			canvasModule.clearScreen();
-
 			function _subDrawAll (all) {
 				var a, subA;
 				for (a = 0; a < all.length; a++) {
