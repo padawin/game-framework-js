@@ -149,7 +149,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		// if the car is on a wall
 		if (0 <= carGridCellCol && carGridCellCol < level.width
 			&& 0 <= carGridCellRow && carGridCellRow < level.height
-			&& wall.state == data.resourcesMap.TILE_GRASS
+			&& wall.state == data.resourcesMap.TILE_WALL
 		) {
 			car.bumpBack();
 		}
