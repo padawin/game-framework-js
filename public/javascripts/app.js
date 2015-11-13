@@ -96,7 +96,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
 		for (r = 0; r < data.resources.length; r++) {
 			data.resources[r].resource = new Image();
 			data.resources[r].resource.onload = function () {
-				if (++loaded == data.nbResources) {
+				if (++loaded == data.resources.length) {
 					loadedCallback();
 				}
 			};
