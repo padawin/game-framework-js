@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level',
-function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
+function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	var car,
 		level,
 		walls = [],
@@ -91,13 +91,31 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level) {
 	/* End of Events */
 
 	function loadResources (loadedCallback) {
-		var r, loaded = 0;
+		var r, loaded = 0,
+			loadingPadding = canvas.width() / 5,
+			loadingWidth = 3 * loadingPadding;
 
+		canvas.clearScreen();
+		GUI.progressBar(
+			loadingPadding, canvas.height() / 2,
+			loadingWidth, 30,
+			0,
+			'black', 'white', 'black'
+		);
 		for (r = 0; r < data.resources.length; r++) {
 			data.resources[r].resource = new Image();
 			data.resources[r].resource.onload = function () {
 				if (++loaded == data.resources.length) {
 					loadedCallback();
+				}
+				else {
+					console.log('progress: ' + loaded / data.resources.length);
+					GUI.progressBar(
+						loadingPadding, canvas.height() / 2,
+						loadingWidth, 30,
+						loaded / data.resources.length,
+						'black', 'white', 'black'
+					);
 				}
 			};
 			data.resources[r].resource.src = data.resources[r].url;
