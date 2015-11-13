@@ -29,12 +29,12 @@ function () {
 		],
 		resourcesMap: {TILE_ROAD: 0, TILE_WALL: 1, TILE_GRASS: 2, TILE_START: 3, CAR: 4, TILE_FLAG: 5},
 		resources: [
-			{url: 'images/road.png'},
-			{url: 'images/wall.png'},
-			{url: 'images/grass.png'},
-			{url: 'images/start.png'},
+			{url: 'images/road.png', obstacle: false},
+			{url: 'images/wall.png', obstacle: true},
+			{url: 'images/grass.png', obstacle: false},
+			{url: 'images/start.png', obstacle: false},
 			{url: 'images/player1car.png'},
-			{url: 'images/flag.png'}
+			{url: 'images/flag.png', obstacle: true}
 		]
 	};
 
