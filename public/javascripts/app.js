@@ -24,9 +24,9 @@ function (B, canvas, Entities, Physics, Utils, data) {
 	B.on(window, 'load', function () {
 		// Init the view
 		canvas.init(document.getElementById('game-canvas'));
-		setInterval(updateAll, 1000 / fps);
 
 		loadResources(function () {
+			setInterval(updateAll, 1000 / fps);
 			// Init the ball
 			ball = new Entities.Ball(canvas.width() / 2, 3 * canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
 			// Position of the ball in the grid
