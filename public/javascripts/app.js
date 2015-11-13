@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils',
-function (B, canvas, Entities, Physics, Utils) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data',
+function (B, canvas, Entities, Physics, Utils, data) {
 	var ball,
 		paddle,
 		bricks = [],
@@ -75,6 +75,25 @@ function (B, canvas, Entities, Physics, Utils) {
 		}
 	});
 	/* End of Events */
+
+	function loadResources (loadedCallback) {
+		var r, loaded = 0;
+
+		if (!data.resources) {
+			loadedCallback();
+			return;
+		}
+
+		for (r = 0; r < data.resources.length; r++) {
+			data.resources[r].resource = new Image();
+			data.resources[r].resource.onload = function () {
+				if (++loaded == data.resources.length) {
+					loadedCallback();
+				}
+			};
+			data.resources[r].resource.src = data.resources[r].url;
+		}
+	}
 
 	/*
 	 * Create the bricks, The whole game is a grid and bricks are on the grid
