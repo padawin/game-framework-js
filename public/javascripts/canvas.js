@@ -108,6 +108,10 @@ function (B) {
 			return canvas.width;
 		},
 
+		clearScreen: function () {
+			canvasModule.drawRectangle(0, 0, canvas.width, canvas.height, 'white');
+		},
+
 		/**
 		 * Method to get the canvas's height
 		 */
