@@ -26,6 +26,13 @@ function () {
 			 [1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1],
 			 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],
 			 CELL_WALL: 1}
+		],
+		resourcesMap: {TILE_ROAD: 0, TILE_GRASS: 1, TILE_START: 2, CAR: 3},
+		resources: [
+			{url: 'images/road.png'},
+			{url: 'images/grass.png'},
+			{url: 'images/start.png'},
+			{url: 'images/player1car.png'}
 		]
 	};
 
