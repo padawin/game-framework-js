@@ -3,7 +3,7 @@ if (typeof (require) != 'undefined') {
 }
 
 /**
- * Module to deal with physics calculations and collisions
+ * Module providing game data
  */
 loader.addModule('data',
 function () {
