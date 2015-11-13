@@ -20,7 +20,6 @@ function (B, canvas, Entities, Physics, Utils) {
 		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
-	console.log(DEBUG);
 
 	// Init the view
 	canvas.init(document.getElementById('game-canvas'));
