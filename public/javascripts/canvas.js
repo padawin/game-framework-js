@@ -14,7 +14,7 @@ function (B) {
 		 * Method to initialise the canvas and set the mouse events
 		 */
 		init: function (element) {
-			canvas = document.getElementById('game-canvas');
+			canvas = element;
 			canvasContext = canvas.getContext('2d');
 
 			canvas.addEventListener('mousemove', mouseMovedEvent);
