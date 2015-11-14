@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils',
-function (B, canvas, Entities, Physics, Utils) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data',
+function (B, canvas, Entities, Physics, Utils, data) {
 	var ball,
 		paddle,
 		bricks = [],
@@ -24,18 +24,21 @@ function (B, canvas, Entities, Physics, Utils) {
 	B.on(window, 'load', function () {
 		// Init the view
 		canvas.init(document.getElementById('game-canvas'));
-		setInterval(updateAll, 1000 / fps);
 
-		// Init the ball
-		ball = new Entities.Ball(canvas.width() / 2, 3 * canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
-		// Position of the ball in the grid
-		ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
-		// Init the paddle at the middle of the game view, 100px above the bottom
-		paddle = new Entities.Paddle(
-			(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
-			PADDLE_WIDTH,
-			PADDLE_THICKNESS
-		);
+		loadResources(function () {
+			setInterval(updateAll, 1000 / fps);
+			// Init the ball
+			ball = new Entities.Ball(canvas.width() / 2, 3 * canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+			// Position of the ball in the grid
+			ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
+			// Init the paddle at the middle of the game view, 100px above the bottom
+			paddle = new Entities.Paddle(
+				(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
+				PADDLE_WIDTH,
+				PADDLE_THICKNESS
+			);
+		});
+
 	});
 
 	/* Events */
@@ -75,6 +78,25 @@ function (B, canvas, Entities, Physics, Utils) {
 		}
 	});
 	/* End of Events */
+
+	function loadResources (loadedCallback) {
+		var r, loaded = 0;
+
+		if (!data.resources) {
+			loadedCallback();
+			return;
+		}
+
+		for (r = 0; r < data.resources.length; r++) {
+			data.resources[r].resource = new Image();
+			data.resources[r].resource.onload = function () {
+				if (++loaded == data.resources.length) {
+					loadedCallback();
+				}
+			};
+			data.resources[r].resource.src = data.resources[r].url;
+		}
+	}
 
 	/*
 	 * Create the bricks, The whole game is a grid and bricks are on the grid
