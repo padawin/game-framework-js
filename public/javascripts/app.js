@@ -207,6 +207,7 @@ function (B, canvas, Entities, Physics, Utils, data) {
 	 */
 	function updateAll () {
 		moveAll();
+		canvas.clearScreen();
 		canvas.drawAll([ball, paddle, bricks]);
 
 		if (DEBUG) {
