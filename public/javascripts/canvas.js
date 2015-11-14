@@ -108,8 +108,9 @@ function (B) {
 			return canvas.width;
 		},
 
-		clearScreen: function () {
-			canvasModule.drawRectangle(0, 0, canvas.width, canvas.height, 'white');
+		clearScreen: function (color) {
+			color = color || 'white';
+			canvasModule.drawRectangle(0, 0, canvas.width, canvas.height, color);
 		},
 
 		/**
