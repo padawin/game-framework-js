@@ -64,6 +64,33 @@ function (B) {
 		},
 
 		/**
+		 * Method to draw an image
+		 */
+		drawImage: function (image, x, y) {
+			canvasContext.drawImage(image, x, y);
+		},
+
+		/**
+		 * Method to draw a repeated image
+		 */
+		drawTexture: function (image, x, y, w, h) {
+			var pattern = canvasContext.createPattern(image, 'repeat');
+			canvasContext.fillStyle = pattern;
+			canvasContext.fillRect(x, y, w, h);
+		},
+
+		/**
+		 * Method to draw a rotated image
+		 */
+		drawRotatedImage: function (image, x, y, angle) {
+			canvasContext.save();
+			canvasContext.translate(x, y);
+			canvasContext.rotate(angle);
+			canvasContext.drawImage(image, -image.width / 2, -image.height / 2);
+			canvasContext.restore();
+		},
+
+		/**
 		 * Method to draw a line
 		 */
 		line: function (from, to) {
