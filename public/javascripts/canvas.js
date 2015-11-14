@@ -54,6 +54,7 @@ function (B) {
 			canvasContext.arc(x, y, radius, 0, Math.PI * 2, true);
 			canvasContext.fill();
 		},
+
 		/**
 		 * Method to draw some text
 		 */
