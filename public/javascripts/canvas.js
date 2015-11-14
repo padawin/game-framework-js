@@ -14,7 +14,7 @@ function (B) {
 		 * Method to initialise the canvas and set the mouse events
 		 */
 		init: function (element) {
-			canvas = document.getElementById('game-canvas');
+			canvas = element;
 			canvasContext = canvas.getContext('2d');
 
 			canvas.addEventListener('mousemove', mouseMovedEvent);
@@ -36,8 +36,12 @@ function (B) {
 		/**
 		 * Method to draw a rectangle
 		 */
-		drawRectangle: function (x, y, width, height, color) {
-			canvasContext.fillStyle = color;
+		drawRectangle: function (x, y, width, height, fillColor, strokeColor) {
+			strokeColor = strokeColor || '#000000';
+			fillColor = fillColor || '#000000';
+			canvasContext.strokeStyle = strokeColor;
+			canvasContext.fillStyle = fillColor;
+			canvasContext.strokeRect(x, y, width, height);
 			canvasContext.fillRect(x, y, width, height);
 		},
 
@@ -50,12 +54,40 @@ function (B) {
 			canvasContext.arc(x, y, radius, 0, Math.PI * 2, true);
 			canvasContext.fill();
 		},
+
 		/**
 		 * Method to draw some text
 		 */
 		drawText: function (text, x, y, color) {
 			canvasContext.fillStyle = color;
 			canvasContext.fillText(text, x, y);
+		},
+
+		/**
+		 * Method to draw an image
+		 */
+		drawImage: function (image, x, y) {
+			canvasContext.drawImage(image, x, y);
+		},
+
+		/**
+		 * Method to draw a repeated image
+		 */
+		drawTexture: function (image, x, y, w, h) {
+			var pattern = canvasContext.createPattern(image, 'repeat');
+			canvasContext.fillStyle = pattern;
+			canvasContext.fillRect(x, y, w, h);
+		},
+
+		/**
+		 * Method to draw a rotated image
+		 */
+		drawRotatedImage: function (image, x, y, angle) {
+			canvasContext.save();
+			canvasContext.translate(x, y);
+			canvasContext.rotate(angle);
+			canvasContext.drawImage(image, -image.width / 2, -image.height / 2);
+			canvasContext.restore();
 		},
 
 		/**
@@ -76,6 +108,10 @@ function (B) {
 			return canvas.width;
 		},
 
+		clearScreen: function () {
+			canvasModule.drawRectangle(0, 0, canvas.width, canvas.height, 'white');
+		},
+
 		/**
 		 * Method to get the canvas's height
 		 */
@@ -84,8 +120,6 @@ function (B) {
 		},
 
 		drawAll: function (all) {
-			canvasModule.drawRectangle(0, 0, canvas.width, canvas.height, 'black');
-
 			function _subDrawAll (all) {
 				var a, subA;
 				for (a = 0; a < all.length; a++) {
