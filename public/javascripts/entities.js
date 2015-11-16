@@ -24,16 +24,6 @@ function (canvas, B) {
 		};
 
 		/**
-		 * From the ball coordinates, set
-		 */
-		Ball.prototype.setGridCoordinates = function (gridCellWidth, gridCellHeight) {
-			this.oldGridCellCol = this.gridCellCol;
-			this.oldGridCellRow = this.gridCellRow;
-			this.gridCellCol = Math.floor(this.x / gridCellWidth);
-			this.gridCellRow = Math.floor(this.y / gridCellHeight);
-		};
-
-		/**
 		 * Method to update the ball position according to its speed
 		 */
 		Ball.prototype.updatePosition = function () {
