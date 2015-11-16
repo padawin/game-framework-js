@@ -58,5 +58,3 @@ function (canvas, Entities) {
 
 	return level;
 });
-
-

@@ -109,7 +109,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 					loadedCallback();
 				}
 				else {
-					console.log('progress: ' + loaded / data.resources.length);
 					GUI.progressBar(
 						loadingPadding, canvas.height() / 2,
 						loadingWidth, 30,
@@ -120,7 +119,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			};
 			data.resources[r].resource.src = data.resources[r].url;
 		}
-	};
+	}
 
 	/**
 	 * Method to update the game state and the objects's position

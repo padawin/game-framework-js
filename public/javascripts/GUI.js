@@ -23,6 +23,3 @@ function (Canvas) {
 
 	return GUI;
 });
-
-
-
