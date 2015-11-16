@@ -62,11 +62,16 @@ function (canvas, Entities) {
 			level.counts = {};
 			for (row = 0; row < map.height; row++ ) {
 				for (col = 0; col < map.width; col++ ) {
+					var resource;
+					if (data.resources && data.resources[map.map[row][col]]) {
+						resource = data.resources[map.map[row][col]].resource;
+					}
+
 					level.cells.push(new Entities.GridCell(
 						// 5 is the initial left margin
 						level.gridCellWidth * col, level.gridCellHeight * row,
 						level.gridCellWidth, level.gridCellHeight,
-						data.resources[map.map[row][col]].resource,
+						resource,
 						// @TODO remove destructable field
 						true, map.map[row][col]
 					));

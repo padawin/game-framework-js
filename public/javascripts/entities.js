@@ -125,7 +125,12 @@ function (canvas, B, data) {
 		 * Draw the gridCell on the screen
 		 */
 		GridCell.prototype.draw = function () {
-			canvas.drawTexture(this.texture, this.x, this.y, this.w, this.h);
+			if (this.texture) {
+				canvas.drawTexture(this.texture, this.x, this.y, this.w, this.h);
+			}
+			else {
+				canvas.drawRectangle(this.x, this.y, this.w, this.h, 'red');
+			}
 		};
 
 		/**
