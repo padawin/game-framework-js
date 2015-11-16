@@ -9,7 +9,7 @@ loader.addModule('data',
 function () {
 	var data = {
 		maps: [
-			{width: 16, height: 20, map:
+			{width: 16, height: 20, start: [6, 12], map:
 			[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 			 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 			 [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
