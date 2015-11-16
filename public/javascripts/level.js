@@ -18,6 +18,15 @@ function (canvas, Entities) {
 		return this.cells[col + this.width * row];
 	};
 
+	// Reset the bricks to the original state (all active)
+	LevelClass.prototype.reset = function (bricks) {
+		level.counts = {};
+		for (var c = 0; c < this.cells.length; c++) {
+			this.cells[c].reset();
+			_incrementStateCount(level, this.cells[c].state);
+		}
+	};
+
 	LevelClass.prototype.changeCellState = function (cellIndex, newState) {
 		level.counts[this.cells[cellIndex].state]--;
 		this.cells[cellIndex].state = newState;
