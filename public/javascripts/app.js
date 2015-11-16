@@ -95,6 +95,11 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			loadingPadding = canvas.width() / 5,
 			loadingWidth = 3 * loadingPadding;
 
+		if (!data.resources) {
+			loadedCallback();
+			return;
+		}
+
 		canvas.clearScreen();
 		GUI.progressBar(
 			loadingPadding, canvas.height() / 2,
