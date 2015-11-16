@@ -36,7 +36,8 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			remainingBricks = level.counts[Entities.GridCell.STATE_ACTIVE];
 
 			// Init the ball
-			ball = new Entities.Ball(level.startX, level.startY, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+			var startCell = level.getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
+			ball = new Entities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
 			// Init the paddle at the middle of the game view, 100px above the bottom
 			paddle = new Entities.Paddle(
 				(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
@@ -44,7 +45,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 				PADDLE_THICKNESS
 			);
 		});
-
 	});
 
 	/* Events */

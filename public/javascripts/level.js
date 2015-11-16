@@ -34,6 +34,13 @@ function (canvas, Entities) {
 		_incrementStateCount(level, state);
 	};
 
+	LevelClass.prototype.getCoordinatesCenterCell = function (col, row) {
+		return [
+			this.gridCellWidth * col + this.gridCellWidth / 2,
+			this.gridCellHeight * row + this.gridCellHeight / 2
+		];
+	}
+
 	function _incrementStateCount (level, state) {
 		if (!level.counts[state]) {
 			level.counts[state] = 1;
@@ -71,11 +78,6 @@ function (canvas, Entities) {
 					));
 
 					_incrementStateCount(level, map.map[row][col]);
-
-					if (map.map[row][col] == Entities.GridCell.STATE_START) {
-						level.startX = level.gridCellWidth * col + level.gridCellWidth / 2;
-						level.startY = level.gridCellHeight * row + level.gridCellHeight / 2;
-					}
 				}
 			}
 
