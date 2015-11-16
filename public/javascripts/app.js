@@ -30,7 +30,7 @@ function (B, canvas, Entities, Physics, Utils, data, GUI) {
 			// Init the ball
 			ball = new Entities.Ball(canvas.width() / 2, 3 * canvas.height() / 4, BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
 			// Position of the ball in the grid
-			ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
+			ball.setGridCoordinates(GRID_CELL_SPACE_WIDTH, GRID_CELL_SPACE_HEIGHT);
 			// Init the paddle at the middle of the game view, 100px above the bottom
 			paddle = new Entities.Paddle(
 				(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
@@ -118,32 +118,32 @@ function (B, canvas, Entities, Physics, Utils, data, GUI) {
 	/*
 	 * Create the bricks, The whole game is a grid and bricks are on the grid
 	 * The bricks are organised on a rectangle of the grid started at the
-	 * position (BRICK_GRID_START_COL, BRICK_GRID_START_COL) and ends at the
-	 * position (BRICK_GRID_COL, BRICK_GRID_ROW)
-	 * Each brick is an instance of the class Entities.Brick
+	 * position (GRID_START_COL, GRID_START_COL) and ends at the
+	 * position (GRID_COL, GRID_ROW)
+	 * Each brick is an instance of the class Entities.GridCell
 	 */
 	var col, row;
-	for (row = BRICK_GRID_START_ROW; row < BRICK_GRID_ROW; row++ ) {
-		for (col = BRICK_GRID_START_COL; col < BRICK_GRID_COL; col++ ) {
-			bricks.push(new Entities.Brick(
+	for (row = GRID_START_ROW; row < GRID_ROW; row++ ) {
+		for (col = GRID_START_COL; col < GRID_COL; col++ ) {
+			bricks.push(new Entities.GridCell(
 				// 5 is the initial left margin
-				BRICK_SPACE_WIDTH * col,
-				BRICK_SPACE_HEIGHT * row,
-				BRICK_WIDTH,
-				BRICK_HEIGHT,
+				GRID_CELL_SPACE_WIDTH * col,
+				GRID_CELL_SPACE_HEIGHT * row,
+				GRID_CELL_WIDTH,
+				GRID_CELL_HEIGHT,
 				// @TODO remove destructable field
-				true, Entities.Brick.STATE_ACTIVE
+				true, Entities.GridCell.STATE_ACTIVE
 			));
 		}
 	}
 
 	// Set the number of remaining bricks to destroy
-	var remainingBricks = BRICKS_NUMBER;
+	var remainingBricks = GRID_CELLS_NUMBER;
 
 	// @TODO put that somewhere
 	// Reset the bricks to the original state (all active)
 	function resetBricks (bricks) {
-		for (var b = 0; b < BRICKS_NUMBER; b++) {
+		for (var b = 0; b < GRID_CELLS_NUMBER; b++) {
 			bricks[b].reset();
 		}
 	}
@@ -153,8 +153,8 @@ function (B, canvas, Entities, Physics, Utils, data, GUI) {
 	 * grid the coordinates are in
 	 */
 	colRowToGridIndex = function (col, row) {
-		return col - BRICK_GRID_START_COL +
-			(BRICK_GRID_COL - BRICK_GRID_START_COL) * (row - BRICK_GRID_START_ROW);
+		return col - GRID_START_COL +
+			(GRID_COL - GRID_START_COL) * (row - GRID_START_ROW);
 	};
 
 	/**
@@ -163,7 +163,7 @@ function (B, canvas, Entities, Physics, Utils, data, GUI) {
 	function moveAll () {
 		// Update the ball position
 		ball.updatePosition();
-		ball.setGridCoordinates(BRICK_SPACE_WIDTH, BRICK_SPACE_HEIGHT);
+		ball.setGridCoordinates(GRID_CELL_SPACE_WIDTH, GRID_CELL_SPACE_HEIGHT);
 
 		/* Ball and edges collision*/
 		var wallBounded = Physics.sphereBounceAgainstInnerRectangle(ball, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
@@ -185,21 +185,21 @@ function (B, canvas, Entities, Physics, Utils, data, GUI) {
 		)];
 
 		// if the ball is on an active brick
-		if (BRICK_GRID_START_COL <= ball.gridCellCol && ball.gridCellCol < BRICK_GRID_COL
-			&& BRICK_GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < BRICK_GRID_ROW
-			&& brick.state == Entities.Brick.STATE_ACTIVE
+		if (GRID_START_COL <= ball.gridCellCol && ball.gridCellCol < GRID_COL
+			&& GRID_START_COL <= ball.gridCellRow && ball.gridCellRow < GRID_ROW
+			&& brick.state == Entities.GridCell.STATE_ACTIVE
 		) {
 			// brick next to the current one, according to ball's old position
 			brickSide = bricks[colRowToGridIndex(ball.oldGridCellCol, ball.gridCellRow)];
-			brickSide = brickSide && brickSide.state == Entities.Brick.STATE_ACTIVE && brickSide || undefined;
+			brickSide = brickSide && brickSide.state == Entities.GridCell.STATE_ACTIVE && brickSide || undefined;
 
 			// brick under or above to the current one, according to ball's old position
 			brickTopBot = bricks[colRowToGridIndex(ball.gridCellCol, ball.oldGridCellRow)];
-			brickTopBot = brickTopBot && brickTopBot.state == Entities.Brick.STATE_ACTIVE && brickTopBot || undefined;
+			brickTopBot = brickTopBot && brickTopBot.state == Entities.GridCell.STATE_ACTIVE && brickTopBot || undefined;
 
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 
-			brick.state = Entities.Brick.STATE_INACTIVE;
+			brick.state = Entities.GridCell.STATE_INACTIVE;
 			remainingBricks--;
 
 			if (remainingBricks == 0) {
@@ -229,9 +229,9 @@ function (B, canvas, Entities, Physics, Utils, data, GUI) {
 
 		if (DEBUG) {
 			canvas.drawText('(' +
-				Math.floor(mouseX / BRICK_SPACE_WIDTH) + ', ' +
-				Math.floor(mouseY / BRICK_SPACE_HEIGHT) + ', ' +
-				colRowToGridIndex(Math.floor(mouseX / BRICK_SPACE_WIDTH), Math.floor(mouseY / BRICK_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
+				Math.floor(mouseX / GRID_CELL_SPACE_WIDTH) + ', ' +
+				Math.floor(mouseY / GRID_CELL_SPACE_HEIGHT) + ', ' +
+				colRowToGridIndex(Math.floor(mouseX / GRID_CELL_SPACE_WIDTH), Math.floor(mouseY / GRID_CELL_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
 
 
 			canvas.line([ball.x, ball.y], [ball.x + ball.speedX * 30, ball.y + ball.speedY * 30]);

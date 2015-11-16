@@ -3,14 +3,14 @@ if (typeof (require) != 'undefined') {
 }
 
 /**
- * This module contains the definition of the Ball, Paddle and Brick entities
+ * This module contains the definition of the Ball, Paddle and GridCell entities
  */
 loader.addModule('Entities',
 'Canvas', 'B',
 function (canvas, B) {
 	var entities = {},
 		Ball,
-		Brick,
+		GridCell,
 		Paddle;
 
 	(function () {
@@ -86,8 +86,8 @@ function (canvas, B) {
 	})();
 
 	(function () {
-		/* Brick Class */
-		Brick = function (x, y, w, h, destructible, state) {
+		/* GridCell Class */
+		GridCell = function (x, y, w, h, destructible, state) {
 			this.x = x;
 			this.y = y;
 			this.w = w;
@@ -97,31 +97,31 @@ function (canvas, B) {
 		}
 
 		/**
-		 * Draw the brick on the screen
+		 * Draw the gridCell on the screen
 		 */
-		Brick.prototype.draw = function () {
-			if (this.state == Brick.STATE_ACTIVE) {
+		GridCell.prototype.draw = function () {
+			if (this.state == GridCell.STATE_ACTIVE) {
 				canvas.drawRectangle(this.x, this.y, this.w, this.h, 'red');
 			}
 		};
 
 		/**
-		 * Reset the brick to its original values
+		 * Reset the gridCell to its original values
 		 */
-		Brick.prototype.reset = function () {
+		GridCell.prototype.reset = function () {
 			this.state = this.originalState;
 			this.destructible = this.originalDestructible;
 		};
 
-		Brick.STATE_INACTIVE = 0;
-		Brick.STATE_ACTIVE = 1;
-		Brick.STATE_START = 2;
-		/* End Brick Class */
+		GridCell.STATE_INACTIVE = 0;
+		GridCell.STATE_ACTIVE = 1;
+		GridCell.STATE_START = 2;
+		/* End GridCell Class */
 	})();
 
 	entities.Ball = Ball;
 	entities.Paddle = Paddle;
-	entities.Brick = Brick;
+	entities.GridCell = GridCell;
 
 	return entities;
 });
