@@ -24,7 +24,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	B.on(window, 'load', function () {
 		// Init the view
 		canvas.init(document.getElementById('game-canvas'));
-		Controls.init();
+		Controls.init(true);
 
 		loadResources(function () {
 			setInterval(updateAll, 1000 / fps);

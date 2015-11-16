@@ -23,9 +23,11 @@ function (B) {
 	}
 
 	var controls = {
-		init: function () {
-			document.addEventListener('keydown', keyDownEvent);
-			document.addEventListener('keyup', keyUpEvent);
+		init: function (eventKey) {
+			if (eventKey) {
+				document.addEventListener('keydown', keyDownEvent);
+				document.addEventListener('keyup', keyUpEvent);
+			}
 		}
 	};
 
