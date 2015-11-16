@@ -67,10 +67,11 @@ function (canvas, B, data) {
 			if (this.isReversing) {
 				this.speed = Math.max(this.speed - _reverse, this.minSpeed);
 			}
-			if (this.isSteeringLeft) {
+
+			if (Math.abs(this.speed) > 0.0 && this.isSteeringLeft) {
 				this.angle -= _turnRate;
 			}
-			if (this.isSteeringRight) {
+			if (Math.abs(this.speed) > 0.0 && this.isSteeringRight) {
 				this.angle += _turnRate;
 			}
 
