@@ -18,6 +18,13 @@ function (canvas, Entities) {
 		return this.cells[col + this.width * row];
 	};
 
+	LevelClass.prototype.changeCellState = function (cellIndex, newState) {
+		level.counts[this.cells[cellIndex].state]--;
+		this.cells[cellIndex].state = newState;
+
+		_incrementStateCount(level, state);
+	};
+
 	function _incrementStateCount (level, state) {
 		if (!level.counts[state]) {
 			level.counts[state] = 1;
