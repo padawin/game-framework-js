@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Level', 'GUI',
-function (B, canvas, Entities, Physics, Utils, data, Level, GUI) {
+'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
+function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	var ball,
 		level,
 		paddle,
@@ -26,6 +26,7 @@ function (B, canvas, Entities, Physics, Utils, data, Level, GUI) {
 	B.on(window, 'load', function () {
 		// Init the view
 		canvas.init(document.getElementById('game-canvas'));
+		Controls.init(null, document.getElementById('game-canvas'));
 
 		loadResources(function () {
 			setInterval(updateAll, 1000 / fps);

@@ -16,21 +16,6 @@ function (B) {
 		init: function (element) {
 			canvas = element;
 			canvasContext = canvas.getContext('2d');
-
-			canvas.addEventListener('mousemove', mouseMovedEvent);
-
-			/**
-			 * EVENT FOR THE MOUSE
-			 */
-			function mouseMovedEvent (e) {
-				var rect = canvas.getBoundingClientRect(),
-					root = document.documentElement;
-
-					mouseX = e.clientX - rect.left - root.scrollLeft;
-					mouseY = e.clientY- rect.top - root.scrollTop;
-
-				B.Events.fire('mouse-moved', [mouseX, mouseY]);
-			}
 		},
 
 		/**
