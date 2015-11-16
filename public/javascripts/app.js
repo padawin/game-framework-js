@@ -195,15 +195,5 @@ function (B, canvas, Entities, Physics, Utils, data, Level, GUI) {
 		moveAll();
 		canvas.clearScreen('black');
 		canvas.drawAll([ball, paddle, level.cells]);
-
-		if (DEBUG) {
-			canvas.drawText('(' +
-				Math.floor(mouseX / GRID_CELL_SPACE_WIDTH) + ', ' +
-				Math.floor(mouseY / GRID_CELL_SPACE_HEIGHT) + ', ' +
-				colRowToGridIndex(Math.floor(mouseX / GRID_CELL_SPACE_WIDTH), Math.floor(mouseY / GRID_CELL_SPACE_HEIGHT)) + ')', mouseX, mouseY, 'white');
-
-
-			canvas.line([ball.x, ball.y], [ball.x + ball.speedX * 30, ball.y + ball.speedY * 30]);
-		}
 	}
 });
