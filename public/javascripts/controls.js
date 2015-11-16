@@ -22,11 +22,25 @@ function (B) {
 		}
 	}
 
+	function mouseMovedEvent (e) {
+		var rect = this.getBoundingClientRect(),
+			root = document.documentElement;
+
+			mouseX = e.clientX - rect.left - root.scrollLeft;
+			mouseY = e.clientY- rect.top - root.scrollTop;
+
+		B.Events.fire('mouse-moved', [mouseX, mouseY]);
+	}
+
 	var controls = {
-		init: function (eventKey) {
+		init: function (eventKey, eventMouseElement) {
 			if (eventKey) {
 				document.addEventListener('keydown', keyDownEvent);
 				document.addEventListener('keyup', keyUpEvent);
+			}
+			if (eventMouseElement) {
+				// @TODO add click and mouse down/up
+				eventMouseElement.addEventListener('mousemove', mouseMovedEvent.bind(eventMouseElement));
 			}
 		}
 	};
