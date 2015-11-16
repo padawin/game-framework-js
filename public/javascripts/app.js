@@ -32,7 +32,9 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			level = Level.createLevel(data, 0);
 
 			// Init the car
-			car = new Entities.Car(level.startX, level.startY, Math.PI / 2, CAR_SPEED);
+
+			var startCell = level.getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
+			car = new Entities.Car(startCell[0], startCell[1], Math.PI / 2, CAR_SPEED);
 			car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
 		});
 
