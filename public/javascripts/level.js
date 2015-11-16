@@ -18,6 +18,31 @@ function (canvas, Entities) {
 		return this.cells[col + this.width * row];
 	};
 
+	// Reset the bricks to the original state (all active)
+	LevelClass.prototype.reset = function (bricks) {
+		level.counts = {};
+		for (var c = 0; c < this.cells.length; c++) {
+			this.cells[c].reset();
+			_incrementStateCount(level, this.cells[c].state);
+		}
+	};
+
+	LevelClass.prototype.changeCellState = function (cellIndex, newState) {
+		level.counts[this.cells[cellIndex].state]--;
+		this.cells[cellIndex].state = newState;
+
+		_incrementStateCount(level, state);
+	};
+
+	function _incrementStateCount (level, state) {
+		if (!level.counts[state]) {
+			level.counts[state] = 1;
+		}
+		else {
+			level.counts[state]++;
+		}
+	}
+
 	level = {
 		/**
 		 * Create the walls, The whole game is a grid and walls are on the grid
@@ -34,6 +59,7 @@ function (canvas, Entities) {
 			level.cells = [];
 			level.width = map.width;
 			level.height = map.height;
+			level.counts = {};
 			for (row = 0; row < map.height; row++ ) {
 				for (col = 0; col < map.width; col++ ) {
 					level.cells.push(new Entities.GridCell(
@@ -44,6 +70,8 @@ function (canvas, Entities) {
 						// @TODO remove destructable field
 						true, map.map[row][col]
 					));
+
+					_incrementStateCount(level, map.map[row][col]);
 
 					if (map.map[row][col] == data.resourcesMap.TILE_START) {
 						level.startX = level.gridCellWidth * col + level.gridCellWidth / 2;
