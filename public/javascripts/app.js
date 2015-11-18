@@ -9,13 +9,14 @@ if (typeof (require) != 'undefined') {
 loader.executeModule('main',
 'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
 function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
-	var car,
-		level,
+	var level,
 		walls = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
 		mouseY,
+		nbPlayers = 1,
+		players = [],
 		fps = 30,
 		urlParams = Utils.getUrlParams(window.location.search);
 
@@ -33,9 +34,12 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 
 			// Init the car
 
-			var startCell = level.getCoordinatesCenterCell(data.maps[0].start[0][0], data.maps[0].start[0][1]);
-			car = new Entities.Car(startCell[0], startCell[1], Math.PI / 2, CAR_SPEED);
-			car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
+			for (var p = 0; p < nbPlayers; p++) {
+				var startCell = level.getCoordinatesCenterCell(data.maps[0].start[p][0], data.maps[0].start[p][1]),
+					car = new Entities.Car(startCell[0], startCell[1], Math.PI / 2, CAR_SPEED);
+				car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
+				players.push(car);
+			}
 		});
 
 		function key (code, pressed, car, gasKey, reverseKey, leftKey, rightKey) {
@@ -54,18 +58,24 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		}
 
 		B.Events.on('keydown', null, function (code) {
-			key(code, true, car, KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
+			for (var p = 0; p < nbPlayers; p++) {
+				key(code, true, players[p], KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
+			}
 		});
 
 		B.Events.on('keyup', null, function (code) {
-			key(code, false, car, KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
+			for (var p = 0; p < nbPlayers; p++) {
+				key(code, false, players[p], KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
+			}
 		});
 	});
 
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		car.reset();
+		for (var p = 0; p < nbPlayers; p++) {
+			players[p].reset();
+		}
 	});
 
 	// Event to execute when the player loses
@@ -119,30 +129,32 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	 * Method to update the game state and the objects's position
 	 */
 	function moveAll () {
-		// Update the car position
-		car.updatePosition();
+		for (var p = 0; p < nbPlayers; p++) {
+			// Update the cars position
+			players[p].updatePosition();
 
-		var carGridCellCol = Math.floor(car.x / level.gridCellWidth),
-			carGridCellRow = Math.floor(car.y / level.gridCellHeight);
+			var carGridCellCol = Math.floor(players[p].x / level.gridCellWidth),
+				carGridCellRow = Math.floor(players[p].y / level.gridCellHeight);
 
-		/* Car and edges collision*/
-		Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
-		/* End of Car and edges collision*/
+			/* Car and edges collision*/
+			Physics.sphereBounceAgainstInnerRectangle(players[p], {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
+			/* End of Car and edges collision*/
 
-		/* Car and wall collision */
-		var wall = level.getCell(
-			carGridCellCol,
-			carGridCellRow
-		);
+			/* Car and wall collision */
+			var wall = level.getCell(
+				carGridCellCol,
+				carGridCellRow
+			);
 
-		// if the car is on a wall
-		if (0 <= carGridCellCol && carGridCellCol < level.width
-			&& 0 <= carGridCellRow && carGridCellRow < level.height
-			&& data.resources[wall.state].obstacle
-		) {
-			car.bumpBack();
+			// if the car is on a wall
+			if (0 <= carGridCellCol && carGridCellCol < level.width
+				&& 0 <= carGridCellRow && carGridCellRow < level.height
+				&& data.resources[wall.state].obstacle
+			) {
+				players[p].bumpBack();
+			}
+			/* End of Car and wall collision */
 		}
-		/* End of Car and wall collision */
 	}
 
 	/**
@@ -151,6 +163,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([level.cells, car]);
+		canvas.drawAll([level.cells, players]);
 	}
 });
