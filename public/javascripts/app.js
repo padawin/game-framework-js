@@ -38,34 +38,27 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
 		});
 
-		B.Events.on('keydown', car, function (code) {
-			if (code == KEY_LEFT_ARROW) {
-				car.steerLeft(true);
+		function key (code, pressed, car, gasKey, reverseKey, leftKey, rightKey) {
+			if (code == leftKey) {
+				car.steerLeft(pressed);
 			}
-			else if (code == KEY_UP_ARROW) {
-				car.accelerate(true);
+			else if (code == gasKey) {
+				car.accelerate(pressed);
 			}
-			else if (code == KEY_RIGHT_ARROW) {
-				car.steerRight(true);
+			else if (code == rightKey) {
+				car.steerRight(pressed);
 			}
-			else if (code == KEY_DOWN_ARROW) {
-				car.reverse(true);
+			else if (code == reverseKey) {
+				car.reverse(pressed);
 			}
+		}
+
+		B.Events.on('keydown', null, function (code) {
+			key(code, true, car, KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
 		});
 
-		B.Events.on('keyup', car, function (code) {
-			if (code == KEY_LEFT_ARROW) {
-				car.steerLeft(false);
-			}
-			else if (code == KEY_UP_ARROW) {
-				car.accelerate(false);
-			}
-			else if (code == KEY_RIGHT_ARROW) {
-				car.steerRight(false);
-			}
-			else if (code == KEY_DOWN_ARROW) {
-				car.reverse(false);
-			}
+		B.Events.on('keyup', null, function (code) {
+			key(code, false, car, KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
 		});
 	});
 
