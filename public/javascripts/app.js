@@ -57,15 +57,24 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			}
 		}
 
+		var controlsPlayers = [
+			[KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW],
+			[KEY_W, KEY_S, KEY_A, KEY_D]
+		];
+
 		B.Events.on('keydown', null, function (code) {
 			for (var p = 0; p < nbPlayers; p++) {
-				key(code, true, players[p], KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
+				key(code, true, players[p],
+					controlsPlayers[p][0], controlsPlayers[p][1], controlsPlayers[p][2], controlsPlayers[p][3]
+				);
 			}
 		});
 
 		B.Events.on('keyup', null, function (code) {
 			for (var p = 0; p < nbPlayers; p++) {
-				key(code, false, players[p], KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
+				key(code, false,
+					players[p], controlsPlayers[p][0], controlsPlayers[p][1], controlsPlayers[p][2], controlsPlayers[p][3]
+				);
 			}
 		});
 	});
