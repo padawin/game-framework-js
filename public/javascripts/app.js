@@ -9,13 +9,18 @@ if (typeof (require) != 'undefined') {
 loader.executeModule('main',
 'B', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
 function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
-	var car,
-		level,
+	var level,
 		walls = [],
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
 		mouseY,
+		nbPlayers = 2,
+		players = [],
+		playerControls = [
+			{gasKey: KEY_UP_ARROW, reverseKey: KEY_DOWN_ARROW, leftKey: KEY_LEFT_ARROW, rightKey: KEY_RIGHT_ARROW},
+			{gasKey: KEY_W, reverseKey: KEY_S, leftKey: KEY_A, rightKey: KEY_D}
+		];
 		fps = 30,
 		urlParams = Utils.getUrlParams(window.location.search);
 
@@ -33,38 +38,38 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 
 			// Init the car
 
-			var startCell = level.getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
-			car = new Entities.Car(startCell[0], startCell[1], Math.PI / 2, CAR_SPEED);
-			car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
-		});
-
-		B.Events.on('keydown', car, function (code) {
-			if (code == KEY_LEFT_ARROW) {
-				car.steerLeft(true);
-			}
-			else if (code == KEY_UP_ARROW) {
-				car.accelerate(true);
-			}
-			else if (code == KEY_RIGHT_ARROW) {
-				car.steerRight(true);
-			}
-			else if (code == KEY_DOWN_ARROW) {
-				car.reverse(true);
+			for (var p = 0; p < data.maps[0].start.length && p < nbPlayers; p++) {
+				var startCell = level.getCoordinatesCenterCell(data.maps[0].start[p][0], data.maps[0].start[p][1]),
+					car = new Entities.Car(startCell[0], startCell[1], Math.PI / 2, CAR_SPEED);
+				car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
+				players.push(car);
 			}
 		});
 
-		B.Events.on('keyup', car, function (code) {
-			if (code == KEY_LEFT_ARROW) {
-				car.steerLeft(false);
+		function key (code, pressed, car, controls) {
+			if (code == controls.leftKey) {
+				car.steerLeft(pressed);
 			}
-			else if (code == KEY_UP_ARROW) {
-				car.accelerate(false);
+			else if (code == controls.gasKey) {
+				car.accelerate(pressed);
 			}
-			else if (code == KEY_RIGHT_ARROW) {
-				car.steerRight(false);
+			else if (code == controls.rightKey) {
+				car.steerRight(pressed);
 			}
-			else if (code == KEY_DOWN_ARROW) {
-				car.reverse(false);
+			else if (code == controls.reverseKey) {
+				car.reverse(pressed);
+			}
+		}
+
+		B.Events.on('keydown', null, function (code) {
+			for (var p = 0; p < nbPlayers; p++) {
+				key(code, true, players[p], playerControls[p]);
+			}
+		});
+
+		B.Events.on('keyup', null, function (code) {
+			for (var p = 0; p < nbPlayers; p++) {
+				key(code, false, players[p], playerControls[p]);
 			}
 		});
 	});
@@ -72,7 +77,9 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		car.reset();
+		for (var p = 0; p < nbPlayers; p++) {
+			players[p].reset();
+		}
 	});
 
 	// Event to execute when the player loses
@@ -83,12 +90,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	B.Events.on('mouse-moved', null, function (mX, mY) {
 		mouseX = mX;
 		mouseY = mY;
-
-		if (DEBUG) {
-			car.x = mouseX;
-			car.y = mouseY;
-			car.speed = CAR_SPEED;
-		}
 	});
 	/* End of Events */
 
@@ -132,30 +133,32 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	 * Method to update the game state and the objects's position
 	 */
 	function moveAll () {
-		// Update the car position
-		car.updatePosition();
+		for (var p = 0; p < nbPlayers; p++) {
+			// Update the cars position
+			players[p].updatePosition();
 
-		var carGridCellCol = Math.floor(car.x / level.gridCellWidth),
-			carGridCellRow = Math.floor(car.y / level.gridCellHeight);
+			var carGridCellCol = Math.floor(players[p].x / level.gridCellWidth),
+				carGridCellRow = Math.floor(players[p].y / level.gridCellHeight);
 
-		/* Car and edges collision*/
-		Physics.sphereBounceAgainstInnerRectangle(car, {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
-		/* End of Car and edges collision*/
+			/* Car and edges collision*/
+			Physics.sphereBounceAgainstInnerRectangle(players[p], {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
+			/* End of Car and edges collision*/
 
-		/* Car and wall collision */
-		var wall = level.getCell(
-			carGridCellCol,
-			carGridCellRow
-		);
+			/* Car and wall collision */
+			var wall = level.getCell(
+				carGridCellCol,
+				carGridCellRow
+			);
 
-		// if the car is on a wall
-		if (0 <= carGridCellCol && carGridCellCol < level.width
-			&& 0 <= carGridCellRow && carGridCellRow < level.height
-			&& data.resources[wall.state].obstacle
-		) {
-			car.bumpBack();
+			// if the car is on a wall
+			if (0 <= carGridCellCol && carGridCellCol < level.width
+				&& 0 <= carGridCellRow && carGridCellRow < level.height
+				&& data.resources[wall.state].obstacle
+			) {
+				players[p].bumpBack();
+			}
+			/* End of Car and wall collision */
 		}
-		/* End of Car and wall collision */
 	}
 
 	/**
@@ -164,6 +167,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	 */
 	function updateAll () {
 		moveAll();
-		canvas.drawAll([level.cells, car]);
+		canvas.drawAll([level.cells, players]);
 	}
 });
