@@ -15,7 +15,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		// and position of the canvas in the page
 		mouseX,
 		mouseY,
-		nbPlayers = 1,
+		nbPlayers = 2,
 		players = [],
 		fps = 30,
 		urlParams = Utils.getUrlParams(window.location.search);
