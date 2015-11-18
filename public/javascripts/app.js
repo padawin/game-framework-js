@@ -33,7 +33,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 
 			// Init the car
 
-			var startCell = level.getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
+			var startCell = level.getCoordinatesCenterCell(data.maps[0].start[0][0], data.maps[0].start[0][1]);
 			car = new Entities.Car(startCell[0], startCell[1], Math.PI / 2, CAR_SPEED);
 			car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
 		});
