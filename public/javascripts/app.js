@@ -17,6 +17,10 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		mouseY,
 		nbPlayers = 2,
 		players = [],
+		playerControls = [
+			{gasKey: KEY_UP_ARROW, reverseKey: KEY_DOWN_ARROW, leftKey: KEY_LEFT_ARROW, rightKey: KEY_RIGHT_ARROW},
+			{gasKey: KEY_W, reverseKey: KEY_S, leftKey: KEY_A, rightKey: KEY_D}
+		];
 		fps = 30,
 		urlParams = Utils.getUrlParams(window.location.search);
 
@@ -42,39 +46,30 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			}
 		});
 
-		function key (code, pressed, car, gasKey, reverseKey, leftKey, rightKey) {
-			if (code == leftKey) {
+		function key (code, pressed, car, controls) {
+			if (code == controls.leftKey) {
 				car.steerLeft(pressed);
 			}
-			else if (code == gasKey) {
+			else if (code == controls.gasKey) {
 				car.accelerate(pressed);
 			}
-			else if (code == rightKey) {
+			else if (code == controls.rightKey) {
 				car.steerRight(pressed);
 			}
-			else if (code == reverseKey) {
+			else if (code == controls.reverseKey) {
 				car.reverse(pressed);
 			}
 		}
 
-		var controlsPlayers = [
-			[KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW],
-			[KEY_W, KEY_S, KEY_A, KEY_D]
-		];
-
 		B.Events.on('keydown', null, function (code) {
 			for (var p = 0; p < nbPlayers; p++) {
-				key(code, true, players[p],
-					controlsPlayers[p][0], controlsPlayers[p][1], controlsPlayers[p][2], controlsPlayers[p][3]
-				);
+				key(code, true, players[p], playerControls[p]);
 			}
 		});
 
 		B.Events.on('keyup', null, function (code) {
 			for (var p = 0; p < nbPlayers; p++) {
-				key(code, false,
-					players[p], controlsPlayers[p][0], controlsPlayers[p][1], controlsPlayers[p][2], controlsPlayers[p][3]
-				);
+				key(code, false, players[p], playerControls[p]);
 			}
 		});
 	});
