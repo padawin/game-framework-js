@@ -83,12 +83,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	B.Events.on('mouse-moved', null, function (mX, mY) {
 		mouseX = mX;
 		mouseY = mY;
-
-		if (DEBUG) {
-			car.x = mouseX;
-			car.y = mouseY;
-			car.speed = CAR_SPEED;
-		}
 	});
 	/* End of Events */
 
