@@ -31,10 +31,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 
 		loadResources(function () {
 			setInterval(updateAll, 1000 / fps);
-			level = Level.createLevel(data, 0);
-
-			// Set the number of remaining bricks to destroy
-			remainingBricks = level.counts[Entities.GridCell.STATE_ACTIVE];
+			resetLevel(true);
 
 			// Init the ball
 			var startCell = level.getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
@@ -51,13 +48,13 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		resetLevel();
+		resetLevel(true);
 		ball.reset();
 	});
 
 	// Event to execute when the player loses
 	B.Events.on('lost', null, function () {
-		resetLevel();
+		resetLevel(false);
 		ball.reset();
 	});
 
@@ -123,8 +120,14 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		}
 	}
 
-	function resetLevel () {
-		level.reset();
+	function resetLevel (newLevel) {
+		if (newLevel) {
+			level = Level.createLevel(data, currentLevelIndex);
+		}
+		else {
+			level.reset();
+		}
+
 		// Set the number of remaining bricks to destroy
 		remainingBricks = level.counts[Entities.GridCell.STATE_ACTIVE];
 	}
