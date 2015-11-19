@@ -140,16 +140,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			var carGridCellCol = Math.floor(players[p].x / level.gridCellWidth),
 				carGridCellRow = Math.floor(players[p].y / level.gridCellHeight);
 
-			/* Car and edges collision*/
-			var boundaryHit = Physics.sphereBounceAgainstInnerRectangle(
-				players[p],
-				{x: 0, y: 0, w: canvas.width(), h: canvas.height()}
-			);
-			if (boundaryHit) {
-				players[p].bumpBack();
-			}
-			/* End of Car and edges collision*/
-
 			/* Car and wall collision */
 			var wall = level.getCell(
 				carGridCellCol,
@@ -159,8 +149,12 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			// if the car is on a wall
 			if (0 <= carGridCellCol && carGridCellCol < level.width
 				&& 0 <= carGridCellRow && carGridCellRow < level.height
-				&& data.resources[wall.state].obstacle
 			) {
+				if (data.resources[wall.state].obstacle) {
+					players[p].bumpBack();
+				}
+			}
+			else {
 				players[p].bumpBack();
 			}
 			/* End of Car and wall collision */
