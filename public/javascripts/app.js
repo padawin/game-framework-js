@@ -14,12 +14,16 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		paddle,
 		bricks = [],
 		remainingBricks,
+		currentLevelIndex = 0,
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
 		mouseY,
 		fps = 30,
-		urlParams = Utils.getUrlParams(window.location.search);
+		urlParams = Utils.getUrlParams(window.location.search),
+		// some states
+		gameFinished = false,
+		levelFinished = false;
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
@@ -30,10 +34,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 
 		loadResources(function () {
 			setInterval(updateAll, 1000 / fps);
-			level = Level.createLevel(data, 0);
-
-			// Set the number of remaining bricks to destroy
-			remainingBricks = level.counts[Entities.GridCell.STATE_ACTIVE];
+			resetLevel(true);
 
 			// Init the ball
 			var startCell = level.getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
@@ -50,14 +51,36 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		resetLevel();
+		if (currentLevelIndex == data.maps.length - 1) {
+			resetLevel(true);
+			gameFinished = true;
+		}
+		else {
+			resetLevel(false);
+			levelFinished = true;
+		}
+
 		ball.reset();
 	});
 
 	// Event to execute when the player loses
 	B.Events.on('lost', null, function () {
-		resetLevel();
+		resetLevel(false);
 		ball.reset();
+	});
+
+	// Event to execute when the mouse is clicked
+	B.Events.on('mouse-clicked', null, function (mX, mY) {
+		if (levelFinished) {
+			currentLevelIndex++;
+			resetLevel(true);
+			levelFinished = false;
+		}
+		else if (gameFinished) {
+			currentLevelIndex = 0;
+			resetLevel(true);
+			gameFinished = false;
+		}
 	});
 
 	// Event to execute when the mouse move
@@ -85,6 +108,16 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		}
 	});
 	/* End of Events */
+
+	function displayWinGameScreen () {
+		canvas.drawText('You won the game!', canvas.width() / 2 - 50, 200, 'white');
+		canvas.drawText('Click to restart', canvas.width() / 2 - 45, 400, 'white');
+	}
+
+	function displayWinLevelScreen () {
+		canvas.drawText('Level finished', canvas.width() / 2 - 40, 200, 'white');
+		canvas.drawText('Click to continue', canvas.width() / 2 - 45, 400, 'white');
+	}
 
 	function loadResources (loadedCallback) {
 		var r, loaded = 0,
@@ -122,8 +155,14 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		}
 	}
 
-	function resetLevel () {
-		level.reset();
+	function resetLevel (newLevel) {
+		if (newLevel) {
+			level = Level.createLevel(data, currentLevelIndex);
+		}
+		else {
+			level.reset();
+		}
+
 		// Set the number of remaining bricks to destroy
 		remainingBricks = level.counts[Entities.GridCell.STATE_ACTIVE];
 	}
@@ -197,8 +236,16 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	 * objects's position and then redraw the canvas
 	 */
 	function updateAll () {
-		moveAll();
 		canvas.clearScreen('black');
-		canvas.drawAll([ball, paddle, level.cells]);
+		if (gameFinished) {
+			displayWinGameScreen();
+		}
+		else if (levelFinished) {
+			displayWinLevelScreen();
+		}
+		else {
+			moveAll();
+			canvas.drawAll([ball, paddle, level.cells]);
+		}
 	}
 });

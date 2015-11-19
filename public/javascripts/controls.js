@@ -22,14 +22,22 @@ function (B) {
 		}
 	}
 
-	function mouseMovedEvent (e) {
+	function _mouseCoordinates (e) {
 		var rect = this.getBoundingClientRect(),
 			root = document.documentElement;
 
 			mouseX = e.clientX - rect.left - root.scrollLeft;
 			mouseY = e.clientY- rect.top - root.scrollTop;
 
-		B.Events.fire('mouse-moved', [mouseX, mouseY]);
+		return [mouseX, mouseY];
+	}
+
+	function mouseMovedEvent (e) {
+		B.Events.fire('mouse-moved', _mouseCoordinates.apply(this, [e]));
+	}
+
+	function mouseClickedEvent (e) {
+		B.Events.fire('mouse-clicked', _mouseCoordinates.apply(this, [e]));
 	}
 
 	var controls = {
@@ -41,6 +49,7 @@ function (B) {
 			if (eventMouseElement) {
 				// @TODO add click and mouse down/up
 				eventMouseElement.addEventListener('mousemove', mouseMovedEvent.bind(eventMouseElement));
+				eventMouseElement.addEventListener('mousedown', mouseClickedEvent.bind(eventMouseElement));
 			}
 		}
 	};
