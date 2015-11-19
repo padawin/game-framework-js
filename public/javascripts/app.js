@@ -223,8 +223,16 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	 * objects's position and then redraw the canvas
 	 */
 	function updateAll () {
-		moveAll();
 		canvas.clearScreen('black');
-		canvas.drawAll([ball, paddle, level.cells]);
+		if (gameFinished) {
+			displayWinGameScreen();
+		}
+		else if (levelFinished) {
+			displayWinLevelScreen();
+		}
+		else {
+			moveAll();
+			canvas.drawAll([ball, paddle, level.cells]);
+		}
 	}
 });
