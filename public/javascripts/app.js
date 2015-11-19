@@ -40,7 +40,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 
 			for (var p = 0; p < data.maps[0].start.length && p < nbPlayers; p++) {
 				var startCell = level.getCoordinatesCenterCell(data.maps[0].start[p][0], data.maps[0].start[p][1]),
-					car = new Entities.Car(startCell[0], startCell[1], Math.PI / 2, CAR_SPEED);
+					car = new Entities.Car('MyCar', startCell[0], startCell[1], Math.PI / 2, CAR_SPEED);
 				car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
 				players.push(car);
 			}
