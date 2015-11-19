@@ -36,6 +36,10 @@ function (B) {
 		B.Events.fire('mouse-moved', _mouseCoordinates.apply(this, [e]));
 	}
 
+	function mouseClickedEvent (e) {
+		B.Events.fire('mouse-clicked', _mouseCoordinates.apply(this, [e]));
+	}
+
 	var controls = {
 		init: function (eventKey, eventMouseElement) {
 			if (eventKey) {
@@ -45,6 +49,7 @@ function (B) {
 			if (eventMouseElement) {
 				// @TODO add click and mouse down/up
 				eventMouseElement.addEventListener('mousemove', mouseMovedEvent.bind(eventMouseElement));
+				eventMouseElement.addEventListener('mousedown', mouseClickedEvent.bind(eventMouseElement));
 			}
 		}
 	};
