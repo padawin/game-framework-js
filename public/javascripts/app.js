@@ -26,7 +26,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	B.on(window, 'load', function () {
 		// Init the view
 		canvas.init(document.getElementById('game-canvas'));
-		Controls.init(null, document.getElementById('game-canvas'));
+		Controls.init(false, document.getElementById('game-canvas'));
 
 		loadResources(function () {
 			setInterval(updateAll, 1000 / fps);
@@ -77,13 +77,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 					canvas.width() - PADDLE_WIDTH / 2
 				)
 			);
-		}
-
-		if (DEBUG) {
-			ball.x = mouseX;
-			ball.y = mouseY;
-			ball.speedX = BALL_SPEED_X;
-			ball.speedY = BALL_SPEED_Y * -1;
 		}
 	});
 	/* End of Events */
