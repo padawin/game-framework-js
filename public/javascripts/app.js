@@ -51,8 +51,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		currentLevelIndex++;
-		if (currentLevelIndex == data.maps.length) {
+		if (currentLevelIndex == data.maps.length - 1) {
 			resetLevel(true);
 			gameFinished = true;
 		}
@@ -68,6 +67,20 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	B.Events.on('lost', null, function () {
 		resetLevel(false);
 		ball.reset();
+	});
+
+	// Event to execute when the mouse is clicked
+	B.Events.on('mouse-clicked', null, function (mX, mY) {
+		if (levelFinished) {
+			currentLevelIndex++;
+			resetLevel(true);
+			levelFinished = false;
+		}
+		else if (gameFinished) {
+			currentLevelIndex = 0;
+			resetLevel(true);
+			gameFinished = false;
+		}
 	});
 
 	// Event to execute when the mouse move
