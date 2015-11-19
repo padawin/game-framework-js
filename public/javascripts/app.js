@@ -76,7 +76,8 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 
 	/* Events */
 	// Event to execute when the player wins
-	B.Events.on('win', null, function () {
+	B.Events.on('win', null, function (winner) {
+		console.log('And the winner is: ' + winner.name);
 		for (var p = 0; p < nbPlayers; p++) {
 			players[p].reset();
 		}
