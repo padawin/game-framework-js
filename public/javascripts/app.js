@@ -78,13 +78,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 				)
 			);
 		}
-
-		if (DEBUG) {
-			ball.x = mouseX;
-			ball.y = mouseY;
-			ball.speedX = BALL_SPEED_X;
-			ball.speedY = BALL_SPEED_Y * -1;
-		}
 	});
 	/* End of Events */
 
