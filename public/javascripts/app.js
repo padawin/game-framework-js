@@ -20,7 +20,10 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		mouseX,
 		mouseY,
 		fps = 30,
-		urlParams = Utils.getUrlParams(window.location.search);
+		urlParams = Utils.getUrlParams(window.location.search),
+		// some states
+		gameFinished = false,
+		levelFinished = false;
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
@@ -48,7 +51,16 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		resetLevel(true);
+		currentLevelIndex++;
+		if (currentLevelIndex == data.maps.length) {
+			resetLevel(true);
+			gameFinished = true;
+		}
+		else {
+			resetLevel(false);
+			levelFinished = true;
+		}
+
 		ball.reset();
 	});
 
