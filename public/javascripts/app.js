@@ -141,7 +141,13 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 				carGridCellRow = Math.floor(players[p].y / level.gridCellHeight);
 
 			/* Car and edges collision*/
-			Physics.sphereBounceAgainstInnerRectangle(players[p], {x: 0, y: 0, w: canvas.width(), h: canvas.height()});
+			var boundaryHit = Physics.sphereBounceAgainstInnerRectangle(
+				players[p],
+				{x: 0, y: 0, w: canvas.width(), h: canvas.height()}
+			);
+			if (boundaryHit) {
+				players[p].bumpBack();
+			}
 			/* End of Car and edges collision*/
 
 			/* Car and wall collision */
