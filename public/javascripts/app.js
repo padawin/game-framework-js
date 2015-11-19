@@ -14,6 +14,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		paddle,
 		bricks = [],
 		remainingBricks,
+		currentLevelIndex = 0,
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
