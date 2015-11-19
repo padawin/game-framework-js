@@ -21,7 +21,8 @@ function (canvas, B, data) {
 			_radius = 10;
 
 		/* Car Class */
-		Car = function (x, y, angle, speed) {
+		Car = function (name, x, y, angle, speed) {
+			this.name = name;
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
 			this.r = _radius;
