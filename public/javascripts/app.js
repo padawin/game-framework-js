@@ -84,6 +84,16 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	});
 	/* End of Events */
 
+	function displayWinGameScreen () {
+		canvas.drawText('You won the game!', canvas.width() / 2 - 50, 200, 'white');
+		canvas.drawText('Click to restart', canvas.width() / 2 - 45, 400, 'white');
+	}
+
+	function displayWinLevelScreen () {
+		canvas.drawText('Level finished', canvas.width() / 2 - 40, 200, 'white');
+		canvas.drawText('Click to continue', canvas.width() / 2 - 45, 400, 'white');
+	}
+
 	function loadResources (loadedCallback) {
 		var r, loaded = 0,
 			loadingPadding = canvas.width() / 5,
