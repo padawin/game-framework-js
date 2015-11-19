@@ -154,6 +154,9 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 				if (data.resources[wall.state].obstacle) {
 					players[p].bumpBack();
 				}
+				else if (wall.state == data.resourcesMap.TILE_FINISH) {
+					B.Events.fire('win', [players[p]]);
+				}
 			}
 			else {
 				players[p].bumpBack();
