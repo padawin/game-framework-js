@@ -50,16 +50,14 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	/* Events */
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
-		level.reset();
-
-		// Set the number of remaining bricks to destroy
-		remainingBricks = level.counts[Entities.GridCell.STATE_ACTIVE];
+		resetLevel();
 		ball.reset();
 	});
 
 	// Event to execute when the player loses
 	B.Events.on('lost', null, function () {
-		level.reset();
+		resetLevel();
+		ball.reset();
 	});
 
 	// Event to execute when the mouse move
@@ -115,6 +113,12 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			};
 			data.resources[r].resource.src = data.resources[r].url;
 		}
+	}
+
+	function resetLevel () {
+		level.reset();
+		// Set the number of remaining bricks to destroy
+		remainingBricks = level.counts[Entities.GridCell.STATE_ACTIVE];
 	}
 
 	/**
