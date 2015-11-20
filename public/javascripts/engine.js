@@ -9,7 +9,28 @@ if (typeof (require) != 'undefined') {
 loader.addModule('Engine',
 'Canvas',
 function (canvas) {
-	var engine = {};
+	var _callbacks = {},
+		engine = {};
+
+	function _addCallback (name, callback) {
+		_callbacks[name] = callback;
+	}
+
+	engine.addLevelFinishedCallback = function (callback) {
+		_addCallback('levelFinished', callback);
+	};
+
+	engine.addGameFinishedCallback = function (callback) {
+		_addCallback('gameFinished', callback);
+	};
+
+	engine.addUpdateAllCallback = function (callback) {
+		_addCallback('updateAll', callback);
+	};
+
+	engine.addDrawAllCallback = function (callback) {
+		_addCallback('drawAll', callback);
+	};
 
 	engine.loadResources = function (resources, loadedCallback) {
 		var r, loaded = 0,
