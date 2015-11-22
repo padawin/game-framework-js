@@ -72,9 +72,9 @@ function (B, canvas, Controls, Level, data) {
 		}
 	}
 
-	function _runCallback (name) {
+	function _runCallback (name, args) {
 		if (typeof _callbacks[name] == 'function') {
-			_callbacks[name]();
+			_callbacks[name].apply(this, args);
 		}
 	}
 
