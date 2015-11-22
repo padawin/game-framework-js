@@ -48,6 +48,12 @@ function (canvas) {
 		}
 	};
 
+	function _runCallback (name) {
+		if (typeof _callbacks[name] == 'function') {
+			_callbacks[name]();
+		}
+	}
+
 	engine.addCallback = function (name, callback) {
 		_callbacks[name] = callback;
 	};
