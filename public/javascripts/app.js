@@ -23,6 +23,8 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
+	Engine.initEvents();
+
 	B.on(window, 'load', function () {
 		// Init the view
 		canvas.init(document.getElementById('game-canvas'));
@@ -52,29 +54,15 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		});
 	});
 
-	/* Events */
-	// Event to execute when the player wins
-	B.Events.on('win', null, function () {
-		if (currentLevelIndex == data.maps.length - 1) {
-			Engine.resetLevel(true, currentLevelIndex);
-			Engine.gameFinished = true;
-		}
-		else {
-			Engine.resetLevel(false, currentLevelIndex);
-			Engine.levelFinished = true;
-		}
-
+	Engine.addCallback('win', function () {
 		ball.reset();
 	});
 
-	// Event to execute when the player loses
-	B.Events.on('lost', null, function () {
-		Engine.resetLevel(false, currentLevelIndex);
+	Engine.addCallback('lose', function () {
 		ball.reset();
 	});
 
-	// Event to execute when the mouse is clicked
-	B.Events.on('mouse-clicked', null, function (mX, mY) {
+	Engine.addCallback('mouseClicked', function (mouseX, mouseY) {
 		if (Engine.levelFinished) {
 			currentLevelIndex++;
 			Engine.resetLevel(true, currentLevelIndex);
@@ -87,10 +75,7 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		}
 	});
 
-	// Event to execute when the mouse move
-	B.Events.on('mouse-moved', null, function (mX, mY) {
-		mouseX = mX;
-		mouseY = mY;
+	Engine.addCallback('mouseMoved', function (mouseX, mouseY) {
 		// @TODO move that in the paddle logic
 		if (mouseX > PADDLE_WIDTH / 2 && mouseX < canvas.width() - PADDLE_WIDTH / 2) {
 			paddle.updatePosition(
@@ -111,7 +96,6 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 			ball.speedY = BALL_SPEED_Y * -1;
 		}
 	});
-	/* End of Events */
 
 	Engine.addCallback('gameFinishedScreen', function () {
 		canvas.drawText('You won the game!', canvas.width() / 2 - 50, 200, 'white');

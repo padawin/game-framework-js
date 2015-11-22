@@ -110,6 +110,53 @@ function (B, canvas, Controls, Level, data) {
 		});
 	};
 
+	engine.initEvents = function () {
+		// Event to execute when the player wins
+		B.Events.on('win', null, function () {
+			if (currentLevelIndex == data.maps.length - 1) {
+				_resetLevel(true, currentLevelIndex);
+				gameFinished = true;
+			}
+			else {
+				_resetLevel(false, currentLevelIndex);
+				levelFinished = true;
+			}
+
+			_runCallback('win');
+		});
+
+		// Event to execute when the player loses
+		B.Events.on('lost', null, function () {
+			_resetLevel(false, currentLevelIndex);
+
+			_runCallback('lose');
+		});
+
+		// Event to execute when the mouse is clicked
+		B.Events.on('mouse-clicked', null, function (mX, mY) {
+			if (levelFinished) {
+				currentLevelIndex++;
+				_resetLevel(true, currentLevelIndex);
+				levelFinished = false;
+			}
+			else if (gameFinished) {
+				currentLevelIndex = 0;
+				_resetLevel(true, currentLevelIndex);
+				gameFinished = false;
+			}
+
+			_runCallback('mouseClicked');
+		});
+
+		// Event to execute when the mouse move
+		B.Events.on('mouse-moved', null, function (mX, mY) {
+			mouseX = mX;
+			mouseY = mY;
+
+			_runCallback('mouseMoved', [mouseX, mouseY]);
+		});
+	};
+
 	engine.addDrawable = function (drawable) {
 		_drawables.push(drawable);
 	};
