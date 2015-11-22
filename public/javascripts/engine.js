@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * of a loading bar...
  */
 loader.addModule('Engine',
-'Canvas', 'Level', 'data',
-function (canvas, Level, data) {
+'B', 'Canvas', 'Controls', 'Level', 'data',
+function (B, canvas, Controls, Level, data) {
 	var _callbacks = {},
 		engine = {},
 		level;
@@ -68,6 +68,23 @@ function (canvas, Level, data) {
 
 	engine.addCallback = function (name, callback) {
 		_callbacks[name] = callback;
+	};
+
+	engine.init = function (canvasElement, callback) {
+		B.on(window, 'load', function () {
+			// Init the view
+			canvas.init(canvasElement);
+			Controls.init(false, canvasElement);
+
+			_loadResources(function () {
+				_resetLevel(true);
+
+				if (typeof callback == 'function') {
+					callback();
+				}
+				setInterval(_updateAll, 1000 / fps);
+			});
+		});
 	};
 
 	engine.getLevel = function () {
