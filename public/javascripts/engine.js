@@ -13,7 +13,7 @@ function (B, canvas, Controls, Level, data) {
 		engine = {},
 		level;
 
-	engine.loadResources = function (resources, loadedCallback) {
+	function _loadResources (resources, loadedCallback) {
 		var r, loaded = 0,
 			loadingPadding = canvas.width() / 5,
 			loadingWidth = 3 * loadingPadding;
@@ -47,7 +47,7 @@ function (B, canvas, Controls, Level, data) {
 			};
 			resources[r].resource.src = resources[r].url;
 		}
-	};
+	}
 
 	function _runCallback (name) {
 		if (typeof _callbacks[name] == 'function') {
@@ -92,6 +92,7 @@ function (B, canvas, Controls, Level, data) {
 	};
 
 	engine.resetLevel = _resetLevel;
+	engine._loadResources = _loadResources;
 
 	return engine;
 });
