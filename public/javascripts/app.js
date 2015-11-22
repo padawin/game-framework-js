@@ -37,7 +37,6 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		});
 
 		Engine.loadResources(data.resources, function () {
-			setInterval(updateAll, 1000 / fps);
 			Engine.resetLevel(true, currentLevelIndex);
 
 			// Init the ball
@@ -49,6 +48,8 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 				PADDLE_WIDTH,
 				PADDLE_THICKNESS
 			);
+
+			setInterval(updateAll, 1000 / fps);
 		});
 	});
 
