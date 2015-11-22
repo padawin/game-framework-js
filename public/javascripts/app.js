@@ -49,6 +49,8 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 				PADDLE_THICKNESS
 			);
 
+			Engine.addDrawable(ball);
+			Engine.addDrawable(paddle);
 			setInterval(updateAll, 1000 / fps);
 		});
 	});

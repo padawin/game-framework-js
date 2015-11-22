@@ -11,6 +11,7 @@ loader.addModule('Engine',
 function (B, canvas, Controls, Level, data) {
 	var _callbacks = {},
 		engine = {},
+		_drawables = [],
 		level;
 
 	function _loadResources (loadedCallback) {
@@ -86,6 +87,10 @@ function (B, canvas, Controls, Level, data) {
 				setInterval(_updateAll, 1000 / fps);
 			});
 		});
+	};
+
+	engine.addDrawable = function (drawable) {
+		_drawables.push(drawable);
 	};
 
 	engine.getLevel = function () {
