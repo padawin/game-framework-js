@@ -11,6 +11,8 @@ loader.addModule('Engine',
 function (B, canvas, Controls, Level, data) {
 	var _callbacks = {},
 		engine = {},
+		fps = 30,
+		currentLevelIndex = 0,
 		// some states
 		gameFinished = false,
 		levelFinished = false,
@@ -60,10 +62,10 @@ function (B, canvas, Controls, Level, data) {
 	 */
 	function _updateAll () {
 		canvas.clearScreen('black');
-		if (engine.gameFinished) {
+		if (gameFinished) {
 			_runCallback('gameFinishedScreen');
 		}
-		else if (engine.levelFinished) {
+		else if (levelFinished) {
 			_runCallback('levelFinishedScreen');
 		}
 		else {
@@ -78,7 +80,7 @@ function (B, canvas, Controls, Level, data) {
 		}
 	}
 
-	function _resetLevel (newLevel, currentLevelIndex) {
+	function _resetLevel (newLevel) {
 		if (newLevel) {
 			level = Level.createLevel(data, currentLevelIndex);
 		}
@@ -114,11 +116,11 @@ function (B, canvas, Controls, Level, data) {
 		// Event to execute when the player wins
 		B.Events.on('win', null, function () {
 			if (currentLevelIndex == data.maps.length - 1) {
-				_resetLevel(true, currentLevelIndex);
+				_resetLevel(true);
 				gameFinished = true;
 			}
 			else {
-				_resetLevel(false, currentLevelIndex);
+				_resetLevel(false);
 				levelFinished = true;
 			}
 
@@ -127,7 +129,7 @@ function (B, canvas, Controls, Level, data) {
 
 		// Event to execute when the player loses
 		B.Events.on('lost', null, function () {
-			_resetLevel(false, currentLevelIndex);
+			_resetLevel(false);
 
 			_runCallback('lose');
 		});
@@ -136,12 +138,12 @@ function (B, canvas, Controls, Level, data) {
 		B.Events.on('mouse-clicked', null, function (mX, mY) {
 			if (levelFinished) {
 				currentLevelIndex++;
-				_resetLevel(true, currentLevelIndex);
+				_resetLevel(true);
 				levelFinished = false;
 			}
 			else if (gameFinished) {
 				currentLevelIndex = 0;
-				_resetLevel(true, currentLevelIndex);
+				_resetLevel(true);
 				gameFinished = false;
 			}
 

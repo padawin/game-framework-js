@@ -12,46 +12,34 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 	var ball,
 		paddle,
 		bricks = [],
-		currentLevelIndex = 0,
 		remainingBricks,
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
 		mouseY,
-		fps = 30,
 		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
 	Engine.initEvents();
 
-	B.on(window, 'load', function () {
-		// Init the view
-		canvas.init(document.getElementById('game-canvas'));
-		Controls.init(false, document.getElementById('game-canvas'));
+	Engine.addCallback('resetLevel', function () {
+		// Set the number of remaining bricks to destroy
+		remainingBricks = Engine.getLevel().counts[Entities.GridCell.STATE_ACTIVE];
+	});
 
-		Engine.addCallback('resetLevel', function () {
-			// Set the number of remaining bricks to destroy
-			remainingBricks = Engine.getLevel().counts[Entities.GridCell.STATE_ACTIVE];
-		});
-
-		Engine._loadResources(function () {
-			Engine.resetLevel(true, currentLevelIndex);
-
-			// Init the ball
-			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
-			ball = new Entities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
-			// Init the paddle at the middle of the game view, 100px above the bottom
-			paddle = new Entities.Paddle(
-				(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
-				PADDLE_WIDTH,
-				PADDLE_THICKNESS
-			);
-
-			Engine.addDrawable(ball);
-			Engine.addDrawable(paddle);
-			setInterval(Engine.updateAll, 1000 / fps);
-		});
+	Engine.init(document.getElementById('game-canvas'), function () {
+		// Init the ball
+		var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
+		ball = new Entities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+		// Init the paddle at the middle of the game view, 100px above the bottom
+		paddle = new Entities.Paddle(
+			(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
+			PADDLE_WIDTH,
+			PADDLE_THICKNESS
+		);
+		Engine.addDrawable(ball);
+		Engine.addDrawable(paddle);
 	});
 
 	Engine.addCallback('win', function () {
@@ -60,19 +48,6 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 
 	Engine.addCallback('lose', function () {
 		ball.reset();
-	});
-
-	Engine.addCallback('mouseClicked', function (mouseX, mouseY) {
-		if (Engine.levelFinished) {
-			currentLevelIndex++;
-			Engine.resetLevel(true, currentLevelIndex);
-			Engine.levelFinished = false;
-		}
-		else if (Engine.gameFinished) {
-			currentLevelIndex = 0;
-			Engine.resetLevel(true, currentLevelIndex);
-			Engine.gameFinished = false;
-		}
 	});
 
 	Engine.addCallback('mouseMoved', function (mouseX, mouseY) {
