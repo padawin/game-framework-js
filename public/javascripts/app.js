@@ -10,11 +10,10 @@ loader.executeModule('main',
 'B', 'Engine', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
 function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	var ball,
-		level,
 		paddle,
 		bricks = [],
-		remainingBricks,
 		currentLevelIndex = 0,
+		remainingBricks,
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
 		mouseX,
@@ -32,12 +31,17 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		canvas.init(document.getElementById('game-canvas'));
 		Controls.init(false, document.getElementById('game-canvas'));
 
+		Engine.addCallback('resetLevel', function () {
+			// Set the number of remaining bricks to destroy
+			remainingBricks = Engine.getLevel().counts[Entities.GridCell.STATE_ACTIVE];
+		});
+
 		Engine.loadResources(data.resources, function () {
 			setInterval(updateAll, 1000 / fps);
-			resetLevel(true);
+			Engine.resetLevel(true, currentLevelIndex);
 
 			// Init the ball
-			var startCell = level.getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
+			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
 			ball = new Entities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
 			// Init the paddle at the middle of the game view, 100px above the bottom
 			paddle = new Entities.Paddle(
@@ -52,11 +56,11 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 	// Event to execute when the player wins
 	B.Events.on('win', null, function () {
 		if (currentLevelIndex == data.maps.length - 1) {
-			resetLevel(true);
+			Engine.resetLevel(true, currentLevelIndex);
 			gameFinished = true;
 		}
 		else {
-			resetLevel(false);
+			Engine.resetLevel(false, currentLevelIndex);
 			levelFinished = true;
 		}
 
@@ -65,7 +69,7 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 
 	// Event to execute when the player loses
 	B.Events.on('lost', null, function () {
-		resetLevel(false);
+		Engine.resetLevel(false, currentLevelIndex);
 		ball.reset();
 	});
 
@@ -73,12 +77,12 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 	B.Events.on('mouse-clicked', null, function (mX, mY) {
 		if (levelFinished) {
 			currentLevelIndex++;
-			resetLevel(true);
+			Engine.resetLevel(true, currentLevelIndex);
 			levelFinished = false;
 		}
 		else if (gameFinished) {
 			currentLevelIndex = 0;
-			resetLevel(true);
+			Engine.resetLevel(true, currentLevelIndex);
 			gameFinished = false;
 		}
 	});
@@ -119,18 +123,6 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		canvas.drawText('Click to continue', canvas.width() / 2 - 45, 400, 'white');
 	}
 
-	function resetLevel (newLevel) {
-		if (newLevel) {
-			level = Level.createLevel(data, currentLevelIndex);
-		}
-		else {
-			level.reset();
-		}
-
-		// Set the number of remaining bricks to destroy
-		remainingBricks = level.counts[Entities.GridCell.STATE_ACTIVE];
-	}
-
 	/**
 	 * Method to update the game state and the objects's position
 	 */
@@ -151,27 +143,27 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		var brick,
 			brickSide,
 			brickTopBot,
-			ballGridCellCol = Math.floor(ball.x / level.gridCellWidth),
-			ballGridCellRow = Math.floor(ball.y / level.gridCellHeight)
-			ballOldGridCellCol = Math.floor((ball.x - ball.speedX) / level.gridCellWidth),
-			ballOldGridCellRow = Math.floor((ball.y - ball.speedY) / level.gridCellHeight);
+			ballGridCellCol = Math.floor(ball.x / Engine.getLevel().gridCellWidth),
+			ballGridCellRow = Math.floor(ball.y / Engine.getLevel().gridCellHeight)
+			ballOldGridCellCol = Math.floor((ball.x - ball.speedX) / Engine.getLevel().gridCellWidth),
+			ballOldGridCellRow = Math.floor((ball.y - ball.speedY) / Engine.getLevel().gridCellHeight);
 
-		brick = level.getCell(
+		brick = Engine.getLevel().getCell(
 			ballGridCellCol,
 			ballGridCellRow
 		);
 
 		// if the ball is on an active brick
-		if (0 <= ballGridCellCol && ballGridCellCol < level.width
-			&& 0 <= ballGridCellRow && ballGridCellRow < level.height
+		if (0 <= ballGridCellCol && ballGridCellCol < Engine.getLevel().width
+			&& 0 <= ballGridCellRow && ballGridCellRow < Engine.getLevel().height
 			&& brick.state == Entities.GridCell.STATE_ACTIVE
 		) {
 			// brick next to the current one, according to ball's old position
-			brickSide = level.getCell(ballOldGridCellCol, ballGridCellRow);
+			brickSide = Engine.getLevel().getCell(ballOldGridCellCol, ballGridCellRow);
 			brickSide = brickSide && brickSide.state == Entities.GridCell.STATE_ACTIVE && brickSide || undefined;
 
 			// brick under or above to the current one, according to ball's old position
-			brickTopBot = level.getCell(ballGridCellCol, ballOldGridCellRow);
+			brickTopBot = Engine.getLevel().getCell(ballGridCellCol, ballOldGridCellRow);
 			brickTopBot = brickTopBot && brickTopBot.state == Entities.GridCell.STATE_ACTIVE && brickTopBot || undefined;
 
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
@@ -209,7 +201,7 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		}
 		else {
 			moveAll();
-			canvas.drawAll([ball, paddle, level.cells]);
+			canvas.drawAll([ball, paddle, Engine.getLevel().cells]);
 		}
 	}
 });

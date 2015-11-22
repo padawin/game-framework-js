@@ -7,10 +7,11 @@ if (typeof (require) != 'undefined') {
  * of a loading bar...
  */
 loader.addModule('Engine',
-'Canvas',
-function (canvas) {
+'Canvas', 'Level', 'data',
+function (canvas, Level, data) {
 	var _callbacks = {},
-		engine = {};
+		engine = {},
+		level;
 
 	engine.loadResources = function (resources, loadedCallback) {
 		var r, loaded = 0,
@@ -54,9 +55,26 @@ function (canvas) {
 		}
 	}
 
+	function _resetLevel (newLevel, currentLevelIndex) {
+		if (newLevel) {
+			level = Level.createLevel(data, currentLevelIndex);
+		}
+		else {
+			level.reset();
+		}
+
+		_runCallback('resetLevel');
+	}
+
 	engine.addCallback = function (name, callback) {
 		_callbacks[name] = callback;
 	};
+
+	engine.getLevel = function () {
+		return level;
+	};
+
+	engine.resetLevel = _resetLevel;
 
 	return engine;
 });
