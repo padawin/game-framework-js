@@ -19,10 +19,7 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		mouseX,
 		mouseY,
 		fps = 30,
-		urlParams = Utils.getUrlParams(window.location.search),
-		// some states
-		gameFinished = false,
-		levelFinished = false;
+		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
@@ -51,7 +48,7 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 
 			Engine.addDrawable(ball);
 			Engine.addDrawable(paddle);
-			setInterval(updateAll, 1000 / fps);
+			setInterval(Engine.updateAll, 1000 / fps);
 		});
 	});
 
@@ -60,11 +57,11 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 	B.Events.on('win', null, function () {
 		if (currentLevelIndex == data.maps.length - 1) {
 			Engine.resetLevel(true, currentLevelIndex);
-			gameFinished = true;
+			Engine.gameFinished = true;
 		}
 		else {
 			Engine.resetLevel(false, currentLevelIndex);
-			levelFinished = true;
+			Engine.levelFinished = true;
 		}
 
 		ball.reset();
@@ -78,15 +75,15 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 
 	// Event to execute when the mouse is clicked
 	B.Events.on('mouse-clicked', null, function (mX, mY) {
-		if (levelFinished) {
+		if (Engine.levelFinished) {
 			currentLevelIndex++;
 			Engine.resetLevel(true, currentLevelIndex);
-			levelFinished = false;
+			Engine.levelFinished = false;
 		}
-		else if (gameFinished) {
+		else if (Engine.gameFinished) {
 			currentLevelIndex = 0;
 			Engine.resetLevel(true, currentLevelIndex);
-			gameFinished = false;
+			Engine.gameFinished = false;
 		}
 	});
 
@@ -116,20 +113,20 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 	});
 	/* End of Events */
 
-	function displayWinGameScreen () {
+	Engine.addCallback('gameFinishedScreen', function () {
 		canvas.drawText('You won the game!', canvas.width() / 2 - 50, 200, 'white');
 		canvas.drawText('Click to restart', canvas.width() / 2 - 45, 400, 'white');
-	}
+	});
 
-	function displayWinLevelScreen () {
+	Engine.addCallback('levelFinishedScreen', function () {
 		canvas.drawText('Level finished', canvas.width() / 2 - 40, 200, 'white');
 		canvas.drawText('Click to continue', canvas.width() / 2 - 45, 400, 'white');
-	}
+	});
 
 	/**
 	 * Method to update the game state and the objects's position
 	 */
-	function moveAll () {
+	Engine.addCallback('moveAll', function () {
 		// Update the ball position
 		ball.updatePosition();
 
@@ -188,23 +185,5 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 			Physics.sphereBounceAgainstRectangle(ball, paddle);
 		}
 		/* Ball and paddle collision */
-	}
-
-	/**
-	 * Method to execute on each frame to update the game state and the
-	 * objects's position and then redraw the canvas
-	 */
-	function updateAll () {
-		canvas.clearScreen('black');
-		if (gameFinished) {
-			displayWinGameScreen();
-		}
-		else if (levelFinished) {
-			displayWinLevelScreen();
-		}
-		else {
-			moveAll();
-			canvas.drawAll([ball, paddle, Engine.getLevel().cells]);
-		}
-	}
+	});
 });

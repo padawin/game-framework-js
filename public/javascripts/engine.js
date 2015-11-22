@@ -11,6 +11,9 @@ loader.addModule('Engine',
 function (B, canvas, Controls, Level, data) {
 	var _callbacks = {},
 		engine = {},
+		// some states
+		gameFinished = false,
+		levelFinished = false,
 		_drawables = [],
 		level;
 
@@ -48,6 +51,24 @@ function (B, canvas, Controls, Level, data) {
 				}
 			};
 			resources[r].resource.src = resources[r].url;
+		}
+	}
+
+	/**
+	 * Method to execute on each frame to update the game state and the
+	 * objects's position and then redraw the canvas
+	 */
+	function _updateAll () {
+		canvas.clearScreen('black');
+		if (engine.gameFinished) {
+			_runCallback('gameFinishedScreen');
+		}
+		else if (engine.levelFinished) {
+			_runCallback('levelFinishedScreen');
+		}
+		else {
+			_runCallback('moveAll');
+			canvas.drawAll([_drawables, level.cells]);
 		}
 	}
 
@@ -99,6 +120,9 @@ function (B, canvas, Controls, Level, data) {
 
 	engine.resetLevel = _resetLevel;
 	engine._loadResources = _loadResources;
+	engine.updateAll = _updateAll;
+	engine.levelFinished = levelFinished;
+	engine.gameFinished = gameFinished;
 
 	return engine;
 });
