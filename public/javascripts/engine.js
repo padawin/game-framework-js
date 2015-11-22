@@ -13,10 +13,11 @@ function (B, canvas, Controls, Level, data) {
 		engine = {},
 		level;
 
-	function _loadResources (resources, loadedCallback) {
+	function _loadResources (loadedCallback) {
 		var r, loaded = 0,
 			loadingPadding = canvas.width() / 5,
-			loadingWidth = 3 * loadingPadding;
+			loadingWidth = 3 * loadingPadding,
+			resources = data.resources;
 
 		if (!resources) {
 			loadedCallback();

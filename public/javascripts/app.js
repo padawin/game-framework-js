@@ -36,7 +36,7 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 			remainingBricks = Engine.getLevel().counts[Entities.GridCell.STATE_ACTIVE];
 		});
 
-		Engine._loadResources(data.resources, function () {
+		Engine._loadResources(function () {
 			Engine.resetLevel(true, currentLevelIndex);
 
 			// Init the ball
