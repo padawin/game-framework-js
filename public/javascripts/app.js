@@ -21,6 +21,12 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
+	const PADDLE_WIDTH = 100;
+	const PADDLE_THICKNESS = 10;
+	const BALL_RADIUS = 10;
+	const BALL_SPEED_X = 5;
+	const BALL_SPEED_Y = 7;
+
 	Engine.addCallback('resetLevel', function () {
 		// Set the number of remaining bricks to destroy
 		remainingBricks = Engine.getLevel().counts[data.states.ACTIVE];
