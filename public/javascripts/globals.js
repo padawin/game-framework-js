@@ -1,5 +1,3 @@
-const CAR_SPEED = 0;
-
 const NO_DEBUG = 0;
 
 const KEY_LEFT_ARROW = 37;

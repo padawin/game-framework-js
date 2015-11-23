@@ -19,13 +19,13 @@ function (canvas) {
 			_radius = 10;
 
 		/* Car Class */
-		Car = function (name, x, y, angle, speed) {
+		Car = function (name, x, y, angle) {
 			this.name = name;
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
 			this.r = _radius;
 			this.angle = this.originalAngle = angle;
-			this.speed = this.originalSpeed = speed;
+			this.speed = this.originalSpeed = 0;
 			this.maxSpeed = 15;
 			this.minSpeed = -15;
 			this.graphicLoaded = false;

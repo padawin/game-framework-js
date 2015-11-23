@@ -29,7 +29,7 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 			// Init the car
 			for (var p = 0; p < data.maps[0].start.length && p < nbPlayers; p++) {
 				var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[p][0], data.maps[0].start[p][1]),
-					car = new GameEntities.Car('MyCar', startCell[0], startCell[1], Math.PI / 2, CAR_SPEED);
+					car = new GameEntities.Car('MyCar', startCell[0], startCell[1], Math.PI / 2);
 				car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
 				players.push(car);
 			}
