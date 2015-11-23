@@ -14,8 +14,8 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		nbPlayers = 2,
 		players = [],
 		playerControls = [
-			{gasKey: KEY_UP_ARROW, reverseKey: KEY_DOWN_ARROW, leftKey: KEY_LEFT_ARROW, rightKey: KEY_RIGHT_ARROW},
-			{gasKey: KEY_W, reverseKey: KEY_S, leftKey: KEY_A, rightKey: KEY_D}
+			{gasKey: Controls.KEY_UP_ARROW, reverseKey: Controls.KEY_DOWN_ARROW, leftKey: Controls.KEY_LEFT_ARROW, rightKey: Controls.KEY_RIGHT_ARROW},
+			{gasKey: Controls.KEY_W, reverseKey: Controls.KEY_S, leftKey: Controls.KEY_A, rightKey: Controls.KEY_D}
 		];
 		fps = 30,
 		urlParams = Utils.getUrlParams(window.location.search);
