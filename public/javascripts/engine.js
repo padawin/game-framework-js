@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * of a loading bar...
  */
 loader.addModule('Engine',
-'B', 'Canvas', 'Controls', 'Level', 'data',
-function (B, canvas, Controls, Level, data) {
+'B', 'Canvas', 'Controls', 'Level', 'data', 'GUI',
+function (B, canvas, Controls, Level, data, GUI) {
 	var _callbacks = {},
 		engine = {},
 		fps = 30,
@@ -18,6 +18,9 @@ function (B, canvas, Controls, Level, data) {
 		levelFinished = false,
 		_drawables = [],
 		level;
+
+	engine.OPTION_USE_KEYBOARD = 0x1;
+	engine.OPTION_USE_MOUSE = 0x2;
 
 	function _loadResources (loadedCallback) {
 		var r, loaded = 0,
@@ -70,7 +73,7 @@ function (B, canvas, Controls, Level, data) {
 		}
 		else {
 			_runCallback('moveAll');
-			canvas.drawAll([_drawables, level.cells]);
+			canvas.drawAll([level.cells, _drawables]);
 		}
 	}
 
@@ -103,7 +106,7 @@ function (B, canvas, Controls, Level, data) {
 				levelFinished = true;
 			}
 
-			_runCallback('win');
+			_runCallback('win', arguments);
 		});
 
 		// Event to execute when the player loses
@@ -142,11 +145,14 @@ function (B, canvas, Controls, Level, data) {
 		_callbacks[name] = callback;
 	};
 
-	engine.init = function (canvasElement, callback) {
+	engine.init = function (canvasElement, options, callback) {
 		B.on(window, 'load', function () {
 			// Init the view
 			canvas.init(canvasElement);
-			Controls.init(false, canvasElement);
+			Controls.init(
+				(options & engine.OPTION_USE_KEYBOARD) == engine.OPTION_USE_KEYBOARD,
+				(options & engine.OPTION_USE_MOUSE) == engine.OPTION_USE_MOUSE ? canvasElement : null
+			);
 
 			_loadResources(function () {
 				_resetLevel(true);

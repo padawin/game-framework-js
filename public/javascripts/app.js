@@ -26,19 +26,23 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		remainingBricks = Engine.getLevel().counts[Entities.GridCell.STATE_ACTIVE];
 	});
 
-	Engine.init(document.getElementById('game-canvas'), function () {
-		// Init the ball
-		var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
-		ball = new Entities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
-		// Init the paddle at the middle of the game view, 100px above the bottom
-		paddle = new Entities.Paddle(
-			(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
-			PADDLE_WIDTH,
-			PADDLE_THICKNESS
-		);
-		Engine.addDrawable(ball);
-		Engine.addDrawable(paddle);
-	});
+	Engine.init(
+		document.getElementById('game-canvas'),
+		Engine.OPTION_USE_MOUSE,
+		function () {
+			// Init the ball
+			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
+			ball = new Entities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+			// Init the paddle at the middle of the game view, 100px above the bottom
+			paddle = new Entities.Paddle(
+				(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
+				PADDLE_WIDTH,
+				PADDLE_THICKNESS
+			);
+			Engine.addDrawable(ball);
+			Engine.addDrawable(paddle);
+		}
+	);
 
 	Engine.addCallback('win', function () {
 		ball.reset();
