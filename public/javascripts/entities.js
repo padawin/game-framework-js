@@ -18,7 +18,7 @@ function (canvas) {
 			this.y = y;
 			this.w = w;
 			this.h = h;
-			this.texture = texture;
+			this.texture = this.originalTexture = texture;
 			this.state = this.originalState = state;
 			this.destructible = this.originalDestructible = destructible;
 		}
@@ -40,6 +40,7 @@ function (canvas) {
 		 */
 		GridCell.prototype.reset = function () {
 			this.state = this.originalState;
+			this.texture = this.originalTexture;
 			this.destructible = this.originalDestructible;
 		};
 		/* End GridCell Class */
