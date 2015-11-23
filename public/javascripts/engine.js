@@ -91,28 +91,7 @@ function (B, canvas, Controls, Level, data) {
 		_runCallback('resetLevel');
 	}
 
-	engine.addCallback = function (name, callback) {
-		_callbacks[name] = callback;
-	};
-
-	engine.init = function (canvasElement, callback) {
-		B.on(window, 'load', function () {
-			// Init the view
-			canvas.init(canvasElement);
-			Controls.init(false, canvasElement);
-
-			_loadResources(function () {
-				_resetLevel(true);
-
-				if (typeof callback == 'function') {
-					callback();
-				}
-				setInterval(_updateAll, 1000 / fps);
-			});
-		});
-	};
-
-	engine.initEvents = function () {
+	function _initEvents () {
 		// Event to execute when the player wins
 		B.Events.on('win', null, function () {
 			if (currentLevelIndex == data.maps.length - 1) {
@@ -157,6 +136,29 @@ function (B, canvas, Controls, Level, data) {
 
 			_runCallback('mouseMoved', [mouseX, mouseY]);
 		});
+	}
+
+	engine.addCallback = function (name, callback) {
+		_callbacks[name] = callback;
+	};
+
+	engine.init = function (canvasElement, callback) {
+		B.on(window, 'load', function () {
+			// Init the view
+			canvas.init(canvasElement);
+			Controls.init(false, canvasElement);
+
+			_loadResources(function () {
+				_resetLevel(true);
+
+				if (typeof callback == 'function') {
+					callback();
+				}
+				setInterval(_updateAll, 1000 / fps);
+			});
+		});
+
+		_initEvents();
 	};
 
 	engine.addDrawable = function (drawable) {

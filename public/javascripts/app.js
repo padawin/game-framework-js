@@ -21,8 +21,6 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
 
-	Engine.initEvents();
-
 	Engine.addCallback('resetLevel', function () {
 		// Set the number of remaining bricks to destroy
 		remainingBricks = Engine.getLevel().counts[Entities.GridCell.STATE_ACTIVE];
