@@ -56,8 +56,11 @@ function () {
 		resources: [
 			{color: 'black'},
 			{color: 'blue'}
-		]
-
+		],
+		states: {
+			INACTIVE: 0,
+			ACTIVE: 1
+		}
 	};
 
 	return data;

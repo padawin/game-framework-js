@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Engine', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
-function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
+'B', 'Engine', 'Canvas', 'Entities', 'GameEntities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
+function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Controls, Level, GUI) {
 	var ball,
 		paddle,
 		bricks = [],
@@ -23,7 +23,7 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 
 	Engine.addCallback('resetLevel', function () {
 		// Set the number of remaining bricks to destroy
-		remainingBricks = Engine.getLevel().counts[Entities.GridCell.STATE_ACTIVE];
+		remainingBricks = Engine.getLevel().counts[data.states.ACTIVE];
 	});
 
 	Engine.init(
@@ -32,9 +32,9 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		function () {
 			// Init the ball
 			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
-			ball = new Entities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+			ball = new GameEntities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
 			// Init the paddle at the middle of the game view, 100px above the bottom
-			paddle = new Entities.Paddle(
+			paddle = new GameEntities.Paddle(
 				(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
 				PADDLE_WIDTH,
 				PADDLE_THICKNESS
@@ -117,19 +117,19 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		// if the ball is on an active brick
 		if (0 <= ballGridCellCol && ballGridCellCol < Engine.getLevel().width
 			&& 0 <= ballGridCellRow && ballGridCellRow < Engine.getLevel().height
-			&& brick.state == Entities.GridCell.STATE_ACTIVE
+			&& brick.state == data.states.ACTIVE
 		) {
 			// brick next to the current one, according to ball's old position
 			brickSide = Engine.getLevel().getCell(ballOldGridCellCol, ballGridCellRow);
-			brickSide = brickSide && brickSide.state == Entities.GridCell.STATE_ACTIVE && brickSide || undefined;
+			brickSide = brickSide && brickSide.state == data.states.ACTIVE && brickSide || undefined;
 
 			// brick under or above to the current one, according to ball's old position
 			brickTopBot = Engine.getLevel().getCell(ballGridCellCol, ballOldGridCellRow);
-			brickTopBot = brickTopBot && brickTopBot.state == Entities.GridCell.STATE_ACTIVE && brickTopBot || undefined;
+			brickTopBot = brickTopBot && brickTopBot.state == data.states.ACTIVE && brickTopBot || undefined;
 
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 
-			brick.state = Entities.GridCell.STATE_INACTIVE;
+			brick.state = data.states.INACTIVE;
 			brick.texture = data.resources[brick.state].resource;
 			remainingBricks--;
 
