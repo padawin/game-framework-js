@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * of a loading bar...
  */
 loader.addModule('Engine',
-'B', 'Canvas', 'Controls', 'Level', 'data',
-function (B, canvas, Controls, Level, data) {
+'B', 'Canvas', 'Controls', 'Level', 'data', 'GUI',
+function (B, canvas, Controls, Level, data, GUI) {
 	var _callbacks = {},
 		engine = {},
 		fps = 30,
