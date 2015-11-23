@@ -19,6 +19,9 @@ function (B, canvas, Controls, Level, data, GUI) {
 		_drawables = [],
 		level;
 
+	engine.OPTION_USE_KEYBOARD = 0x1;
+	engine.OPTION_USE_MOUSE = 0x2;
+
 	function _loadResources (loadedCallback) {
 		var r, loaded = 0,
 			loadingPadding = canvas.width() / 5,
@@ -142,11 +145,14 @@ function (B, canvas, Controls, Level, data, GUI) {
 		_callbacks[name] = callback;
 	};
 
-	engine.init = function (canvasElement, callback) {
+	engine.init = function (canvasElement, options, callback) {
 		B.on(window, 'load', function () {
 			// Init the view
 			canvas.init(canvasElement);
-			Controls.init(false, canvasElement);
+			Controls.init(
+				(options & engine.OPTION_USE_KEYBOARD) == engine.OPTION_USE_KEYBOARD,
+				(options & engine.OPTION_USE_MOUSE) == engine.OPTION_USE_MOUSE ? canvasElement : null
+			);
 
 			_loadResources(function () {
 				_resetLevel(true);
