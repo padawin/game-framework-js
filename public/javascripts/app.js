@@ -150,7 +150,12 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		/* Ball and paddle collision */
 		// if the ball is colliding with the paddle
 		if (Physics.sphereCollidesWithRectangle(ball, paddle)) {
-			Physics.sphereBounceAgainstRectangle(ball, paddle);
+			ball.speedY *= -1;
+
+			var centerPaddleX = paddle.x + paddle.w / 2,
+				distFromPaddleCenter = ball.x - centerPaddleX;
+
+			ball.speedX = distFromPaddleCenter * 0.35;
 		}
 		/* Ball and paddle collision */
 	});

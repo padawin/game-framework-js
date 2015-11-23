@@ -73,21 +73,6 @@ function () {
 		}
 	};
 
-	/**
-	 * Make a moving sphere bouncing against a rectangle
-	 *
-	 * @TODO this might be too game-related
-	 */
-	physics.sphereBounceAgainstRectangle = function (sphere, rectangle) {
-		// to change with actual physics
-		sphere.speedY *= -1;
-
-		var centerPaddleX = rectangle.x + rectangle.w / 2,
-			distFromPaddleCenter = sphere.x - centerPaddleX;
-
-		sphere.speedX = distFromPaddleCenter * 0.35;
-	};
-
 	physics.sphereBounceAgainstInnerRectangle = function (sphere, rectangle) {
 		if (sphere.x - sphere.r < rectangle.x) {
 			sphere.x = rectangle.x + sphere.r;
