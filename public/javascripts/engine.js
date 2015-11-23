@@ -73,7 +73,7 @@ function (B, canvas, Controls, Level, data, GUI) {
 		}
 		else {
 			_runCallback('moveAll');
-			canvas.drawAll([_drawables, level.cells]);
+			canvas.drawAll([level.cells, _drawables]);
 		}
 	}
 
