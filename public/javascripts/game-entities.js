@@ -5,7 +5,7 @@ if (typeof (require) != 'undefined') {
 /**
  * This module contains the definition of the Car entitie
  */
-loader.addModule('ameEntities',
+loader.addModule('GameEntities',
 'Canvas',
 function (canvas) {
 	var entities = {},
