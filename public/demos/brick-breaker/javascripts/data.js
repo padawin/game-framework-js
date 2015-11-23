@@ -1,5 +1,5 @@
 if (typeof (require) != 'undefined') {
-	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
+	var loader = require('../../../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
 
 /**
