@@ -6,8 +6,8 @@ if (typeof (require) != 'undefined') {
  * This module contains the definition of the GridCell entities
  */
 loader.addModule('Entities',
-'Canvas', 'B',
-function (canvas, B) {
+'Canvas',
+function (canvas) {
 	var entities = {},
 		GridCell;
 
