@@ -128,7 +128,7 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 				carGridCellRow = Math.floor(players[p].y / level.gridCellHeight);
 
 			/* Car and wall collision */
-			var wall = level.getCell(
+			var tileUnderCar = level.getCell(
 				carGridCellCol,
 				carGridCellRow
 			);
@@ -137,10 +137,10 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 			if (0 <= carGridCellCol && carGridCellCol < level.width
 				&& 0 <= carGridCellRow && carGridCellRow < level.height
 			) {
-				if (data.resources[wall.state].obstacle) {
+				if (data.resources[tileUnderCar.state].obstacle) {
 					players[p].bumpBack();
 				}
-				else if (wall.state == data.resourcesMap.TILE_FINISH) {
+				else if (tileUnderCar.state == data.resourcesMap.TILE_FINISH) {
 					B.Events.fire('win', [players[p]]);
 				}
 			}
