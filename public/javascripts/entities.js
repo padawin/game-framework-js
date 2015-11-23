@@ -77,11 +77,12 @@ function (canvas, B) {
 
 	(function () {
 		/* GridCell Class */
-		GridCell = function (x, y, w, h, destructible, state) {
+		GridCell = function (x, y, w, h, texture, destructible, state) {
 			this.x = x;
 			this.y = y;
 			this.w = w;
 			this.h = h;
+			this.texture = texture;
 			this.state = this.originalState = state;
 			this.destructible = this.originalDestructible = destructible;
 		}
@@ -90,8 +91,11 @@ function (canvas, B) {
 		 * Draw the gridCell on the screen
 		 */
 		GridCell.prototype.draw = function () {
-			if (this.state == GridCell.STATE_ACTIVE) {
-				canvas.drawRectangle(this.x, this.y, this.w, this.h, 'red');
+			if (this.texture && typeof this.texture == 'object') {
+				canvas.drawTexture(this.texture, this.x, this.y, this.w, this.h);
+			}
+			else if (this.texture && typeof this.texture == 'string') {
+				canvas.drawRectangle(this.x, this.y, this.w, this.h, this.texture);
 			}
 		};
 

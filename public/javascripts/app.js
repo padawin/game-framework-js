@@ -130,6 +130,7 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 
 			brick.state = Entities.GridCell.STATE_INACTIVE;
+			brick.texture = data.resources[brick.state].resource;
 			remainingBricks--;
 
 			if (remainingBricks == 0) {

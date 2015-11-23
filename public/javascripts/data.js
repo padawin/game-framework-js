@@ -51,7 +51,13 @@ function () {
 			 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 			 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 			 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]}
+		],
+		resourcesMap: {TILE_INACTIVE: 0, TILE_ACTIVE: 1},
+		resources: [
+			{color: 'black'},
+			{color: 'blue'}
 		]
+
 	};
 
 	return data;
