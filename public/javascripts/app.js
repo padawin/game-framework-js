@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Engine', 'Canvas', 'Entities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
-function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
+'B', 'Engine', 'Canvas', 'Entities', 'GameEntities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
+function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Controls, Level, GUI) {
 	var ball,
 		paddle,
 		bricks = [],
@@ -32,9 +32,9 @@ function (B, Engine, canvas, Entities, Physics, Utils, data, Controls, Level, GU
 		function () {
 			// Init the ball
 			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
-			ball = new Entities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
+			ball = new GameEntities.Ball(startCell[0], startCell[1], BALL_RADIUS, BALL_SPEED_X, BALL_SPEED_Y);
 			// Init the paddle at the middle of the game view, 100px above the bottom
-			paddle = new Entities.Paddle(
+			paddle = new GameEntities.Paddle(
 				(canvas.width() - PADDLE_WIDTH) / 2, canvas.height() - 100,
 				PADDLE_WIDTH,
 				PADDLE_THICKNESS
