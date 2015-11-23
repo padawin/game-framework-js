@@ -106,7 +106,7 @@ function (B, canvas, Controls, Level, data, GUI) {
 				levelFinished = true;
 			}
 
-			_runCallback('win');
+			_runCallback('win', arguments);
 		});
 
 		// Event to execute when the player loses
