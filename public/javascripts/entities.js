@@ -3,7 +3,7 @@ if (typeof (require) != 'undefined') {
 }
 
 /**
- * This module contains the definition of the Car, Paddle and GridCell entities
+ * This module contains the definition of the GridCell entities
  */
 loader.addModule('Entities',
 'Canvas',
