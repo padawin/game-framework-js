@@ -11,10 +11,6 @@ loader.executeModule('main',
 function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 	var level,
 		walls = [],
-		// position of the mouse in the canvas, taking in account the scroll
-		// and position of the canvas in the page
-		mouseX,
-		mouseY,
 		nbPlayers = 2,
 		players = [],
 		playerControls = [
@@ -81,16 +77,6 @@ function (B, canvas, Entities, Physics, Utils, data, Controls, Level, GUI) {
 		for (var p = 0; p < nbPlayers; p++) {
 			players[p].reset();
 		}
-	});
-
-	// Event to execute when the player loses
-	B.Events.on('lost', null, function () {
-	});
-
-	// Event to execute when the mouse move
-	B.Events.on('mouse-moved', null, function (mX, mY) {
-		mouseX = mX;
-		mouseY = mY;
 	});
 	/* End of Events */
 
