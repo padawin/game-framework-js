@@ -41,21 +41,33 @@ function (B, canvas, Controls, Level, data, GUI) {
 			'black', 'white', 'black'
 		);
 		for (r = 0; r < resources.length; r++) {
-			resources[r].resource = new Image();
-			resources[r].resource.onload = function () {
-				if (++loaded == resources.length) {
-					loadedCallback();
+			if (resources[r] && resources[r].url) {
+				resources[r].resource = new Image();
+				resources[r].resource.onload = function () {
+					if (++loaded == resources.length) {
+						loadedCallback();
+					}
+					else {
+						GUI.progressBar(
+							loadingPadding, canvas.height() / 2,
+							loadingWidth, 30,
+							loaded / resources.length,
+							'black', 'white', 'black'
+						);
+					}
+				};
+				resources[r].resource.src = resources[r].url;
+			}
+			else {
+				if (resources[r]) {
+					resources[r].resource = resources[r].color;
 				}
-				else {
-					GUI.progressBar(
-						loadingPadding, canvas.height() / 2,
-						loadingWidth, 30,
-						loaded / resources.length,
-						'black', 'white', 'black'
-					);
-				}
-			};
-			resources[r].resource.src = resources[r].url;
+				++loaded;
+			}
+		}
+
+		if (loaded == resources.length) {
+			loadedCallback();
 		}
 	}
 
