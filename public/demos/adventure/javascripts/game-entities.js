@@ -19,12 +19,12 @@ function (canvas) {
 			_radius = 10;
 
 		/* Warrior Class */
-		Warrior = function (name, x, y, angle) {
+		Warrior = function (name, x, y) {
 			this.name = name;
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
 			this.r = _radius;
-			this.angle = this.originalAngle = angle;
+			this.angle = this.originalAngle = 0;
 			this.speed = this.originalSpeed = 0;
 			this.maxSpeed = 15;
 			this.minSpeed = -15;

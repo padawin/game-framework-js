@@ -24,7 +24,7 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		Engine.OPTION_USE_KEYBOARD,
 		function () {
 			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1])
-			warrior = new GameEntities.Warrior('MyWarrior', startCell[0], startCell[1], Math.PI / 2);
+			warrior = new GameEntities.Warrior('MyWarrior', startCell[0], startCell[1]);
 			warrior.setGraphic(data.resources[data.resourcesMap.WARRIOR].resource);
 
 			Engine.addDrawable(warrior);
