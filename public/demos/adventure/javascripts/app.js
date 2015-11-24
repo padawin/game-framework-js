@@ -13,7 +13,7 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		walls = [],
 		nbPlayers = 2,
 		warrior,
-		playerControls = {gasKey: Controls.KEY_UP_ARROW, reverseKey: Controls.KEY_DOWN_ARROW, leftKey: Controls.KEY_LEFT_ARROW, rightKey: Controls.KEY_RIGHT_ARROW};
+		playerControls = {up: Controls.KEY_UP_ARROW, down: Controls.KEY_DOWN_ARROW, left: Controls.KEY_LEFT_ARROW, right: Controls.KEY_RIGHT_ARROW};
 		fps = 30,
 		urlParams = Utils.getUrlParams(window.location.search);
 
@@ -32,16 +32,16 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 	);
 
 	function key (code, pressed, warrior, controls) {
-		if (code == controls.leftKey) {
+		if (code == controls.left) {
 			warrior.steerLeft(pressed);
 		}
-		else if (code == controls.gasKey) {
+		else if (code == controls.up) {
 			warrior.accelerate(pressed);
 		}
-		else if (code == controls.rightKey) {
+		else if (code == controls.right) {
 			warrior.steerRight(pressed);
 		}
-		else if (code == controls.reverseKey) {
+		else if (code == controls.down) {
 			warrior.reverse(pressed);
 		}
 	}
