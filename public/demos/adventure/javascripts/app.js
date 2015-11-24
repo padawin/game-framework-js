@@ -81,9 +81,6 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 			if (data.resources[tileUnderWarrior.state].obstacle) {
 				warrior.bumpBack();
 			}
-			else if (tileUnderWarrior.state == data.resourcesMap.TILE_FINISH) {
-				B.Events.fire('win', [warrior]);
-			}
 		}
 		else {
 			warrior.bumpBack();
