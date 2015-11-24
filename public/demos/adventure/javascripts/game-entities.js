@@ -3,13 +3,13 @@ if (typeof (require) != 'undefined') {
 }
 
 /**
- * This module contains the definition of the Car entitie
+ * This module contains the definition of the Warrior entitie
  */
 loader.addModule('GameEntities',
 'Canvas',
 function (canvas) {
 	var entities = {},
-		Car;
+		Warrior;
 
 	(function () {
 		var _power = 0.2,
@@ -18,8 +18,8 @@ function (canvas) {
 			_friction = 0.98,
 			_radius = 10;
 
-		/* Car Class */
-		Car = function (name, x, y, angle) {
+		/* Warrior Class */
+		Warrior = function (name, x, y, angle) {
 			this.name = name;
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
@@ -35,26 +35,26 @@ function (canvas) {
 			this.isReversing = false;
 		};
 
-		Car.prototype.steerLeft = function (enable) {
+		Warrior.prototype.steerLeft = function (enable) {
 			this.isSteeringLeft = enable;
 		};
 
-		Car.prototype.steerRight = function (enable) {
+		Warrior.prototype.steerRight = function (enable) {
 			this.isSteeringRight = enable;
 		};
 
-		Car.prototype.accelerate = function (enable) {
+		Warrior.prototype.accelerate = function (enable) {
 			this.gas = enable;
 		};
 
-		Car.prototype.reverse = function (enable) {
+		Warrior.prototype.reverse = function (enable) {
 			this.isReversing = enable;
 		};
 
 		/**
-		 * Method to update the car position according to its speed
+		 * Method to update the warrior position according to its speed
 		 */
-		Car.prototype.updatePosition = function () {
+		Warrior.prototype.updatePosition = function () {
 			// friction
 			this.speed *= 0.98;
 			if (Math.abs(this.speed) < 0.1) {
@@ -79,21 +79,21 @@ function (canvas) {
 
 		};
 
-		Car.prototype.bumpBack = function () {
+		Warrior.prototype.bumpBack = function () {
 			this.x -= Math.cos(this.angle) * this.speed;
 			this.y -= Math.sin(this.angle) * this.speed;
 
 			this.speed *= -0.5;
 		};
 
-		Car.prototype.setGraphic = function (graphic) {
+		Warrior.prototype.setGraphic = function (graphic) {
 			this.graphic = graphic;
 		};
 
 		/**
-		 * Reset the car to its original values
+		 * Reset the warrior to its original values
 		 */
-		Car.prototype.reset = function () {
+		Warrior.prototype.reset = function () {
 			this.x  = this.originalX;
 			this.y = this.originalY;
 			this.angle = this.originalAngle;
@@ -101,15 +101,15 @@ function (canvas) {
 		};
 
 		/**
-		 * Draw the car on the screen
+		 * Draw the warrior on the screen
 		 */
-		Car.prototype.draw = function () {
+		Warrior.prototype.draw = function () {
 			canvas.drawRotatedImage(this.graphic, this.x, this.y, this.angle);
 		};
-		/* End Car Class */
+		/* End Warrior Class */
 	})();
 
-	entities.Car = Car;
+	entities.Warrior = Warrior;
 
 	return entities;
 });

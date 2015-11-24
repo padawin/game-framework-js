@@ -12,7 +12,7 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 	var level,
 		walls = [],
 		nbPlayers = 2,
-		car,
+		warrior,
 		playerControls = {gasKey: Controls.KEY_UP_ARROW, reverseKey: Controls.KEY_DOWN_ARROW, leftKey: Controls.KEY_LEFT_ARROW, rightKey: Controls.KEY_RIGHT_ARROW};
 		fps = 30,
 		urlParams = Utils.getUrlParams(window.location.search);
@@ -24,70 +24,70 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		Engine.OPTION_USE_KEYBOARD,
 		function () {
 			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1])
-			car = new GameEntities.Car('MyCar', startCell[0], startCell[1], Math.PI / 2);
-			car.setGraphic(data.resources[data.resourcesMap.CAR].resource);
+			warrior = new GameEntities.Warrior('MyWarrior', startCell[0], startCell[1], Math.PI / 2);
+			warrior.setGraphic(data.resources[data.resourcesMap.WARRIOR].resource);
 
-			Engine.addDrawable(car);
+			Engine.addDrawable(warrior);
 		}
 	);
 
-	function key (code, pressed, car, controls) {
+	function key (code, pressed, warrior, controls) {
 		if (code == controls.leftKey) {
-			car.steerLeft(pressed);
+			warrior.steerLeft(pressed);
 		}
 		else if (code == controls.gasKey) {
-			car.accelerate(pressed);
+			warrior.accelerate(pressed);
 		}
 		else if (code == controls.rightKey) {
-			car.steerRight(pressed);
+			warrior.steerRight(pressed);
 		}
 		else if (code == controls.reverseKey) {
-			car.reverse(pressed);
+			warrior.reverse(pressed);
 		}
 	}
 
 	B.Events.on('keydown', null, function (code) {
-		key(code, true, car, playerControls);
+		key(code, true, warrior, playerControls);
 	});
 
 	B.Events.on('keyup', null, function (code) {
-		key(code, false, car, playerControls);
+		key(code, false, warrior, playerControls);
 	});
 
 	Engine.addCallback('win', function (winner) {
-		car.reset();
+		warrior.reset();
 	});
 
 	/**
 	 * Method to update the game state and the objects's position
 	 */
 	Engine.addCallback('moveAll', function () {
-		// Update the cars position
-		car.updatePosition();
+		// Update the warriors position
+		warrior.updatePosition();
 
-		var carGridCellCol = Math.floor(car.x / Engine.getLevel().gridCellWidth),
-			carGridCellRow = Math.floor(car.y / Engine.getLevel().gridCellHeight);
+		var warriorGridCellCol = Math.floor(warrior.x / Engine.getLevel().gridCellWidth),
+			warriorGridCellRow = Math.floor(warrior.y / Engine.getLevel().gridCellHeight);
 
-		/* Car and wall collision */
-		var tileUnderCar = Engine.getLevel().getCell(
-			carGridCellCol,
-			carGridCellRow
+		/* Warrior and wall collision */
+		var tileUnderWarrior = Engine.getLevel().getCell(
+			warriorGridCellCol,
+			warriorGridCellRow
 		);
 
-		// if the car is on a wall
-		if (0 <= carGridCellCol && carGridCellCol < Engine.getLevel().width
-			&& 0 <= carGridCellRow && carGridCellRow < Engine.getLevel().height
+		// if the warrior is on a wall
+		if (0 <= warriorGridCellCol && warriorGridCellCol < Engine.getLevel().width
+			&& 0 <= warriorGridCellRow && warriorGridCellRow < Engine.getLevel().height
 		) {
-			if (data.resources[tileUnderCar.state].obstacle) {
-				car.bumpBack();
+			if (data.resources[tileUnderWarrior.state].obstacle) {
+				warrior.bumpBack();
 			}
-			else if (tileUnderCar.state == data.resourcesMap.TILE_FINISH) {
-				B.Events.fire('win', [car]);
+			else if (tileUnderWarrior.state == data.resourcesMap.TILE_FINISH) {
+				B.Events.fire('win', [warrior]);
 			}
 		}
 		else {
-			car.bumpBack();
+			warrior.bumpBack();
 		}
-		/* End of Car and wall collision */
+		/* End of Warrior and wall collision */
 	});
 });
