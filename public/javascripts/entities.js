@@ -28,7 +28,14 @@ function (canvas) {
 		 */
 		GridCell.prototype.draw = function () {
 			if (this.texture && typeof this.texture.resource == 'object') {
-				canvas.drawTexture(this.texture.resource, this.x, this.y, this.w, this.h);
+				if (this.texture.texture) {
+					canvas.drawTexture(this.texture.resource, this.x, this.y, this.w, this.h);
+				}
+				else {
+					// @TODO Set the picture size at maximum 100% of the cell's
+					// size to not overlap on neighbour cells
+					canvas.drawImage(this.texture.resource, this.x, this.y);
+				}
 			}
 			else if (this.texture && typeof this.texture.resource == 'string') {
 				canvas.drawRectangle(this.x, this.y, this.w, this.h, this.texture.resource);
