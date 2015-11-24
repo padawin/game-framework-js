@@ -72,6 +72,9 @@ function (canvas, Entities) {
 					var resource;
 					if (data.resources && data.resources[map.map[row][col]]) {
 						resource = data.resources[map.map[row][col]];
+						if (typeof resource.background == 'number') {
+							resource.background = data.resources[resource.background];
+						}
 					}
 
 					level.cells.push(new Entities.GridCell(

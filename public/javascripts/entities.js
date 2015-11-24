@@ -32,6 +32,9 @@ function (canvas) {
 					canvas.drawTexture(this.texture.resource, this.x, this.y, this.w, this.h);
 				}
 				else {
+					if (this.texture.background !== undefined) {
+						canvas.drawTexture(this.texture.background.resource, this.x, this.y, this.w, this.h);
+					}
 					// @TODO Set the picture size at maximum 100% of the cell's
 					// size to not overlap on neighbour cells
 					canvas.drawImage(this.texture.resource, this.x, this.y);
