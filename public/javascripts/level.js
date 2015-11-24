@@ -71,7 +71,7 @@ function (canvas, Entities) {
 				for (col = 0; col < map.width; col++ ) {
 					var resource;
 					if (data.resources && data.resources[map.map[row][col]]) {
-						resource = data.resources[map.map[row][col]].resource;
+						resource = data.resources[map.map[row][col]];
 					}
 
 					level.cells.push(new Entities.GridCell(

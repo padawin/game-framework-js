@@ -27,11 +27,11 @@ function (canvas) {
 		 * Draw the gridCell on the screen
 		 */
 		GridCell.prototype.draw = function () {
-			if (this.texture && typeof this.texture == 'object') {
-				canvas.drawTexture(this.texture, this.x, this.y, this.w, this.h);
+			if (this.texture && typeof this.texture.resource == 'object') {
+				canvas.drawTexture(this.texture.resource, this.x, this.y, this.w, this.h);
 			}
-			else if (this.texture && typeof this.texture == 'string') {
-				canvas.drawRectangle(this.x, this.y, this.w, this.h, this.texture);
+			else if (this.texture && typeof this.texture.resource == 'string') {
+				canvas.drawRectangle(this.x, this.y, this.w, this.h, this.texture.resource);
 			}
 		};
 
