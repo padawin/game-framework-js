@@ -33,16 +33,16 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 
 	function key (code, pressed, warrior, controls) {
 		if (code == controls.left) {
-			warrior.steerLeft(pressed);
+			warrior.walkLeft(pressed);
 		}
 		else if (code == controls.up) {
-			warrior.accelerate(pressed);
+			warrior.walkUp(pressed);
 		}
 		else if (code == controls.right) {
-			warrior.steerRight(pressed);
+			warrior.walkRight(pressed);
 		}
 		else if (code == controls.down) {
-			warrior.reverse(pressed);
+			warrior.walkDown(pressed);
 		}
 	}
 
