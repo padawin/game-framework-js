@@ -9,7 +9,7 @@ loader.addModule('data',
 function () {
 	var data = {
 		maps: [
-			{width: 20, height: 15, start: [[2, 7], [1, 7]], map:
+			{width: 20, height: 15, start: [2, 7], map:
 			[[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 			 [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1],
 			 [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,1],
@@ -26,15 +26,14 @@ function () {
 			 [1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,2,1],
 			 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]}
 		],
-		resourcesMap: {TILE_ROAD: 0, TILE_WALL: 1, TILE_GRASS: 2, TILE_FINISH: 3, TILE_FLAG: 4, CAR: [5, 6]},
+		resourcesMap: {TILE_ROAD: 0, TILE_WALL: 1, TILE_GRASS: 2, TILE_FINISH: 3, TILE_FLAG: 4, CAR: 5},
 		resources: [
 			{url: 'images/road.png', obstacle: false},
 			{url: 'images/wall.png', obstacle: true},
 			{url: 'images/grass.png', obstacle: false},
 			{url: 'images/start.png', obstacle: false},
 			{url: 'images/flag.png', obstacle: true},
-			{url: 'images/player1car.png'},
-			{url: 'images/player2car.png'}
+			{url: 'images/player1car.png'}
 		]
 	};
 
