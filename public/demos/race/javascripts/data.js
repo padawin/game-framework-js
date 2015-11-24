@@ -26,7 +26,7 @@ function () {
 			 [1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,2,1],
 			 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]}
 		],
-		resourcesMap: {TILE_ROAD: 0, TILE_WALL: 1, TILE_GRASS: 2, TILE_FINISH: 3, TILE_FLAG: 4, CAR: 5},
+		resourcesMap: {TILE_ROAD: 0, TILE_WALL: 1, TILE_GRASS: 2, TILE_FINISH: 3, TILE_FLAG: 4, CAR: [5, 6]},
 		resources: [
 			{url: 'images/road.png', obstacle: false},
 			{url: 'images/wall.png', obstacle: true},
