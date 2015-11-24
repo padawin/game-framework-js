@@ -33,7 +33,8 @@ function () {
 			{url: 'images/grass.png', obstacle: false},
 			{url: 'images/start.png', obstacle: false},
 			{url: 'images/flag.png', obstacle: true},
-			{url: 'images/player1car.png'}
+			{url: 'images/player1car.png'},
+			{url: 'images/player2car.png'}
 		]
 	};
 
