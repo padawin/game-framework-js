@@ -56,6 +56,11 @@ function (canvas) {
 			this.texture = this.originalTexture;
 			this.destructible = this.originalDestructible;
 		};
+
+		GridCell.prototype.changeStateAndTexture = function (newState, newTexture) {
+			this.state = newState;
+			this.texture = newTexture;
+		};
 		/* End GridCell Class */
 	})();
 
