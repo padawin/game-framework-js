@@ -28,7 +28,7 @@ function () {
 			{url: 'images/road.png', obstacle: false, texture: true},
 			{url: 'images/wall.png', obstacle: true, texture: true},
 			{url: 'images/grass.png', obstacle: false, texture: true},
-			{url: 'images/flag.png', obstacle: false, texture: false},
+			{url: 'images/flag.png', obstacle: false, texture: false, background: 0}, // 0 is a road
 			{url: 'images/player1warrior.png'}
 		]
 	};
