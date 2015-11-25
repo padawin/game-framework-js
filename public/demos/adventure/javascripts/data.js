@@ -25,10 +25,10 @@ function () {
 		],
 		resourcesMap: {TILE_ROAD: 0, TILE_WALL: 1, TILE_GRASS: 2, TILE_FLAG: 3, WARRIOR: 4},
 		resources: [
-			{url: 'images/road.png', obstacle: false},
-			{url: 'images/wall.png', obstacle: true},
-			{url: 'images/grass.png', obstacle: false},
-			{url: 'images/flag.png', obstacle: false},
+			{url: 'images/road.png', obstacle: false, texture: true},
+			{url: 'images/wall.png', obstacle: true, texture: true},
+			{url: 'images/grass.png', obstacle: false, texture: true},
+			{url: 'images/flag.png', obstacle: false, texture: false},
 			{url: 'images/player1warrior.png'}
 		]
 	};
