@@ -37,7 +37,11 @@ function (canvas) {
 					}
 					// @TODO Set the picture size at maximum 100% of the cell's
 					// size to not overlap on neighbour cells
-					canvas.drawImage(this.texture.resource, this.x, this.y);
+					canvas.drawImage(
+						this.texture.resource,
+						this.x + (this.w - this.texture.resource.width) / 2,
+						this.y + (this.h - this.texture.resource.height) / 2
+					);
 				}
 			}
 			else if (this.texture && typeof this.texture.resource == 'string') {
