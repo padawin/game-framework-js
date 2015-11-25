@@ -23,15 +23,15 @@ function () {
 			 [1,0,0,0,0,0,1,1,0,0,0,0,0,0,2,1],
 			 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]]}
 		],
-		resourcesMap: {TILE_ROAD: 0, TILE_WALL: 1, TILE_GRASS: 2, TILE_DOOR: 3, WARRIOR: 4, KEY: 5, GOAL: 6},
+		resourcesMap: {TILE_FLOOR: 0, TILE_WALL: 1, TILE_GRASS: 2, TILE_DOOR: 3, WARRIOR: 4, KEY: 5, GOAL: 6},
 		resources: [
-			{url: 'images/road.png', obstacle: false, texture: true},
+			{url: 'images/floor.png', obstacle: false, texture: true},
 			{url: 'images/wall.png', obstacle: true, texture: true},
 			{url: 'images/grass.png', obstacle: false, texture: true},
-			{url: 'images/door.png', obstacle: true, texture: false, background: 0}, // 0 is a road
+			{url: 'images/door.png', obstacle: true, texture: false, background: 0}, // 0 is a floor
 			{url: 'images/player1warrior.png'},
-			{url: 'images/key.png', obstacle: false, texture: false, background: 0}, // 0 is a road,
-			{url: 'images/goal.png', obstacle: false, texture: false, background: 0} // 0 is a road
+			{url: 'images/key.png', obstacle: false, texture: false, background: 0}, // 0 is a floor,
+			{url: 'images/goal.png', obstacle: false, texture: false, background: 0} // 0 is a floor
 		]
 	};
 
