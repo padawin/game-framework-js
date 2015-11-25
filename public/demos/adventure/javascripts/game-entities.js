@@ -82,7 +82,11 @@ function (canvas) {
 		 * Draw the warrior on the screen
 		 */
 		Warrior.prototype.draw = function () {
-			canvas.drawRotatedImage(this.graphic, this.x, this.y, this.angle);
+			canvas.drawImage(
+				this.graphic,
+				this.x - this.graphic.width / 2,
+				this.y - this.graphic.height / 2
+			);
 		};
 		/* End Warrior Class */
 	})();
