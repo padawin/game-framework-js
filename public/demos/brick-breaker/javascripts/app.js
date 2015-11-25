@@ -135,8 +135,7 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);
 
-			brick.state = data.states.INACTIVE;
-			brick.texture = data.resources[brick.state].resource;
+			brick.changeStateAndTexture(data.states.INACTIVE, data.resources[brick.state].resource);
 			remainingBricks--;
 
 			if (remainingBricks == 0) {
