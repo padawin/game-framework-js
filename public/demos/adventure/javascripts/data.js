@@ -28,7 +28,7 @@ function () {
 			{url: 'images/road.png', obstacle: false},
 			{url: 'images/wall.png', obstacle: true},
 			{url: 'images/grass.png', obstacle: false},
-			{url: 'images/flag.png', obstacle: true},
+			{url: 'images/flag.png', obstacle: false},
 			{url: 'images/player1warrior.png'}
 		]
 	};
