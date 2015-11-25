@@ -28,11 +28,11 @@ function () {
 		],
 		resourcesMap: {TILE_ROAD: 0, TILE_WALL: 1, TILE_GRASS: 2, TILE_FINISH: 3, TILE_FLAG: 4, CAR: [5, 6]},
 		resources: [
-			{url: 'images/road.png', obstacle: false},
-			{url: 'images/wall.png', obstacle: true},
-			{url: 'images/grass.png', obstacle: false},
-			{url: 'images/start.png', obstacle: false},
-			{url: 'images/flag.png', obstacle: true},
+			{url: 'images/road.png', obstacle: false, texture: true},
+			{url: 'images/wall.png', obstacle: true, texture: true},
+			{url: 'images/grass.png', obstacle: false, texture: true},
+			{url: 'images/start.png', obstacle: false, texture: true},
+			{url: 'images/flag.png', obstacle: true, texture: true},
 			{url: 'images/player1car.png'},
 			{url: 'images/player2car.png'}
 		]
