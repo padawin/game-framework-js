@@ -78,7 +78,14 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		if (0 <= warriorGridCellCol && warriorGridCellCol < Engine.getLevel().width
 			&& 0 <= warriorGridCellRow && warriorGridCellRow < Engine.getLevel().height
 		) {
-			if (data.resources[tileUnderWarrior.state].obstacle) {
+			if (tileUnderWarrior.state == data.resourcesMap.KEY) {
+				warrior.addKey();
+				tileUnderWarrior.changeStateAndTexture(
+					data.resourcesMap.TILE_ROAD,
+					data.resources[data.resourcesMap.TILE_ROAD]
+				);
+			}
+			else if (data.resources[tileUnderWarrior.state].obstacle) {
 				warrior.bumpBack();
 			}
 		}
