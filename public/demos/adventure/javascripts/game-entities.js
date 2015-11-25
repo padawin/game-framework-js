@@ -17,6 +17,7 @@ function (canvas) {
 		/* Warrior Class */
 		Warrior = function (name, x, y) {
 			this.name = name;
+			this.keys = 0;
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
 			this.r = _radius;
@@ -87,6 +88,18 @@ function (canvas) {
 				this.x - this.graphic.width / 2,
 				this.y - this.graphic.height / 2
 			);
+		};
+
+		Warrior.prototype.addKey = function () {
+			this.keys++;
+		};
+
+		Warrior.prototype.useKey = function () {
+			this.keys--;
+		};
+
+		Warrior.prototype.getNumberOfKeys = function () {
+			return this.keys;
 		};
 		/* End Warrior Class */
 	})();
