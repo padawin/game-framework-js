@@ -85,6 +85,13 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 					data.resources[data.resourcesMap.TILE_ROAD]
 				);
 			}
+			else if (tileUnderWarrior.state == data.resourcesMap.TILE_DOOR && warrior.getNumberOfKeys() > 0) {
+				warrior.useKey();
+				tileUnderWarrior.changeStateAndTexture(
+					data.resourcesMap.TILE_ROAD,
+					data.resources[data.resourcesMap.TILE_ROAD]
+				);
+			}
 			else if (data.resources[tileUnderWarrior.state].obstacle) {
 				warrior.bumpBack();
 			}
