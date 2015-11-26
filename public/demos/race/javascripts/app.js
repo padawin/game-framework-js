@@ -24,7 +24,7 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 
 	Engine.init(
 		document.getElementById('game-canvas'),
-		Engine.OPTION_USE_KEYBOARD,
+		Engine.OPTION_USE_KEYBOARD | Engine.OPTION_USE_MOUSE,
 		function () {
 			// Init the car
 			for (var p = 0; p < data.maps[0].start.length && p < nbPlayers; p++) {
