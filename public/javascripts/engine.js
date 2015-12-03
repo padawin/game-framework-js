@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * of a loading bar...
  */
 loader.addModule('Engine',
-'B', 'Canvas', 'Controls', 'Level', 'data', 'GUI',
-function (B, canvas, Controls, Level, data, GUI) {
+'B', 'Canvas', 'Controls', 'Level', 'data', 'GUI', 'Camera',
+function (B, canvas, Controls, Level, data, GUI, Camera) {
 	"use strict";
 
 	var _callbacks = {},
@@ -22,7 +22,8 @@ function (B, canvas, Controls, Level, data, GUI) {
 		level,
 		// If set to true, the camera will scroll, otherwise, the
 		// level will have to fit in the camera
-		_fixedSizeWorld;
+		_fixedSizeWorld,
+		_camera;
 
 	engine.OPTION_USE_KEYBOARD = 0x1;
 	engine.OPTION_USE_MOUSE = 0x2;
@@ -196,6 +197,10 @@ function (B, canvas, Controls, Level, data, GUI) {
 		_callbacks[name] = callback;
 	};
 
+	engine.initCamera = function (xWorld, yWorld, x, y, w, h) {
+		_camera = new Camera(xWorld, yWorld, x, y, w, h);
+	};
+
 	engine.init = function (canvasElement, options, callback) {
 		_fixedSizeWorld = (options & engine.OPTION_FIXED_SIZE_WORLD) == engine.OPTION_FIXED_SIZE_WORLD;
 		B.on(window, 'load', function () {
@@ -211,6 +216,15 @@ function (B, canvas, Controls, Level, data, GUI) {
 
 				if (typeof callback == 'function') {
 					callback();
+
+					if (!_camera) {
+						engine.initCamera(
+							canvas.width() / 2,
+							canvas.height() / 2,
+							0, 0,
+							canvas.width(), canvas.height()
+						);
+					}
 				}
 				setInterval(_updateAll, 1000 / fps);
 			});
