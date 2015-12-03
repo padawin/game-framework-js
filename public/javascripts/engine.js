@@ -78,7 +78,10 @@ function (B, canvas, Controls, Level, data, GUI) {
 	 * objects's position and then redraw the canvas
 	 */
 	function _updateAll () {
-		_runCallback('moveAll');
+		if (!gameFinished && !levelFinished) {
+			_runCallback('moveAll');
+		}
+
 		canvas.clearScreen('black');
 		if (gameFinished) {
 			_runCallback('gameFinishedScreen');
