@@ -14,7 +14,6 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		nbPlayers = 2,
 		warrior,
 		playerControls = {up: Controls.KEY_UP_ARROW, down: Controls.KEY_DOWN_ARROW, left: Controls.KEY_LEFT_ARROW, right: Controls.KEY_RIGHT_ARROW},
-		fps = 30,
 		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
