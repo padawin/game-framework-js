@@ -80,7 +80,6 @@ function (canvas, Entities) {
 					}
 
 					level.cells.push(new Entities.GridCell(
-						// 5 is the initial left margin
 						level.gridCellWidth * col, level.gridCellHeight * row,
 						level.gridCellWidth, level.gridCellHeight,
 						resource,
