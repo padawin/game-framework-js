@@ -9,8 +9,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Engine', 'Entities', 'GameEntities', 'Utils', 'data', 'Controls', 'Level',
-function (B, Engine, Entities, GameEntities, Utils, data, Controls, Level) {
+'B', 'Engine', 'Canvas', 'Entities', 'GameEntities', 'Utils', 'data', 'Controls', 'Level',
+function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Level) {
 	var level,
 		walls = [],
 		nbPlayers = 2,
@@ -29,6 +29,7 @@ function (B, Engine, Entities, GameEntities, Utils, data, Controls, Level) {
 			warrior.setGraphic(data.resources[data.resourcesMap.WARRIOR].resource);
 
 			Engine.addDrawable(warrior);
+			Engine.initCamera(startCell[0] - 200 / 2, startCell[1] - 200 / 2, 0, 0, canvas.width(), canvas.height());
 		}
 	);
 

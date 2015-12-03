@@ -9,8 +9,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Engine', 'Entities', 'GameEntities', 'Utils', 'data', 'Controls', 'Level',
-function (B, Engine, Entities, GameEntities, Utils, data, Controls, Level) {
+'B', 'Engine', 'Canvas', 'Entities', 'GameEntities', 'Utils', 'data', 'Controls', 'Level',
+function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Level) {
 	var level,
 		walls = [],
 		nbPlayers = 2,
