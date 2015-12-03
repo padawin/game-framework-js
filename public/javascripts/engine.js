@@ -99,7 +99,7 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 			_runCallback('levelFinishedScreen');
 		}
 		else {
-			canvas.drawAll([level.cells, _drawables]);
+			canvas.drawAll([level.cells, _drawables, _camera]);
 		}
 	}
 
