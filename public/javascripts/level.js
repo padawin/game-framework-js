@@ -84,8 +84,7 @@ function (canvas, Entities) {
 						level.gridCellWidth * col, level.gridCellHeight * row,
 						level.gridCellWidth, level.gridCellHeight,
 						resource,
-						// @TODO remove destructable field
-						true, map.map[row][col]
+						map.map[row][col]
 					));
 
 					_incrementStateCount(level, map.map[row][col]);

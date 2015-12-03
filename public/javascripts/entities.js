@@ -15,14 +15,13 @@ function (canvas) {
 
 	(function () {
 		/* GridCell Class */
-		GridCell = function (x, y, w, h, texture, destructible, state) {
+		GridCell = function (x, y, w, h, texture, state) {
 			this.x = x;
 			this.y = y;
 			this.w = w;
 			this.h = h;
 			this.texture = this.originalTexture = texture;
 			this.state = this.originalState = state;
-			this.destructible = this.originalDestructible = destructible;
 		}
 
 		/**
@@ -56,7 +55,6 @@ function (canvas) {
 		GridCell.prototype.reset = function () {
 			this.state = this.originalState;
 			this.texture = this.originalTexture;
-			this.destructible = this.originalDestructible;
 		};
 
 		GridCell.prototype.changeStateAndTexture = function (newState, newTexture) {
