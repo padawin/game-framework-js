@@ -1,3 +1,5 @@
+"use strict";
+
 if (typeof (require) != 'undefined') {
 	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -146,10 +148,7 @@ function (B, canvas, Controls, Level, data, GUI) {
 
 		// Event to execute when the mouse move
 		B.Events.on('mouse-moved', null, function (mX, mY) {
-			mouseX = mX;
-			mouseY = mY;
-
-			_runCallback('mouseMoved', [mouseX, mouseY]);
+			_runCallback('mouseMoved', [mX, mY]);
 		});
 	}
 

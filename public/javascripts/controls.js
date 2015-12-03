@@ -1,3 +1,5 @@
+"use strict";
+
 if (typeof (require) != 'undefined') {
 	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -26,10 +28,10 @@ function (B) {
 		var rect = this.getBoundingClientRect(),
 			root = document.documentElement;
 
-			mouseX = e.clientX - rect.left - root.scrollLeft;
-			mouseY = e.clientY- rect.top - root.scrollTop;
-
-		return [mouseX, mouseY];
+		return [
+			e.clientX - rect.left - root.scrollLeft,
+			e.clientY- rect.top - root.scrollTop
+		];
 	}
 
 	function mouseMovedEvent (e) {

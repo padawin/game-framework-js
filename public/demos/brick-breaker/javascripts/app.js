@@ -1,3 +1,5 @@
+"use strict"
+
 if (typeof (require) != 'undefined') {
 	var loader = require('../../../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -111,7 +113,7 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 			brickSide,
 			brickTopBot,
 			ballGridCellCol = Math.floor(ball.x / Engine.getLevel().gridCellWidth),
-			ballGridCellRow = Math.floor(ball.y / Engine.getLevel().gridCellHeight)
+			ballGridCellRow = Math.floor(ball.y / Engine.getLevel().gridCellHeight),
 			ballOldGridCellCol = Math.floor((ball.x - ball.speedX) / Engine.getLevel().gridCellWidth),
 			ballOldGridCellRow = Math.floor((ball.y - ball.speedY) / Engine.getLevel().gridCellHeight);
 

@@ -1,3 +1,5 @@
+"use strict";
+
 if (typeof (require) != 'undefined') {
 	var loader = require('../../../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -16,8 +18,7 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		playerControls = [
 			{gasKey: Controls.KEY_UP_ARROW, reverseKey: Controls.KEY_DOWN_ARROW, leftKey: Controls.KEY_LEFT_ARROW, rightKey: Controls.KEY_RIGHT_ARROW},
 			{gasKey: Controls.KEY_W, reverseKey: Controls.KEY_S, leftKey: Controls.KEY_A, rightKey: Controls.KEY_D}
-		];
-		fps = 30,
+		],
 		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
