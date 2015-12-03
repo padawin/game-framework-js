@@ -23,12 +23,14 @@ function () {
 		 * Method to draw a rectangle
 		 */
 		drawRectangle: function (x, y, width, height, fillColor, strokeColor) {
-			strokeColor = strokeColor || '#000000';
-			fillColor = fillColor || '#000000';
-			canvasContext.strokeStyle = strokeColor;
-			canvasContext.fillStyle = fillColor;
-			canvasContext.strokeRect(x, y, width, height);
-			canvasContext.fillRect(x, y, width, height);
+			if (fillColor) {
+				canvasContext.fillStyle = fillColor;
+				canvasContext.fillRect(x, y, width, height);
+			}
+			if (strokeColor) {
+				canvasContext.strokeStyle = strokeColor;
+				canvasContext.strokeRect(x, y, width, height);
+			}
 		},
 
 		/**
