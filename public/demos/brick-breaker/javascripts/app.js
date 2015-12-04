@@ -9,8 +9,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Engine', 'Canvas', 'Entities', 'GameEntities', 'Physics', 'Utils', 'data', 'Controls', 'Level', 'GUI',
-function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Controls, Level, GUI) {
+'B', 'Engine', 'Canvas', 'Entities', 'GameEntities', 'Physics', 'Utils', 'data', 'Level',
+function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Level) {
 	var ball,
 		paddle,
 		bricks = [],
