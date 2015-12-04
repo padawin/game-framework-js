@@ -46,16 +46,16 @@ function (B, canvas, Controls, Level, data, GUI) {
 			if (resources[r] && resources[r].url) {
 				resources[r].resource = new Image();
 				resources[r].resource.onload = function () {
-					if (++loaded == resources.length) {
+					loaded++;
+					GUI.progressBar(
+						loadingPadding, canvas.height() / 2,
+						loadingWidth, 30,
+						loaded / resources.length,
+						'black', 'white', 'black'
+					);
+
+					if (loaded == resources.length) {
 						loadedCallback();
-					}
-					else {
-						GUI.progressBar(
-							loadingPadding, canvas.height() / 2,
-							loadingWidth, 30,
-							loaded / resources.length,
-							'black', 'white', 'black'
-						);
 					}
 				};
 				resources[r].resource.src = resources[r].url;
