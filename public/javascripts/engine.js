@@ -19,10 +19,12 @@ function (B, canvas, Controls, Level, data, GUI) {
 		gameFinished = false,
 		levelFinished = false,
 		_drawables = [],
-		level;
+		level,
+		_fixedSizeWorld;
 
 	engine.OPTION_USE_KEYBOARD = 0x1;
 	engine.OPTION_USE_MOUSE = 0x2;
+	engine.OPTION_FIXED_SIZE_WORLD = 0x4;
 
 	function _loadResources (loadedCallback) {
 		var r, loaded = 0,
@@ -164,6 +166,7 @@ function (B, canvas, Controls, Level, data, GUI) {
 	};
 
 	engine.init = function (canvasElement, options, callback) {
+		_fixedSizeWorld = (options & engine.OPTION_FIXED_SIZE_WORLD) == engine.OPTION_FIXED_SIZE_WORLD;
 		B.on(window, 'load', function () {
 			// Init the view
 			canvas.init(canvasElement);
