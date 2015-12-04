@@ -207,6 +207,11 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		_camera = new Camera(xWorld, yWorld, x, y, w, h);
 	};
 
+	engine.updateCameraPosition = function (x, y) {
+		_camera.xWorld = x;
+		_camera.yWorld = y;
+	};
+
 	engine.init = function (canvasElement, options, callback) {
 		_fixedSizeWorld = (options & engine.OPTION_FIXED_SIZE_WORLD) == engine.OPTION_FIXED_SIZE_WORLD;
 		B.on(window, 'load', function () {
