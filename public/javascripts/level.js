@@ -58,13 +58,13 @@ function (canvas, Entities) {
 		 * The walls are organised on a rectangle of the grid filling the screen
 		 * Each wall is an instance of the class Entities.GridCell
 		 */
-		createLevel: function (data, levelIndex) {
+		createLevel: function (data, levelIndex, cellDimensions) {
 			var col, row,
 				level = new LevelClass(),
 				map = data.maps[levelIndex];
 
-			level.gridCellWidth = canvas.width() / map.width;
-			level.gridCellHeight = canvas.height() / map.height;
+			level.gridCellWidth = cellDimensions[0];
+			level.gridCellHeight = cellDimensions[1];
 			level.cells = [];
 			level.width = map.width;
 			level.height = map.height;

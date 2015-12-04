@@ -109,8 +109,14 @@ function (B, canvas, Controls, Level, data, GUI) {
 	}
 
 	function _resetLevel (newLevel) {
+		var cellDimensions;
+		cellDimensions = [
+			canvas.width() / data.maps[currentLevelIndex].width,
+			canvas.height() / data.maps[currentLevelIndex].height
+		];
+
 		if (newLevel) {
-			level = Level.createLevel(data, currentLevelIndex);
+			level = Level.createLevel(data, currentLevelIndex, cellDimensions);
 		}
 		else {
 			level.reset();
