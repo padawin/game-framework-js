@@ -1,5 +1,3 @@
-"use strict";
-
 if (typeof (require) != 'undefined') {
 	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -10,6 +8,8 @@ if (typeof (require) != 'undefined') {
 loader.addModule('Level',
 'Canvas', 'Entities',
 function (canvas, Entities) {
+	"use strict";
+
 	var level, LevelClass;
 
 	LevelClass = function () {
@@ -20,8 +20,8 @@ function (canvas, Entities) {
 		return this.cells[col + this.width * row];
 	};
 
-	// Reset the bricks to the original state (all active)
-	LevelClass.prototype.reset = function (bricks) {
+	// Reset the cells to the original state (all active)
+	LevelClass.prototype.reset = function () {
 		level.counts = {};
 		for (var c = 0; c < this.cells.length; c++) {
 			this.cells[c].reset();
@@ -33,7 +33,7 @@ function (canvas, Entities) {
 		level.counts[this.cells[cellIndex].state]--;
 		this.cells[cellIndex].state = newState;
 
-		_incrementStateCount(level, state);
+		_incrementStateCount(level, newState);
 	};
 
 	LevelClass.prototype.getCoordinatesCenterCell = function (col, row) {
@@ -41,7 +41,7 @@ function (canvas, Entities) {
 			this.gridCellWidth * col + this.gridCellWidth / 2,
 			this.gridCellHeight * row + this.gridCellHeight / 2
 		];
-	}
+	};
 
 	function _incrementStateCount (level, state) {
 		if (!level.counts[state]) {
@@ -69,8 +69,8 @@ function (canvas, Entities) {
 			level.width = map.width;
 			level.height = map.height;
 			level.counts = {};
-			for (row = 0; row < map.height; row++ ) {
-				for (col = 0; col < map.width; col++ ) {
+			for (row = 0; row < map.height; row++) {
+				for (col = 0; col < map.width; col++) {
 					var resource;
 					if (data.resources && data.resources[map.map[row][col]]) {
 						resource = data.resources[map.map[row][col]];

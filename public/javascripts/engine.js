@@ -1,5 +1,3 @@
-"use strict";
-
 if (typeof (require) != 'undefined') {
 	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -11,6 +9,8 @@ if (typeof (require) != 'undefined') {
 loader.addModule('Engine',
 'B', 'Canvas', 'Controls', 'Level', 'data', 'GUI',
 function (B, canvas, Controls, Level, data, GUI) {
+	"use strict";
+
 	var _callbacks = {},
 		engine = {},
 		fps = 30,
@@ -28,7 +28,8 @@ function (B, canvas, Controls, Level, data, GUI) {
 		var r, loaded = 0,
 			loadingPadding = canvas.width() / 5,
 			loadingWidth = 3 * loadingPadding,
-			resources = data.resources;
+			resources = data.resources,
+			_resourceLoaded;
 
 		if (!resources) {
 			loadedCallback();
@@ -42,22 +43,25 @@ function (B, canvas, Controls, Level, data, GUI) {
 			0,
 			'black', 'white', 'black'
 		);
+
+		_resourceLoaded = function () {
+			loaded++;
+			GUI.progressBar(
+				loadingPadding, canvas.height() / 2,
+				loadingWidth, 30,
+				loaded / resources.length,
+				'black', 'white', 'black'
+			);
+
+			if (loaded == resources.length) {
+				loadedCallback();
+			}
+		};
+
 		for (r = 0; r < resources.length; r++) {
 			if (resources[r] && resources[r].url) {
 				resources[r].resource = new Image();
-				resources[r].resource.onload = function () {
-					loaded++;
-					GUI.progressBar(
-						loadingPadding, canvas.height() / 2,
-						loadingWidth, 30,
-						loaded / resources.length,
-						'black', 'white', 'black'
-					);
-
-					if (loaded == resources.length) {
-						loadedCallback();
-					}
-				};
+				resources[r].resource.onload = _resourceLoaded;
 				resources[r].resource.src = resources[r].url;
 			}
 			else {
@@ -134,7 +138,7 @@ function (B, canvas, Controls, Level, data, GUI) {
 		});
 
 		// Event to execute when the mouse is clicked
-		B.Events.on('mouse-clicked', null, function (mX, mY) {
+		B.Events.on('mouse-clicked', null, function () {
 			if (levelFinished) {
 				currentLevelIndex++;
 				_resetLevel(true);

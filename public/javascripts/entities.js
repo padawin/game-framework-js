@@ -1,5 +1,3 @@
-"use strict";
-
 if (typeof (require) != 'undefined') {
 	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -10,6 +8,8 @@ if (typeof (require) != 'undefined') {
 loader.addModule('Entities',
 'Canvas',
 function (canvas) {
+	"use strict";
+
 	var entities = {},
 		GridCell;
 
@@ -22,7 +22,7 @@ function (canvas) {
 			this.h = h;
 			this.texture = this.originalTexture = texture;
 			this.state = this.originalState = state;
-		}
+		};
 
 		/**
 		 * Draw the gridCell on the screen
