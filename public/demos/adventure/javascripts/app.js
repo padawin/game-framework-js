@@ -29,7 +29,7 @@ function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Leve
 			warrior.setGraphic(data.resources[data.resourcesMap.WARRIOR].resource);
 
 			Engine.addDrawable(warrior);
-			Engine.initCamera(startCell[0] - 200 / 2, startCell[1] - 200 / 2, 0, 0, canvas.width(), canvas.height());
+			Engine.initCamera(startCell[0], startCell[1], 0, 0, canvas.width(), canvas.height());
 		}
 	);
 
