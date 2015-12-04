@@ -20,6 +20,8 @@ function (B, canvas, Controls, Level, data, GUI) {
 		levelFinished = false,
 		_drawables = [],
 		level,
+		// If set to true, the camera will scroll, otherwise, the
+		// level will have to fit in the camera
 		_fixedSizeWorld;
 
 	engine.OPTION_USE_KEYBOARD = 0x1;
