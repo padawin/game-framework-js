@@ -123,11 +123,29 @@ function (B, canvas, Controls, Level, data, GUI) {
 		_runCallback('resetLevel');
 	}
 
+	/**
+	 * Return the dimensions of a gridcell depending on if the level has
+	 * a fix size or not
+	 */
 	function _getGridCellDimensions () {
-		return = [
-			canvas.width() / data.maps[currentLevelIndex].width,
-			canvas.height() / data.maps[currentLevelIndex].height
-		];
+		var cellDimensions;
+		if (!_fixedSizeWorld) {
+			cellDimensions = [
+				canvas.width() / data.maps[currentLevelIndex].width,
+				canvas.height() / data.maps[currentLevelIndex].height
+			];
+		}
+		else if (data.maps[currentLevelIndex].cellWidth && data.maps[currentLevelIndex].cellHeight) {
+			cellDimensions = [
+				data.maps[currentLevelIndex].cellWidth,
+				data.maps[currentLevelIndex].cellHeight
+			];
+		}
+		else {
+			throw "The dimensions of the grid's cells are needed in the map definition";
+		}
+
+		return cellDimensions;
 	}
 
 	function _initEvents () {
