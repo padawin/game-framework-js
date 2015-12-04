@@ -104,6 +104,8 @@ function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Leve
 		else {
 			warrior.bumpBack();
 		}
+
+		Engine.updateCameraPosition(warrior.x, warrior.y);
 		/* End of Warrior and wall collision */
 	});
 });
