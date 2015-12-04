@@ -27,25 +27,25 @@ function (canvas) {
 		/**
 		 * Draw the gridCell on the screen
 		 */
-		GridCell.prototype.draw = function () {
+		GridCell.prototype.draw = function (x, y) {
 			if (this.texture && typeof this.texture.resource == 'object') {
 				if (this.texture.texture) {
-					canvas.drawTexture(this.texture.resource, this.x, this.y, this.w, this.h);
+					canvas.drawTexture(this.texture.resource, x, y, this.w, this.h);
 				}
 				else {
 					if (this.texture.background !== undefined) {
-						canvas.drawTexture(this.texture.background.resource, this.x, this.y, this.w, this.h);
+						canvas.drawTexture(this.texture.background.resource, x, y, this.w, this.h);
 					}
 
 					canvas.drawImage(
 						this.texture.resource,
-						this.x + (this.w - this.texture.resource.width) / 2,
-						this.y + (this.h - this.texture.resource.height) / 2
+						x + (this.w - this.texture.resource.width) / 2,
+						y + (this.h - this.texture.resource.height) / 2
 					);
 				}
 			}
 			else if (this.texture && typeof this.texture.resource == 'string') {
-				canvas.drawRectangle(this.x, this.y, this.w, this.h, this.texture.resource);
+				canvas.drawRectangle(x, y, this.w, this.h, this.texture.resource);
 			}
 		};
 
