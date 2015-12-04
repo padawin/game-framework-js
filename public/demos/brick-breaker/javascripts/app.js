@@ -60,17 +60,15 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 
 	Engine.addCallback('mouseMoved', function (mouseX) {
 		// @TODO move that in the paddle logic
-		if (mouseX > PADDLE_WIDTH / 2 && mouseX < canvas.width() - PADDLE_WIDTH / 2) {
-			paddle.updatePosition(
-				Math.min(
-					Math.max(
-						0,
-						mouseX - PADDLE_WIDTH / 2
-					),
-					canvas.width() - PADDLE_WIDTH / 2
-				)
-			);
-		}
+		paddle.updatePosition(
+			Math.min(
+				Math.max(
+					0,
+					mouseX - PADDLE_WIDTH / 2
+				),
+				canvas.width() - PADDLE_WIDTH
+			)
+		);
 
 		if (DEBUG) {
 			ball.x = mouseX;
