@@ -109,20 +109,25 @@ function (B, canvas, Controls, Level, data, GUI) {
 	}
 
 	function _resetLevel (newLevel) {
-		var cellDimensions;
-		cellDimensions = [
-			canvas.width() / data.maps[currentLevelIndex].width,
-			canvas.height() / data.maps[currentLevelIndex].height
-		];
-
 		if (newLevel) {
-			level = Level.createLevel(data, currentLevelIndex, cellDimensions);
+			level = Level.createLevel(
+				data,
+				currentLevelIndex,
+				_getGridCellDimensions()
+			);
 		}
 		else {
 			level.reset();
 		}
 
 		_runCallback('resetLevel');
+	}
+
+	function _getGridCellDimensions () {
+		return = [
+			canvas.width() / data.maps[currentLevelIndex].width,
+			canvas.height() / data.maps[currentLevelIndex].height
+		];
 	}
 
 	function _initEvents () {
