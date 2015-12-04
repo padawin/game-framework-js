@@ -50,8 +50,8 @@ function (B) {
 			}
 			if (eventMouseElement) {
 				// @TODO add click and mouse down/up
-				eventMouseElement.addEventListener('mousemove', mouseMovedEvent.bind(eventMouseElement));
-				eventMouseElement.addEventListener('mousedown', mouseClickedEvent.bind(eventMouseElement));
+				document.addEventListener('mousemove', mouseMovedEvent.bind(eventMouseElement));
+				document.addEventListener('mousedown', mouseClickedEvent.bind(eventMouseElement));
 			}
 		},
 

@@ -17,8 +17,6 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		remainingBricks,
 		// position of the mouse in the canvas, taking in account the scroll
 		// and position of the canvas in the page
-		mouseX,
-		mouseY,
 		urlParams = Utils.getUrlParams(window.location.search);
 
 	const DEBUG = urlParams.debug || NO_DEBUG;
@@ -60,19 +58,17 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Contr
 		ball.reset();
 	});
 
-	Engine.addCallback('mouseMoved', function (mouseX, mouseY) {
+	Engine.addCallback('mouseMoved', function (mouseX) {
 		// @TODO move that in the paddle logic
-		if (mouseX > PADDLE_WIDTH / 2 && mouseX < canvas.width() - PADDLE_WIDTH / 2) {
-			paddle.updatePosition(
-				Math.min(
-					Math.max(
-						0,
-						mouseX - PADDLE_WIDTH / 2
-					),
-					canvas.width() - PADDLE_WIDTH / 2
-				)
-			);
-		}
+		paddle.updatePosition(
+			Math.min(
+				Math.max(
+					0,
+					mouseX - PADDLE_WIDTH / 2
+				),
+				canvas.width() - PADDLE_WIDTH
+			)
+		);
 
 		if (DEBUG) {
 			ball.x = mouseX;
