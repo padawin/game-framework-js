@@ -1,5 +1,3 @@
-"use strict";
-
 if (typeof (require) != 'undefined') {
 	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -10,6 +8,8 @@ if (typeof (require) != 'undefined') {
 loader.addModule('Controls',
 'B',
 function (B) {
+	"use strict";
+
 	function keyDownEvent (e) {
 		B.Events.fire('keydown', [e.keyCode]);
 		if (~([controls.KEY_DOWN_ARROW, controls.KEY_LEFT_ARROW, controls.KEY_RIGHT_ARROW, controls.KEY_UP_ARROW].indexOf(e.keyCode))) {
@@ -30,7 +30,7 @@ function (B) {
 
 		return [
 			e.clientX - rect.left - root.scrollLeft,
-			e.clientY- rect.top - root.scrollTop
+			e.clientY - rect.top - root.scrollTop
 		];
 	}
 

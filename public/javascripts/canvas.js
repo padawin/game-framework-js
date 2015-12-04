@@ -1,12 +1,11 @@
-"use strict";
-
 if (typeof (require) != 'undefined') {
 	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
 
 loader.addModule('Canvas',
-'B',
-function (B) {
+function () {
+	"use strict";
+
 	var canvas,
 		canvasContext,
 		canvasModule;
@@ -109,7 +108,7 @@ function (B) {
 
 		drawAll: function (all) {
 			function _subDrawAll (all) {
-				var a, subA;
+				var a;
 				for (a = 0; a < all.length; a++) {
 					if (all[a].length) {
 						_subDrawAll(all[a]);
@@ -122,7 +121,7 @@ function (B) {
 
 			_subDrawAll(all);
 		}
-	}
+	};
 
 	return canvasModule;
 });

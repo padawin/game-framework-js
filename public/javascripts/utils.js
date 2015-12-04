@@ -1,5 +1,3 @@
-"use strict";
-
 if (typeof (require) != 'undefined') {
 	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -9,6 +7,8 @@ if (typeof (require) != 'undefined') {
  */
 loader.addModule('Utils',
 function () {
+	"use strict";
+
 	return {
 		getUrlParams: function (urlQueryString) {
 			var query = urlQueryString.substring(1).split("&"),
@@ -23,5 +23,3 @@ function () {
 		}
 	};
 });
-
-

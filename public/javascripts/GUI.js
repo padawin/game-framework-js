@@ -1,5 +1,3 @@
-"use strict";
-
 if (typeof (require) != 'undefined') {
 	var loader = require('../../node_modules/Butterfly-js/dist/butterfly.min.js').loader;
 }
@@ -10,6 +8,8 @@ if (typeof (require) != 'undefined') {
 loader.addModule('GUI',
 'Canvas',
 function (Canvas) {
+	"use strict";
+
 	var GUI = {
 		progressBar: function (x, y, w, h, progress, colorBorder, colorUnloaded, colorLoaded) {
 			if (progress > 1.0) {
