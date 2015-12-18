@@ -19,7 +19,7 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Level
 		// and position of the canvas in the page
 		urlParams = Utils.getUrlParams(window.location.search);
 
-	const DEBUG = urlParams.debug || NO_DEBUG;
+	const DEBUG = urlParams.debug || Engine.NO_DEBUG;
 
 	const PADDLE_WIDTH = 100;
 	const PADDLE_THICKNESS = 10;

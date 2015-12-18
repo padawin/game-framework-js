@@ -21,7 +21,7 @@ function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Leve
 		],
 		urlParams = Utils.getUrlParams(window.location.search);
 
-	const DEBUG = urlParams.debug || NO_DEBUG;
+	const DEBUG = urlParams.debug || Engine.NO_DEBUG;
 
 	Engine.init(
 		document.getElementById('game-canvas'),
