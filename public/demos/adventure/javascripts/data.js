@@ -11,7 +11,8 @@ loader.addModule('data',
 function () {
 	var data = {
 		maps: [
-			{width: 16, height: 12, start: [1, 10], map:
+			{width: 16, height: 12, cellWidth: 50, cellHeight: 50,
+			start: [1, 10], map:
 			[[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 			 [1,5,5,0,1,0,0,0,0,0,0,0,3,0,5,1],
 			 [1,1,1,3,1,1,0,1,5,1,1,1,1,0,2,1],

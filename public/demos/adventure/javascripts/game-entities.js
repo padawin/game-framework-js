@@ -84,11 +84,11 @@ function (canvas) {
 		/**
 		 * Draw the warrior on the screen
 		 */
-		Warrior.prototype.draw = function () {
+		Warrior.prototype.draw = function (x, y) {
 			canvas.drawImage(
 				this.graphic,
-				this.x - this.graphic.width / 2,
-				this.y - this.graphic.height / 2
+				x - this.graphic.width / 2,
+				y - this.graphic.height / 2
 			);
 		};
 

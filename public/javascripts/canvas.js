@@ -108,7 +108,7 @@ function () {
 			return canvas.height;
 		},
 
-		drawAll: function (all) {
+		drawAll: function (startPosition, all) {
 			function _subDrawAll (all) {
 				var a;
 				for (a = 0; a < all.length; a++) {
@@ -116,7 +116,13 @@ function () {
 						_subDrawAll(all[a]);
 					}
 					else {
-						all[a].draw();
+						var x = all[a].x,
+							y = all[a].y;
+						if (typeof startPosition == 'object') {
+							x -= startPosition.x;
+							y -= startPosition.y;
+						}
+						all[a].draw(x, y);
 					}
 				}
 			}

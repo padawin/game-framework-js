@@ -9,8 +9,8 @@ if (typeof (require) != 'undefined') {
  * the different entities
  */
 loader.executeModule('main',
-'B', 'Engine', 'Entities', 'GameEntities', 'Utils', 'data', 'Controls', 'Level',
-function (B, Engine, Entities, GameEntities, Utils, data, Controls, Level) {
+'B', 'Engine', 'Canvas', 'Entities', 'GameEntities', 'Utils', 'data', 'Controls', 'Level',
+function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Level) {
 	var level,
 		walls = [],
 		nbPlayers = 2,
@@ -22,13 +22,14 @@ function (B, Engine, Entities, GameEntities, Utils, data, Controls, Level) {
 
 	Engine.init(
 		document.getElementById('game-canvas'),
-		Engine.OPTION_USE_KEYBOARD | Engine.OPTION_USE_MOUSE,
+		Engine.OPTION_USE_KEYBOARD | Engine.OPTION_USE_MOUSE | Engine.OPTION_FIXED_SIZE_WORLD,
 		function () {
 			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1])
 			warrior = new GameEntities.Warrior('MyWarrior', startCell[0], startCell[1]);
 			warrior.setGraphic(data.resources[data.resourcesMap.WARRIOR].resource);
 
 			Engine.addDrawable(warrior);
+			Engine.initCamera(startCell[0], startCell[1], 0, 0, canvas.width(), canvas.height());
 		}
 	);
 
@@ -103,6 +104,8 @@ function (B, Engine, Entities, GameEntities, Utils, data, Controls, Level) {
 		else {
 			warrior.bumpBack();
 		}
+
+		Engine.updateCameraPosition(warrior.x, warrior.y);
 		/* End of Warrior and wall collision */
 	});
 });

@@ -7,8 +7,8 @@ if (typeof (require) != 'undefined') {
  * of a loading bar...
  */
 loader.addModule('Engine',
-'B', 'Canvas', 'Controls', 'Level', 'data', 'GUI',
-function (B, canvas, Controls, Level, data, GUI) {
+'B', 'Canvas', 'Controls', 'Level', 'data', 'GUI', 'Camera',
+function (B, canvas, Controls, Level, data, GUI, Camera) {
 	"use strict";
 
 	var _callbacks = {},
@@ -19,10 +19,15 @@ function (B, canvas, Controls, Level, data, GUI) {
 		gameFinished = false,
 		levelFinished = false,
 		_drawables = [],
-		level;
+		level,
+		// If set to true, the camera will scroll, otherwise, the
+		// level will have to fit in the camera
+		_fixedSizeWorld,
+		_camera;
 
 	engine.OPTION_USE_KEYBOARD = 0x1;
 	engine.OPTION_USE_MOUSE = 0x2;
+	engine.OPTION_FIXED_SIZE_WORLD = 0x4;
 
 	function _loadResources (loadedCallback) {
 		var r, loaded = 0,
@@ -94,8 +99,53 @@ function (B, canvas, Controls, Level, data, GUI) {
 			_runCallback('levelFinishedScreen');
 		}
 		else {
-			canvas.drawAll([level.cells, _drawables]);
+			canvas.drawAll(
+				_getCameraCoordinatesInWorld(level),
+				[level.cells, _drawables, _camera]
+			);
 		}
+	}
+
+	function _getCameraCoordinatesInWorld (level) {
+		var x, y,
+			worldWidth = level.gridCellWidth * level.width,
+			worldHeight = level.gridCellHeight * level.height;
+
+		// If the world width fits in the camera
+		if (_camera.w >= worldWidth) {
+			x = (worldWidth - _camera.w) / 2;
+		}
+		// else if the world is wider than the camera
+		// place the camera where it is supposed to be, bounded by the
+		// world's limits
+		else {
+			x = Math.max(
+				0,
+				Math.min(
+					_camera.xWorld - _camera.w / 2,
+					worldWidth - _camera.w
+				)
+			);
+		}
+
+		// If the world height fits in the camera
+		if (_camera.h >= worldHeight) {
+			y = (worldHeight - _camera.h) / 2;
+		}
+		// else if the world is taller than the camera
+		// place the camera where it is supposed to be, bounded by the
+		// world's limits
+		else {
+			y = Math.max(
+				0,
+				Math.min(
+					_camera.yWorld - _camera.h / 2,
+					worldHeight - _camera.h
+				)
+			);
+		}
+
+		return {x: x, y: y};
 	}
 
 	function _runCallback (name, args) {
@@ -106,13 +156,42 @@ function (B, canvas, Controls, Level, data, GUI) {
 
 	function _resetLevel (newLevel) {
 		if (newLevel) {
-			level = Level.createLevel(data, currentLevelIndex);
+			level = Level.createLevel(
+				data,
+				currentLevelIndex,
+				_getGridCellDimensions()
+			);
 		}
 		else {
 			level.reset();
 		}
 
 		_runCallback('resetLevel');
+	}
+
+	/**
+	 * Return the dimensions of a gridcell depending on if the level has
+	 * a fix size or not
+	 */
+	function _getGridCellDimensions () {
+		var cellDimensions;
+		if (!_fixedSizeWorld) {
+			cellDimensions = [
+				canvas.width() / data.maps[currentLevelIndex].width,
+				canvas.height() / data.maps[currentLevelIndex].height
+			];
+		}
+		else if (data.maps[currentLevelIndex].cellWidth && data.maps[currentLevelIndex].cellHeight) {
+			cellDimensions = [
+				data.maps[currentLevelIndex].cellWidth,
+				data.maps[currentLevelIndex].cellHeight
+			];
+		}
+		else {
+			throw "The dimensions of the grid's cells are needed in the map definition";
+		}
+
+		return cellDimensions;
 	}
 
 	function _initEvents () {
@@ -163,7 +242,17 @@ function (B, canvas, Controls, Level, data, GUI) {
 		_callbacks[name] = callback;
 	};
 
+	engine.initCamera = function (xWorld, yWorld, x, y, w, h) {
+		_camera = new Camera(xWorld, yWorld, x, y, w, h);
+	};
+
+	engine.updateCameraPosition = function (x, y) {
+		_camera.xWorld = x;
+		_camera.yWorld = y;
+	};
+
 	engine.init = function (canvasElement, options, callback) {
+		_fixedSizeWorld = (options & engine.OPTION_FIXED_SIZE_WORLD) == engine.OPTION_FIXED_SIZE_WORLD;
 		B.on(window, 'load', function () {
 			// Init the view
 			canvas.init(canvasElement);
@@ -177,6 +266,15 @@ function (B, canvas, Controls, Level, data, GUI) {
 
 				if (typeof callback == 'function') {
 					callback();
+
+					if (!_camera) {
+						engine.initCamera(
+							canvas.width() / 2,
+							canvas.height() / 2,
+							0, 0,
+							canvas.width(), canvas.height()
+						);
+					}
 				}
 				setInterval(_updateAll, 1000 / fps);
 			});
