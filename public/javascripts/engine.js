@@ -100,13 +100,52 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		}
 		else {
 			canvas.drawAll(
-				{
-					x: _camera.xWorld - _camera.w / 2,
-					y: _camera.yWorld - _camera.h / 2,
-				},
+				_getCameraCoordinatesInWorld(level),
 				[level.cells, _drawables, _camera]
 			);
 		}
+	}
+
+	function _getCameraCoordinatesInWorld (level) {
+		var x, y,
+			worldWidth = level.gridCellWidth * level.width,
+			worldHeight = level.gridCellHeight * level.height;
+
+		// If the world width fits in the camera
+		if (_camera.w >= worldWidth) {
+			x = (worldWidth - _camera.w) / 2;
+		}
+		// else if the world is wider than the camera
+		// place the camera where it is supposed to be, bounded by the
+		// world's limits
+		else {
+			x = Math.max(
+				0,
+				Math.min(
+					_camera.xWorld - _camera.w / 2,
+					worldWidth - _camera.w
+				)
+			);
+		}
+
+		// If the world height fits in the camera
+		if (_camera.h >= worldHeight) {
+			y = (worldHeight - _camera.h) / 2;
+		}
+		// else if the world is taller than the camera
+		// place the camera where it is supposed to be, bounded by the
+		// world's limits
+		else {
+			y = Math.max(
+				0,
+				Math.min(
+					_camera.yWorld - _camera.h / 2,
+					worldHeight - _camera.h
+				)
+			);
+		}
+
+		return {x: x, y: y};
 	}
 
 	function _runCallback (name, args) {
