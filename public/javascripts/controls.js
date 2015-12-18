@@ -24,22 +24,22 @@ function (B) {
 		}
 	}
 
-	function _mouseCoordinates (e) {
-		var rect = this.getBoundingClientRect(),
+	function _mouseCoordinates (element, event) {
+		var rect = element.getBoundingClientRect(),
 			root = document.documentElement;
 
 		return [
-			e.clientX - rect.left - root.scrollLeft,
-			e.clientY - rect.top - root.scrollTop
+			event.clientX - rect.left - root.scrollLeft,
+			event.clientY - rect.top - root.scrollTop
 		];
 	}
 
 	function mouseMovedEvent (e) {
-		B.Events.fire('mouse-moved', _mouseCoordinates.apply(this, [e]));
+		B.Events.fire('mouse-moved', _mouseCoordinates(this, e));
 	}
 
 	function mouseClickedEvent (e) {
-		B.Events.fire('mouse-clicked', _mouseCoordinates.apply(this, [e]));
+		B.Events.fire('mouse-clicked', _mouseCoordinates(this, e));
 	}
 
 	var controls = {
