@@ -58,7 +58,7 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Level
 		ball.reset();
 	});
 
-	Engine.addCallback('mouseMoved', function (mouseX) {
+	Engine.addCallback('mouseMoved', function (mouseX, mouseY) {
 		// @TODO move that in the paddle logic
 		paddle.updatePosition(
 			Math.min(
