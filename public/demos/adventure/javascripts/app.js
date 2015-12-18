@@ -18,7 +18,7 @@ function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Leve
 		playerControls = {up: Controls.KEY_UP_ARROW, down: Controls.KEY_DOWN_ARROW, left: Controls.KEY_LEFT_ARROW, right: Controls.KEY_RIGHT_ARROW},
 		urlParams = Utils.getUrlParams(window.location.search);
 
-	const DEBUG = urlParams.debug || NO_DEBUG;
+	const DEBUG = urlParams.debug || Engine.NO_DEBUG;
 
 	Engine.init(
 		document.getElementById('game-canvas'),

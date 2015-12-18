@@ -25,6 +25,8 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		_fixedSizeWorld,
 		_camera;
 
+	engine.NO_DEBUG = 0;
+
 	engine.OPTION_USE_KEYBOARD = 0x1;
 	engine.OPTION_USE_MOUSE = 0x2;
 	engine.OPTION_FIXED_SIZE_WORLD = 0x4;
