@@ -293,12 +293,6 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		return level;
 	};
 
-	engine.resetLevel = _resetLevel;
-	engine._loadResources = _loadResources;
-	engine.updateAll = _updateAll;
-	engine.levelFinished = levelFinished;
-	engine.gameFinished = gameFinished;
-
 	return engine;
 });
 
