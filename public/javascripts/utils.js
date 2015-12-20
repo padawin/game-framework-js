@@ -10,6 +10,10 @@ function () {
 	"use strict";
 
 	return {
+		/**
+		 * Method to get the get parameters of the current url as an
+		 * object
+		 */
 		getUrlParams: function (urlQueryString) {
 			var query = urlQueryString.substring(1).split("&"),
 				i,
