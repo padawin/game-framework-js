@@ -3,7 +3,8 @@ if (typeof (require) != 'undefined') {
 }
 
 /**
- * Module to deal with physics calculations and collisions
+ * Module to deal with a level in the game
+ * A level has a grid of cells
  */
 loader.addModule('Level',
 'Canvas', 'Entities',
@@ -21,15 +22,24 @@ function (canvas, Entities) {
 		}
 	}
 
+	/**
+	 * Class empty construct
+	 */
 	LevelClass = function () {
 
 	};
 
+	/**
+	 * Method to get a cell from its coordinates (col, row)
+	 */
 	LevelClass.prototype.getCell = function (col, row) {
 		return this.cells[col + this.width * row];
 	};
 
-	// Reset the cells to the original state (all active)
+	/**
+	 * Reset the cells to the original state
+	 * and reset also the count of states per cell.
+	 */
 	LevelClass.prototype.reset = function () {
 		level.counts = {};
 		for (var c = 0; c < this.cells.length; c++) {
@@ -38,13 +48,11 @@ function (canvas, Entities) {
 		}
 	};
 
-	LevelClass.prototype.changeCellState = function (cellIndex, newState) {
-		level.counts[this.cells[cellIndex].state]--;
-		this.cells[cellIndex].state = newState;
-
-		_incrementStateCount(level, newState);
-	};
-
+	/**
+	 * Returns an array with as first element the x position in pixels
+	 * of the center of the cell in the grid and as second element
+	 * the y position of the center of the cell in the grid.
+	 */
 	LevelClass.prototype.getCoordinatesCenterCell = function (col, row) {
 		return [
 			this.gridCellWidth * col + this.gridCellWidth / 2,
@@ -54,6 +62,8 @@ function (canvas, Entities) {
 
 	level = {
 		/**
+		 * STATIC METHOD
+		 *
 		 * Create the walls, The whole game is a grid and walls are on the grid
 		 * The walls are organised on a rectangle of the grid filling the screen
 		 * Each wall is an instance of the class Entities.GridCell
