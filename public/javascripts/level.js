@@ -12,6 +12,15 @@ function (canvas, Entities) {
 
 	var level, LevelClass;
 
+	function _incrementStateCount (level, state) {
+		if (!level.counts[state]) {
+			level.counts[state] = 1;
+		}
+		else {
+			level.counts[state]++;
+		}
+	}
+
 	LevelClass = function () {
 
 	};
@@ -42,15 +51,6 @@ function (canvas, Entities) {
 			this.gridCellHeight * row + this.gridCellHeight / 2
 		];
 	};
-
-	function _incrementStateCount (level, state) {
-		if (!level.counts[state]) {
-			level.counts[state] = 1;
-		}
-		else {
-			level.counts[state]++;
-		}
-	}
 
 	level = {
 		/**
