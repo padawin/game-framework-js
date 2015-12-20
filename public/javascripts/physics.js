@@ -75,6 +75,12 @@ function () {
 		}
 	};
 
+	/**
+	 * Method to know if a spheres hits the inner boundaries of a
+	 * rectangle (eg. goes out of a rectangle.
+	 * Returns a string corresponding of the side of the rectangle the
+	 * sphere is crossing.
+	 */
 	physics.sphereBounceAgainstInnerRectangle = function (sphere, rectangle) {
 		if (sphere.x - sphere.r < rectangle.x) {
 			sphere.x = rectangle.x + sphere.r;
