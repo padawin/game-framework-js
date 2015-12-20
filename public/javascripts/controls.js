@@ -19,7 +19,13 @@ function (B) {
 	 */
 	function keyDownEvent (e) {
 		B.Events.fire('keydown', [e.keyCode]);
-		if (~([controls.KEY_DOWN_ARROW, controls.KEY_LEFT_ARROW, controls.KEY_RIGHT_ARROW, controls.KEY_UP_ARROW].indexOf(e.keyCode))) {
+		if (~([
+				controls.KEY_DOWN_ARROW,
+				controls.KEY_LEFT_ARROW,
+				controls.KEY_RIGHT_ARROW,
+				controls.KEY_UP_ARROW
+			].indexOf(e.keyCode))
+		) {
 			e.preventDefault();
 		}
 	}
@@ -33,7 +39,13 @@ function (B) {
 	 */
 	function keyUpEvent (e) {
 		B.Events.fire('keyup', [e.keyCode]);
-		if (~([controls.KEY_DOWN_ARROW, controls.KEY_LEFT_ARROW, controls.KEY_RIGHT_ARROW, controls.KEY_UP_ARROW].indexOf(e.keyCode))) {
+		if (~([
+				controls.KEY_DOWN_ARROW,
+				controls.KEY_LEFT_ARROW,
+				controls.KEY_RIGHT_ARROW,
+				controls.KEY_UP_ARROW
+			].indexOf(e.keyCode))
+		) {
 			e.preventDefault();
 		}
 	}
@@ -90,8 +102,14 @@ function (B) {
 			}
 			if (eventMouseElement) {
 				// @TODO add click and mouse down/up
-				document.addEventListener('mousemove', mouseMovedEvent.bind(eventMouseElement));
-				document.addEventListener('mousedown', mouseClickedEvent.bind(eventMouseElement));
+				document.addEventListener(
+					'mousemove',
+					mouseMovedEvent.bind(eventMouseElement)
+				);
+				document.addEventListener(
+					'mousedown',
+					mouseClickedEvent.bind(eventMouseElement)
+				);
 			}
 		},
 

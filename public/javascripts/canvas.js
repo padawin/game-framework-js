@@ -78,7 +78,9 @@ function () {
 			canvasContext.save();
 			canvasContext.translate(x, y);
 			canvasContext.rotate(angle);
-			canvasContext.drawImage(image, -image.width / 2, -image.height / 2);
+			canvasContext.drawImage(
+				image, -image.width / 2, -image.height / 2
+			);
 			canvasContext.restore();
 		},
 
@@ -104,11 +106,14 @@ function () {
 		 * Clear the screen by displaying a rectangle covering the
 		 * canvas area.
 		 *
-		 * The rectangle's color can be provided. white is used by default
+		 * The rectangle's color can be provided. white is used by
+		 * default
 		 */
 		clearScreen: function (color) {
 			color = color || 'white';
-			canvasModule.drawRectangle(0, 0, canvas.width, canvas.height, color);
+			canvasModule.drawRectangle(
+				0, 0, canvas.width, canvas.height, color
+			);
 		},
 
 		/**

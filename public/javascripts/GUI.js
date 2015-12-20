@@ -15,10 +15,14 @@ function (Canvas) {
 			if (progress > 1.0) {
 				progress = 1.0;
 			}
-			Canvas.drawRectangle(x, y, w, h, colorUnloaded, colorBorder);
+			Canvas.drawRectangle(
+				x, y, w, h, colorUnloaded, colorBorder
+			);
 
 			if (progress > 0.000000) {
-				Canvas.drawRectangle(x, y, w * progress, h, colorLoaded, colorLoaded);
+				Canvas.drawRectangle(
+					x, y, w * progress, h, colorLoaded, colorLoaded
+				);
 			}
 		}
 	};

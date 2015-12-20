@@ -54,15 +54,25 @@ function (B, canvas) {
 		}
 
 		if (this.y + this.h < canvas.height()) {
-			canvas.drawRectangle(0, this.y + this.h, canvas.width(), canvas.height() - this.y - this.h, 'white');
+			canvas.drawRectangle(
+				0, this.y + this.h,
+				canvas.width(), canvas.height() - this.y - this.h,
+				'white'
+			);
 		}
 
 		if (this.x > 0) {
-			canvas.drawRectangle(0, 0, this.x, canvas.height(), 'white');
+			canvas.drawRectangle(
+				0, 0, this.x, canvas.height(), 'white'
+			);
 		}
 
 		if (this.x + this.w < canvas.width()) {
-			canvas.drawRectangle(this.x + this.w, 0, canvas.width() - this.x - this.w, canvas.height(), 'white');
+			canvas.drawRectangle(
+				this.x + this.w, 0,
+				canvas.width() - this.x - this.w, canvas.height(),
+				'white'
+			);
 		}
 	};
 
