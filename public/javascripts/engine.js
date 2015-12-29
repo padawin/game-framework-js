@@ -31,6 +31,13 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 	engine.OPTION_USE_MOUSE = 0x2;
 	engine.OPTION_FIXED_SIZE_WORLD = 0x4;
 
+	/**
+	 * PRIVATE METHOD
+	 *
+	 * Method to load the resources provided in data to be used in the
+	 * game. Once all the resources are loaded, loadedCallback is
+	 * executed.
+	 */
 	function _loadResources (loadedCallback) {
 		var r, loaded = 0,
 			loadingPadding = canvas.width() / 5,
@@ -85,8 +92,15 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 	}
 
 	/**
-	 * Method to execute on each frame to update the game state and the
-	 * objects's position and then redraw the canvas
+	 * PRIVATE METHOD
+	 *
+	 * Method to execute on each frame to update the game state with the
+	 * moveAll event.
+	 *
+	 * During the move allEvent, if the win event is fired, gameFinished
+	 * or levelFinished will be switched to true. If one of those is
+	 * true, the corresponding event (gameFinishedScreen or
+	 * levelFinishedScreen) will be fired to display the correct screen.
 	 */
 	function _updateAll () {
 		if (!gameFinished && !levelFinished) {
@@ -108,6 +122,14 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		}
 	}
 
+	/**
+	 * returns an object {x: \d+, y: \d+} with the displayable
+	 * coordinates of the camera in the world. If the camera is too
+	 * close to the wall, it will be blocked to not display the
+	 * "outside" of the level. However, if the level is smaller than the
+	 * camera, the level will be centered (vertically and/or
+	 * horizontally) in the camera.
+	 */
 	function _getCameraCoordinatesInWorld (level) {
 		var x, y,
 			worldWidth = level.gridCellWidth * level.width,
@@ -150,12 +172,26 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		return {x: x, y: y};
 	}
 
+	/**
+	 * PRIVATE METHOD
+	 *
+	 * Callbacks can be hooked in the engine from the application to be
+	 * executed at specific times (eg. display a end of level/game
+	 * screen).
+	 * This method runs a callback from its name with given arguments.
+	 */
 	function _runCallback (name, args) {
 		if (typeof _callbacks[name] == 'function') {
 			_callbacks[name].apply(this, args);
 		}
 	}
 
+	/**
+	 * PRIVATE METHOD
+	 *
+	 * This method resets the current level. If the argument newLevel is
+	 * set to true, the level is reconstructed.
+	 */
 	function _resetLevel (newLevel) {
 		if (newLevel) {
 			level = Level.createLevel(
@@ -172,6 +208,8 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 	}
 
 	/**
+	 * PRIVATE METHOD
+	 *
 	 * Return the dimensions of a gridcell depending on if the level has
 	 * a fix size or not
 	 */
@@ -196,6 +234,11 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		return cellDimensions;
 	}
 
+	/**
+	 * PRIVATE METHOD
+	 *
+	 * Inits different events in the engine, from Butterfly.Events
+	 */
 	function _initEvents () {
 		// Event to execute when the player wins
 		B.Events.on('win', null, function () {
@@ -240,19 +283,47 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		});
 	}
 
+	/**
+	 * Method to add a callback to the engine, to be executed in the
+	 * appropriate time.
+	 */
 	engine.addCallback = function (name, callback) {
 		_callbacks[name] = callback;
 	};
 
+	/**
+	 * Initialise the camera in a given position in the world and with
+	 * given dimensions and positions in the screen.
+	 */
 	engine.initCamera = function (xWorld, yWorld, x, y, w, h) {
 		_camera = new Camera(xWorld, yWorld, x, y, w, h);
 	};
 
+	/**
+	 * Moves the camera to the given position.
+	 */
 	engine.updateCameraPosition = function (x, y) {
 		_camera.xWorld = x;
 		_camera.yWorld = y;
 	};
 
+	/**
+	 * This method is the engine's entry point. It takes in arguments a
+	 * canvas element, some options (in an integer value) and a
+	 * callback.
+	 * The options can be:
+	 * 	Engine.OPTION_USE_KEYBOARD: To monitor the key strokes
+	 * 	Engine.OPTION_USE_MOUSE: To monitor the mouse movements and
+	 * 		clicks
+	 * 	Engine.OPTION_FIXED_SIZE_WORLD: If provided, The world has a
+	 * 		fixed size and does not have to fit in the camera. If the
+	 * 		option is not provided, the level will be stretched to fit
+	 * 		in the camera dimensions.
+	 *
+	 * The method initialises the canvas, the controls and loads the
+	 * resources provided in the data module. Once the resources are
+	 * loaded, the callback is then executed.
+	 */
 	engine.init = function (canvasElement, options, callback) {
 		_fixedSizeWorld = (options & engine.OPTION_FIXED_SIZE_WORLD) == engine.OPTION_FIXED_SIZE_WORLD;
 		B.on(window, 'load', function () {
@@ -285,10 +356,17 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		_initEvents();
 	};
 
+	/**
+	 * This method is called to add a drawable element in the engine.
+	 * All the added drawable elements are displayed on each frame.
+	 */
 	engine.addDrawable = function (drawable) {
 		_drawables.push(drawable);
 	};
 
+	/**
+	 * Returns the game's current level.
+	 */
 	engine.getLevel = function () {
 		return level;
 	};

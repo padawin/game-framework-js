@@ -13,8 +13,17 @@ function (canvas) {
 	var entities = {},
 		GridCell;
 
+	/**
+	 * Module to manage the grid cells of a game, A cell has a tuple of
+	 * coordinates x and y, a width and height, a texture (which can
+	 * either be a resource or a rgb color as string) and a state being
+	 * an integer corresponding to the index of the state's resource in
+	 * the data module
+	 */
 	(function () {
-		/* GridCell Class */
+		/**
+		 * GridCell Class construct
+		 */
 		GridCell = function (x, y, w, h, texture, state) {
 			this.x = x;
 			this.y = y;
@@ -57,6 +66,10 @@ function (canvas) {
 			this.texture = this.originalTexture;
 		};
 
+		/**
+		 * Change a cell's state and texture. A cell cannot change of
+		 * state without changing its texture
+		 */
 		GridCell.prototype.changeStateAndTexture = function (newState, newTexture) {
 			this.state = newState;
 			this.texture = newTexture;
