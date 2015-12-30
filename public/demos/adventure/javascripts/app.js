@@ -67,18 +67,16 @@ function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Leve
 		// Update the warriors position
 		warrior.updatePosition();
 
-		var warriorGridCellCol = Math.floor(warrior.x / Engine.getLevel().gridCellWidth),
-			warriorGridCellRow = Math.floor(warrior.y / Engine.getLevel().gridCellHeight);
-
-		/* Warrior and wall collision */
-		var tileUnderWarrior = Engine.getLevel().getCell(
-			warriorGridCellCol,
-			warriorGridCellRow
-		);
+		var warriorGridCell = Engine.getLevel().getGridCellcoodinatesAt(warrior.x, warrior.y),
+			/* Warrior and wall collision */
+			tileUnderWarrior = Engine.getLevel().getCell(
+				warriorGridCell[0],
+				warriorGridCell[1]
+			);
 
 		// if the warrior is on a wall
-		if (0 <= warriorGridCellCol && warriorGridCellCol < Engine.getLevel().width
-			&& 0 <= warriorGridCellRow && warriorGridCellRow < Engine.getLevel().height
+		if (0 <= warriorGridCell[0] && warriorGridCell[0] < Engine.getLevel().width
+			&& 0 <= warriorGridCell[1] && warriorGridCell[1] < Engine.getLevel().height
 		) {
 			if (tileUnderWarrior.state == data.resourcesMap.GOAL) {
 				B.Events.fire('win');
