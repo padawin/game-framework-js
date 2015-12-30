@@ -60,6 +60,16 @@ function (canvas, Entities) {
 		];
 	};
 
+	/**
+	 * Returns the grid coordinates of the cell containing the point (x, y).
+	 */
+	LevelClass.prototype.getGridCellcoodinatesAt = function (x, y) {
+		return [
+			Math.floor(x / this.gridCellWidth),
+			Math.floor(y / this.gridCellHeight)
+		];
+	};
+
 	level = {
 		/**
 		 * STATIC METHOD
