@@ -169,7 +169,7 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 			);
 		}
 
-		return {x: x, y: y};
+		return {x: x - _camera.x, y: y - _camera.y};
 	}
 
 	/**
