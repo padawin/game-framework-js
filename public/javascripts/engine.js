@@ -335,8 +335,7 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 
 					if (!_camera) {
 						engine.initCamera(
-							canvas.width() / 2,
-							canvas.height() / 2,
+							0, 0,
 							0, 0,
 							canvas.width(), canvas.height()
 						);
