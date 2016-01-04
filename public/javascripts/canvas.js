@@ -121,36 +121,6 @@ function () {
 		 */
 		height: function () {
 			return canvas.height;
-		},
-
-		/**
-		 * Draw a list of elements
-		 * Every element's coordinate is relative to the world, so
-		 * the startPosition argument is supposed to be an object with
-		 * the coordinates of where to start to draw the elements in the
-		 * world to convert the world coordinates into camera
-		 * coordinates
-		 */
-		drawAll: function (startPosition, all) {
-			function _subDrawAll (all) {
-				var a;
-				for (a = 0; a < all.length; a++) {
-					if (all[a].length) {
-						_subDrawAll(all[a]);
-					}
-					else {
-						var x = all[a].x,
-							y = all[a].y;
-						if (typeof startPosition == 'object') {
-							x -= startPosition.x;
-							y -= startPosition.y;
-						}
-						all[a].draw(x, y);
-					}
-				}
-			}
-
-			_subDrawAll(all);
 		}
 	};
 

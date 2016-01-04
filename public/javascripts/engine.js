@@ -115,10 +115,7 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 			_runCallback('levelFinishedScreen');
 		}
 		else {
-			canvas.drawAll(
-				{x: _camera.xWorld, y: _camera.yWorld},
-				[level.cells, _drawables, _camera]
-			);
+			_drawAll([level.cells, _drawables, _camera]);
 		}
 	}
 
@@ -231,6 +228,37 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		B.Events.on('mouse-moved', null, function (mX, mY) {
 			_runCallback('mouseMoved', [mX, mY]);
 		});
+	}
+
+	/**
+	 * Draw a list of elements
+	 * Every element's coordinate is relative to the world, so
+	 * the startPosition argument is supposed to be an object with
+	 * the coordinates of where to start to draw the elements in the
+	 * world to convert the world coordinates into camera
+	 * coordinates
+	 */
+	function _drawAll (all) {
+		function _subDrawAll (all) {
+			var a, visible;
+			for (a = 0; a < all.length; a++) {
+				if (all[a].length) {
+					_subDrawAll(all[a]);
+				}
+				else {
+					// [all[a].x, all[a].y] are the position of the
+					// element in the world
+					var x = all[a].x - _camera.xWorld,
+						y = all[a].y - _camera.yWorld;
+					// [x, y] are the position of the element in the
+					// canvas
+
+					all[a].draw(x, y);
+				}
+			}
+		}
+
+		_subDrawAll(all);
 	}
 
 	/**
