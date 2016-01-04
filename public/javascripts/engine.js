@@ -115,7 +115,7 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 			_runCallback('levelFinishedScreen');
 		}
 		else {
-			_drawAll([level.cells, _drawables, _camera]);
+			_drawAll([level.cells, _drawables]);
 		}
 	}
 
@@ -253,12 +253,23 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 					// [x, y] are the position of the element in the
 					// canvas
 
-					all[a].draw(x, y);
+					visible = true;
+					if (x + all[a].w < _camera.x || x > _camera.x + _camera.w) {
+						visible = false;
+					}
+					else if (y + all[a].h < _camera.y || y > _camera.y + _camera.h) {
+						visible = false;
+					}
+
+					if (visible) {
+						all[a].draw(x, y);
+					}
 				}
 			}
 		}
 
 		_subDrawAll(all);
+		_camera.draw();
 	}
 
 	/**
