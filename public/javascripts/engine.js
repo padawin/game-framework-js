@@ -136,6 +136,12 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 				if (all[a].length) {
 					_subDrawAll(all[a]);
 				}
+				// delegate the draw to the element itself
+				else if (all[a].x === undefined || all[a].y === undefined) {
+					// call the draw method of the element with the top
+					// left corner of the camera and the camera itself
+					all[a].draw(shiftCameraX, shiftCameraY, _camera);
+				}
 				else {
 					// [all[a].x, all[a].y] are the position of the
 					// element in the world
