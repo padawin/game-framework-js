@@ -108,27 +108,25 @@ function (B, Engine, canvas, Entities, GameEntities, Physics, Utils, data, Level
 		var brick,
 			brickSide,
 			brickTopBot,
-			ballGridCellCol = Math.floor(ball.x / Engine.getLevel().gridCellWidth),
-			ballGridCellRow = Math.floor(ball.y / Engine.getLevel().gridCellHeight),
-			ballOldGridCellCol = Math.floor((ball.x - ball.speedX) / Engine.getLevel().gridCellWidth),
-			ballOldGridCellRow = Math.floor((ball.y - ball.speedY) / Engine.getLevel().gridCellHeight);
+			ballGridCell = Engine.getLevel().getGridCellcoodinatesAt(ball.x, ball.y),
+			ballOldGridCell = Engine.getLevel().getGridCellcoodinatesAt(ball.x - ball.speedX, ball.y - ball.speedY);
 
 		brick = Engine.getLevel().getCell(
-			ballGridCellCol,
-			ballGridCellRow
+			ballGridCell[0],
+			ballGridCell[1]
 		);
 
 		// if the ball is on an active brick
-		if (0 <= ballGridCellCol && ballGridCellCol < Engine.getLevel().width
-			&& 0 <= ballGridCellRow && ballGridCellRow < Engine.getLevel().height
+		if (0 <= ballGridCell[0] && ballGridCell[0] < Engine.getLevel().width
+			&& 0 <= ballGridCell[1] && ballGridCell[1] < Engine.getLevel().height
 			&& brick.state == data.states.ACTIVE
 		) {
 			// brick next to the current one, according to ball's old position
-			brickSide = Engine.getLevel().getCell(ballOldGridCellCol, ballGridCellRow);
+			brickSide = Engine.getLevel().getCell(ballOldGridCell[0], ballGridCell[1]);
 			brickSide = brickSide && brickSide.state == data.states.ACTIVE && brickSide || undefined;
 
 			// brick under or above to the current one, according to ball's old position
-			brickTopBot = Engine.getLevel().getCell(ballGridCellCol, ballOldGridCellRow);
+			brickTopBot = Engine.getLevel().getCell(ballGridCell[0], ballOldGridCell[1]);
 			brickTopBot = brickTopBot && brickTopBot.state == data.states.ACTIVE && brickTopBot || undefined;
 
 			Physics.sphereBounceAgainstGridRectangle(ball, brick, brickSide, brickTopBot);

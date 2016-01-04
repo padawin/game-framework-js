@@ -115,61 +115,58 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 			_runCallback('levelFinishedScreen');
 		}
 		else {
-			canvas.drawAll(
-				_getCameraCoordinatesInWorld(level),
-				[level.cells, _drawables, _camera]
-			);
+			_drawAll([level, _drawables]);
 		}
 	}
 
 	/**
-	 * returns an object {x: \d+, y: \d+} with the displayable
-	 * coordinates of the camera in the world. If the camera is too
-	 * close to the wall, it will be blocked to not display the
-	 * "outside" of the level. However, if the level is smaller than the
-	 * camera, the level will be centered (vertically and/or
-	 * horizontally) in the camera.
+	 * Draw a list of elements
+	 * Every element's coordinate is relative to the world, so
+	 * the startPosition argument is supposed to be an object with
+	 * the coordinates of where to start to draw the elements in the
+	 * world to convert the world coordinates into camera
+	 * coordinates
 	 */
-	function _getCameraCoordinatesInWorld (level) {
-		var x, y,
-			worldWidth = level.gridCellWidth * level.width,
-			worldHeight = level.gridCellHeight * level.height;
+	function _drawAll (all) {
+		function _subDrawAll (all) {
+			var a, visible,
+				shiftCameraX = _camera.xWorld - _camera.x,
+				shiftCameraY = _camera.yWorld - _camera.y;
+			for (a = 0; a < all.length; a++) {
+				if (all[a].length) {
+					_subDrawAll(all[a]);
+				}
+				// delegate the draw to the element itself
+				else if (all[a].x === undefined || all[a].y === undefined) {
+					// call the draw method of the element with the top
+					// left corner of the camera and the camera itself
+					all[a].draw(shiftCameraX, shiftCameraY, _camera);
+				}
+				else {
+					// [all[a].x, all[a].y] are the position of the
+					// element in the world
+					var x = all[a].x - shiftCameraX,
+						y = all[a].y - shiftCameraY;
+					// [x, y] are the position of the element in the
+					// canvas
 
-		// If the world width fits in the camera
-		if (_camera.w >= worldWidth) {
-			x = (worldWidth - _camera.w) / 2;
-		}
-		// else if the world is wider than the camera
-		// place the camera where it is supposed to be, bounded by the
-		// world's limits
-		else {
-			x = Math.max(
-				0,
-				Math.min(
-					_camera.xWorld - _camera.w / 2,
-					worldWidth - _camera.w
-				)
-			);
+					visible = true;
+					if (x + all[a].w < _camera.x || x > _camera.x + _camera.w) {
+						visible = false;
+					}
+					else if (y + all[a].h < _camera.y || y > _camera.y + _camera.h) {
+						visible = false;
+					}
+
+					if (visible) {
+						all[a].draw(x, y);
+					}
+				}
+			}
 		}
 
-		// If the world height fits in the camera
-		if (_camera.h >= worldHeight) {
-			y = (worldHeight - _camera.h) / 2;
-		}
-		// else if the world is taller than the camera
-		// place the camera where it is supposed to be, bounded by the
-		// world's limits
-		else {
-			y = Math.max(
-				0,
-				Math.min(
-					_camera.yWorld - _camera.h / 2,
-					worldHeight - _camera.h
-				)
-			);
-		}
-
-		return {x: x, y: y};
+		_subDrawAll(all);
+		_camera.draw();
 	}
 
 	/**
@@ -300,9 +297,52 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 	};
 
 	/**
-	 * Moves the camera to the given position.
+	 * Moves the camera to the given position in the world
+	 * The camera will be bounded by the world's limits. If the camera is too
+	 * close to the wall, it will be blocked to not display the
+	 * "outside" of the level. However, if the level is smaller than the
+	 * camera, the level will be centered (vertically and/or
+	 * horizontally) in the camera.
 	 */
-	engine.updateCameraPosition = function (x, y) {
+	engine.updateCameraPosition = function (xWorld, yWorld) {
+		var x, y,
+			worldWidth = level.gridCellWidth * level.width,
+			worldHeight = level.gridCellHeight * level.height;
+
+		// If the world width fits in the camera
+		if (_camera.w >= worldWidth) {
+			x = (worldWidth - _camera.w) / 2;
+		}
+		// else if the world is wider than the camera
+		// place the camera where it is supposed to be, bounded by the
+		// world's limits
+		else {
+			x = Math.max(
+				0,
+				Math.min(
+					xWorld - _camera.w / 2,
+					worldWidth - _camera.w
+				)
+			);
+		}
+
+		// If the world height fits in the camera
+		if (_camera.h >= worldHeight) {
+			y = (worldHeight - _camera.h) / 2;
+		}
+		// else if the world is taller than the camera
+		// place the camera where it is supposed to be, bounded by the
+		// world's limits
+		else {
+			y = Math.max(
+				0,
+				Math.min(
+					yWorld - _camera.h / 2,
+					worldHeight - _camera.h
+				)
+			);
+		}
+
 		_camera.xWorld = x;
 		_camera.yWorld = y;
 	};
@@ -342,8 +382,7 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 
 					if (!_camera) {
 						engine.initCamera(
-							canvas.width() / 2,
-							canvas.height() / 2,
+							0, 0,
 							0, 0,
 							canvas.width(), canvas.height()
 						);

@@ -81,18 +81,17 @@ function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Leve
 			// Update the cars position
 			players[p].updatePosition();
 
-			var carGridCellCol = Math.floor(players[p].x / Engine.getLevel().gridCellWidth),
-				carGridCellRow = Math.floor(players[p].y / Engine.getLevel().gridCellHeight);
+			var carGridCell = Engine.getLevel().getGridCellcoodinatesAt(players[p].x, players[p].y);
 
 			/* Car and wall collision */
 			var tileUnderCar = Engine.getLevel().getCell(
-				carGridCellCol,
-				carGridCellRow
+				carGridCell[0],
+				carGridCell[1]
 			);
 
 			// if the car is on a wall
-			if (0 <= carGridCellCol && carGridCellCol < Engine.getLevel().width
-				&& 0 <= carGridCellRow && carGridCellRow < Engine.getLevel().height
+			if (0 <= carGridCell[0] && carGridCell[0] < Engine.getLevel().width
+				&& 0 <= carGridCell[1] && carGridCell[1] < Engine.getLevel().height
 			) {
 				if (data.resources[tileUnderCar.state].obstacle) {
 					players[p].bumpBack();
