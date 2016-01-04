@@ -129,7 +129,9 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 	 */
 	function _drawAll (all) {
 		function _subDrawAll (all) {
-			var a, visible;
+			var a, visible,
+				shiftCameraX = _camera.xWorld - _camera.x,
+				shiftCameraY = _camera.yWorld - _camera.y;
 			for (a = 0; a < all.length; a++) {
 				if (all[a].length) {
 					_subDrawAll(all[a]);
@@ -137,8 +139,8 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 				else {
 					// [all[a].x, all[a].y] are the position of the
 					// element in the world
-					var x = all[a].x - _camera.xWorld + _camera.x,
-						y = all[a].y - _camera.yWorld + _camera.y;
+					var x = all[a].x - shiftCameraX,
+						y = all[a].y - shiftCameraY;
 					// [x, y] are the position of the element in the
 					// canvas
 
