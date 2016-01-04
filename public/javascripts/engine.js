@@ -133,7 +133,7 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 				shiftCameraX = _camera.xWorld - _camera.x,
 				shiftCameraY = _camera.yWorld - _camera.y;
 			for (a = 0; a < all.length; a++) {
-				if (all[a].length) {
+				if (all[a].length !== undefined) {
 					_subDrawAll(all[a]);
 				}
 				// delegate the draw to the element itself
