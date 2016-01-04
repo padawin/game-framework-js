@@ -120,6 +120,48 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 	}
 
 	/**
+	 * Draw a list of elements
+	 * Every element's coordinate is relative to the world, so
+	 * the startPosition argument is supposed to be an object with
+	 * the coordinates of where to start to draw the elements in the
+	 * world to convert the world coordinates into camera
+	 * coordinates
+	 */
+	function _drawAll (all) {
+		function _subDrawAll (all) {
+			var a, visible;
+			for (a = 0; a < all.length; a++) {
+				if (all[a].length) {
+					_subDrawAll(all[a]);
+				}
+				else {
+					// [all[a].x, all[a].y] are the position of the
+					// element in the world
+					var x = all[a].x - _camera.xWorld,
+						y = all[a].y - _camera.yWorld;
+					// [x, y] are the position of the element in the
+					// canvas
+
+					visible = true;
+					if (x + all[a].w < _camera.x || x > _camera.x + _camera.w) {
+						visible = false;
+					}
+					else if (y + all[a].h < _camera.y || y > _camera.y + _camera.h) {
+						visible = false;
+					}
+
+					if (visible) {
+						all[a].draw(x, y);
+					}
+				}
+			}
+		}
+
+		_subDrawAll(all);
+		_camera.draw();
+	}
+
+	/**
 	 * PRIVATE METHOD
 	 *
 	 * Callbacks can be hooked in the engine from the application to be
@@ -228,48 +270,6 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 		B.Events.on('mouse-moved', null, function (mX, mY) {
 			_runCallback('mouseMoved', [mX, mY]);
 		});
-	}
-
-	/**
-	 * Draw a list of elements
-	 * Every element's coordinate is relative to the world, so
-	 * the startPosition argument is supposed to be an object with
-	 * the coordinates of where to start to draw the elements in the
-	 * world to convert the world coordinates into camera
-	 * coordinates
-	 */
-	function _drawAll (all) {
-		function _subDrawAll (all) {
-			var a, visible;
-			for (a = 0; a < all.length; a++) {
-				if (all[a].length) {
-					_subDrawAll(all[a]);
-				}
-				else {
-					// [all[a].x, all[a].y] are the position of the
-					// element in the world
-					var x = all[a].x - _camera.xWorld,
-						y = all[a].y - _camera.yWorld;
-					// [x, y] are the position of the element in the
-					// canvas
-
-					visible = true;
-					if (x + all[a].w < _camera.x || x > _camera.x + _camera.w) {
-						visible = false;
-					}
-					else if (y + all[a].h < _camera.y || y > _camera.y + _camera.h) {
-						visible = false;
-					}
-
-					if (visible) {
-						all[a].draw(x, y);
-					}
-				}
-			}
-		}
-
-		_subDrawAll(all);
-		_camera.draw();
 	}
 
 	/**
