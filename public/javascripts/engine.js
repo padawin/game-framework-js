@@ -294,6 +294,7 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 	 */
 	engine.initCamera = function (xWorld, yWorld, x, y, w, h) {
 		_camera = new Camera(xWorld, yWorld, x, y, w, h);
+		this.updateCameraPosition(_camera.xWorld, _camera.yWorld);
 	};
 
 	/**
