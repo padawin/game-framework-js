@@ -137,8 +137,8 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 				else {
 					// [all[a].x, all[a].y] are the position of the
 					// element in the world
-					var x = all[a].x - _camera.xWorld,
-						y = all[a].y - _camera.yWorld;
+					var x = all[a].x - _camera.xWorld + _camera.x,
+						y = all[a].y - _camera.yWorld + _camera.y;
 					// [x, y] are the position of the element in the
 					// canvas
 
@@ -335,8 +335,8 @@ function (B, canvas, Controls, Level, data, GUI, Camera) {
 			);
 		}
 
-		_camera.xWorld = x - _camera.x;
-		_camera.yWorld = y - _camera.y;
+		_camera.xWorld = x;
+		_camera.yWorld = y;
 	};
 
 	/**
