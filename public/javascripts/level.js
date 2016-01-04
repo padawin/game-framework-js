@@ -70,6 +70,27 @@ function (canvas, Entities) {
 		];
 	};
 
+	/**
+	 * Draws only the cells visible in the camera's scope.
+	 * Computes the coordinates in the grid of the top left and bottom
+	 * right corners of the camera, and loop through this interval of
+	 * cells.
+	 */
+	LevelClass.prototype.draw = function (xInCamera, yInCamera, camera) {
+		var topLeftGridCellCamera = this.getGridCellcoodinatesAt(camera.xWorld, camera.yWorld),
+			bottomRightGridCellCamera = this.getGridCellcoodinatesAt(camera.xWorld + camera.w, camera.yWorld + camera.h),
+			i, j, cell;
+
+		for (j = topLeftGridCellCamera[1]; j <= bottomRightGridCellCamera[1]; j++) {
+			for (i = topLeftGridCellCamera[0]; i <= bottomRightGridCellCamera[0]; i++) {
+				cell = this.getCell(i, j);
+				if (cell) {
+					cell.draw(cell.x - xInCamera, cell.y - yInCamera);
+				}
+			}
+		}
+	};
+
 	level = {
 		/**
 		 * STATIC METHOD
