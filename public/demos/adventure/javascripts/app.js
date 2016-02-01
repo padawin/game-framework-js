@@ -26,7 +26,7 @@ function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Leve
 		function () {
 			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1])
 			warrior = new GameEntities.Warrior('MyWarrior', startCell[0], startCell[1]);
-			warrior.setGraphic(data.resources[data.resourcesMap.WARRIOR].resource);
+			warrior.setGraphic(data.resources[data.resourcesMap.WARRIOR]);
 
 			Engine.addDrawable(warrior);
 			Engine.initCamera(startCell[0], startCell[1], 0, 0, canvas.width(), canvas.height());
