@@ -119,6 +119,9 @@ function (canvas, Entities) {
 							resource.background = data.resources[resource.background];
 						}
 					}
+					else {
+						resource = null;
+					}
 
 					level.cells.push(new Entities.GridCell(
 						level.gridCellWidth * col, level.gridCellHeight * row,
