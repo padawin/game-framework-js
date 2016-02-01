@@ -32,7 +32,17 @@ function () {
 			{url: 'images/wall.png', obstacle: true, texture: true},
 			{url: 'images/grass.png', obstacle: false, texture: true},
 			{url: 'images/door.png', obstacle: true, texture: false, background: 0}, // 0 is a floor
-			{url: 'images/player1warrior.png'},
+			{url: 'images/player1warrior.png', animations: {
+				// animation is x, y, w, h
+				stand: {
+					timePerFrame: 15,
+					frames: [{x: 0, y: 0, w: 50, h: 50}, {x: 50, y: 0, w: 50, h: 50}]
+				},
+				walk: {
+					timePerFrame: 15,
+					frames: [{x: 0, y: 50, w: 50, h: 50}, {x: 50, y: 50, w: 50, h: 50}, {x: 100, y: 50, w: 50, h: 50}, {x: 150, y: 50, w: 50, h: 50}]
+				}
+			}},
 			{url: 'images/key.png', obstacle: false, texture: false, background: 0}, // 0 is a floor,
 			{url: 'images/goal.png', obstacle: false, texture: false, background: 0} // 0 is a floor
 		]

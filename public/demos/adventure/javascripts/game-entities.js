@@ -35,9 +35,11 @@ function (canvas) {
 			}
 			else if (enable) {
 				warrior.speed = 5;
+				warrior.setAnimation('walk');
 			}
 			else {
 				warrior.speed = 0;
+				warrior.setAnimation('stand');
 			}
 		}
 
@@ -67,6 +69,12 @@ function (canvas) {
 		Warrior.prototype.updatePosition = function () {
 			this.x += Math.cos(this.angle) * this.speed;
 			this.y += Math.sin(this.angle) * this.speed;
+
+			this._tick++;
+			if (this._tick == this._timePerFrame) {
+				this._tick = 0;
+				this._frame = (this._frame + 1) % this._framesNb;
+			}
 		};
 
 		Warrior.prototype.bumpBack = function () {
@@ -78,6 +86,7 @@ function (canvas) {
 
 		Warrior.prototype.setGraphic = function (graphic) {
 			this.graphic = graphic;
+			this.setAnimation('stand');
 		};
 
 		/**
@@ -91,13 +100,26 @@ function (canvas) {
 		};
 
 		/**
+		 * Set the warrior's animation
+		 */
+		Warrior.prototype.setAnimation = function (animation) {
+			this.animation = animation;
+			this._frame = 0;
+			this._tick = 0;
+			this._timePerFrame = this.graphic.animations[this.animation].timePerFrame;
+			this._frames = this.graphic.animations[this.animation].frames;
+			this._framesNb = this._frames.length;
+		};
+
+		/**
 		 * Draw the warrior on the screen
 		 */
 		Warrior.prototype.draw = function (x, y) {
 			canvas.drawImage(
-				this.graphic,
-				x - this.graphic.width / 2,
-				y - this.graphic.height / 2
+				this.graphic.resource,
+				x - this._frames[this._frame].w / 2,
+				y - this._frames[this._frame].h / 2,
+				this._frames[this._frame]
 			);
 		};
 
