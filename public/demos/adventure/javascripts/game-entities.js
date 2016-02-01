@@ -20,7 +20,7 @@ function (canvas) {
 		Warrior = function (name, x, y) {
 			this.name = name;
 			this.keys = 0;
-			this.x  = this.originalX = x;
+			this.x = this.originalX = x;
 			this.y = this.originalY = y;
 			this.r = _radius;
 			this.angle = this.originalAngle = 0;
