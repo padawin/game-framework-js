@@ -58,8 +58,19 @@ function () {
 		/**
 		 * Method to draw an image
 		 */
-		drawImage: function (image, x, y) {
-			canvasContext.drawImage(image, x, y);
+		drawImage: function (image, x, y, sprite) {
+			if (!sprite) {
+				canvasContext.drawImage(image, x, y);
+			}
+			else {
+				canvasContext.drawImage(
+					image,
+					sprite.x, sprite.y,
+					sprite.w, sprite.h,
+					x, y,
+					sprite.w, sprite.h
+				);
+			}
 		},
 
 		/**
