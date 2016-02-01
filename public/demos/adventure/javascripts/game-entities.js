@@ -29,7 +29,16 @@ function (canvas) {
 		};
 
 		function _walk (warrior, enable) {
-			warrior.speed = enable ? 5 : 0;
+			if (enable && warrior.speed !== 0) {
+				// already walking
+				return;
+			}
+			else if (enable) {
+				warrior.speed = 5;
+			}
+			else {
+				warrior.speed = 0;
+			}
 		}
 
 		Warrior.prototype.walkLeft = function (enable) {
