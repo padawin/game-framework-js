@@ -56,7 +56,7 @@ function () {
 		],
 		resourcesMap: {TILE_INACTIVE: 0, TILE_ACTIVE: 1},
 		resources: [
-			{color: 'black'},
+			null,
 			{color: 'blue'}
 		],
 		states: {
