@@ -81,6 +81,15 @@ function (canvas, Entities) {
 			bottomRightGridCellCamera = this.getGridCellcoodinatesAt(camera.xWorld + camera.w, camera.yWorld + camera.h),
 			i, j, cell;
 
+		if (this.background !== null) {
+			if (this.background.color) {
+				canvas.drawRectangle(camera.x, camera.y, camera.w, camera.h, this.background.color);
+			}
+			else {
+				canvas.drawTexture(this.background.resource, camera.x, camera.y, camera.w, camera.h);
+			}
+		}
+
 		for (j = topLeftGridCellCamera[1]; j <= bottomRightGridCellCamera[1]; j++) {
 			for (i = topLeftGridCellCamera[0]; i <= bottomRightGridCellCamera[0]; i++) {
 				cell = this.getCell(i, j);
@@ -104,6 +113,10 @@ function (canvas, Entities) {
 				level = new LevelClass(),
 				map = data.maps[levelIndex];
 
+			level.background = null;
+			if ('background' in map) {
+				level.background = data.resources[map.background];
+			}
 			level.gridCellWidth = cellDimensions[0];
 			level.gridCellHeight = cellDimensions[1];
 			level.cells = [];
