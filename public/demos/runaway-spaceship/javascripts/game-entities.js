@@ -14,7 +14,9 @@ function (canvas) {
 		Ship;
 
 	(function () {
-		var _turnRate = 0.05;
+		var _turnRate = 0.05,
+			_maxLeftAngle = 2 * Math.PI / 3,
+			_maxRightAngle = Math.PI / 3;
 
 		/* Ship Class */
 		Ship = function (x, y, angle) {
@@ -45,10 +47,10 @@ function (canvas) {
 		Ship.prototype.updatePosition = function () {
 
 			if (Math.abs(this.speed) > 0.0 && this.isSteeringLeft) {
-				this.angle += _turnRate;
+				this.angle = Math.min(this.angle + _turnRate, _maxLeftAngle);
 			}
 			if (Math.abs(this.speed) > 0.0 && this.isSteeringRight) {
-				this.angle-= _turnRate;
+				this.angle = Math.max(this.angle - _turnRate, _maxRightAngle);
 			}
 
 			this.x += Math.cos(this.angle) * this.speed;
