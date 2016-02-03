@@ -14,17 +14,12 @@ function (canvas) {
 		Ship;
 
 	(function () {
-		var _power = 0.2,
-			_reverse = 0.2,
-			_turnRate = 0.05,
-			_friction = 0.98,
-			_radius = 10;
+		var _turnRate = 0.05;
 
 		/* Ship Class */
 		Ship = function (x, y, angle) {
 			this.x  = this.originalX = x;
 			this.y = this.originalY = y;
-			this.r = _radius;
 			this.angle = this.originalAngle = angle;
 			this.speed = this.originalSpeed = 10;
 			this.maxSpeed = 15;
