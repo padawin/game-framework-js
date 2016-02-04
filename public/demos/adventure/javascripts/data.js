@@ -11,9 +11,21 @@ loader.addModule('data',
 function () {
 	var data = {
 		maps: [
-			{width: 16, height: 12, cellWidth: 50, cellHeight: 50,
+			{width: 16, height: 24, cellWidth: 50, cellHeight: 50,
 			start: [1, 10], map:
 			[[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+			 [1,5,5,0,1,0,0,0,0,0,0,0,3,0,5,1],
+			 [1,1,1,3,1,1,0,1,5,1,1,1,1,0,2,1],
+			 [1,0,0,0,0,1,3,1,1,1,0,0,0,0,5,1],
+			 [1,0,1,1,0,1,0,0,0,1,0,1,1,1,1,1],
+			 [1,0,0,1,0,1,1,1,0,1,0,3,0,3,6,1],
+			 [1,1,0,1,0,1,0,1,0,1,1,1,3,1,1,1],
+			 [1,0,0,1,0,1,0,1,0,0,0,1,0,0,0,1],
+			 [1,0,1,1,0,0,0,1,0,0,0,1,0,1,2,1],
+			 [1,0,1,0,0,1,2,3,0,1,1,1,0,1,2,1],
+			 [1,0,1,5,1,1,1,1,0,0,3,0,0,1,2,1],
+			 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+			 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
 			 [1,5,5,0,1,0,0,0,0,0,0,0,3,0,5,1],
 			 [1,1,1,3,1,1,0,1,5,1,1,1,1,0,2,1],
 			 [1,0,0,0,0,1,3,1,1,1,0,0,0,0,5,1],
@@ -39,12 +51,18 @@ function () {
 					frames: [{x: 0, y: 0, w: 50, h: 50}, {x: 50, y: 0, w: 50, h: 50}]
 				},
 				walk: {
-					timePerFrame: 15,
+					timePerFrame: 3,
 					frames: [{x: 0, y: 50, w: 50, h: 50}, {x: 50, y: 50, w: 50, h: 50}, {x: 100, y: 50, w: 50, h: 50}, {x: 150, y: 50, w: 50, h: 50}]
 				}
 			}},
 			{url: 'images/key.png', obstacle: false, texture: false, background: 0}, // 0 is a floor,
-			{url: 'images/goal.png', obstacle: false, texture: false, background: 0} // 0 is a floor
+			{url: 'images/goal.png', obstacle: false, texture: false, background: 0, animations: {
+				// animation is x, y, w, h
+				default: {
+					timePerFrame: 15,
+					frames: [{x: 0, y: 0, w: 50, h: 50}, {x: 50, y: 0, w: 50, h: 50}, {x: 100, y: 0, w: 50, h: 50}, {x: 150, y: 0, w: 50, h: 50}]
+				}
+			}}
 		]
 	};
 

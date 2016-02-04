@@ -38,7 +38,7 @@ function (canvas) {
 			updateFrame: function (obj) {
 				var b = obj.behaviours.animated;
 				b._tick++;
-				if (b._tick == obj.behaviours.animated._timePerFrame) {
+				if (b._tick == b._timePerFrame) {
 					b._tick = 0;
 					b._frame = (b._frame + 1) % b._framesNb;
 				}
@@ -48,8 +48,8 @@ function (canvas) {
 				var b = obj.behaviours.animated;
 				canvas.drawImage(
 					obj.graphic.resource,
-					x - b._frames[b._frame].w / 2,
-					y - b._frames[b._frame].h / 2,
+					x,
+					y,
 					b._frames[b._frame]
 				);
 			}

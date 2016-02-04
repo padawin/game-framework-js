@@ -61,6 +61,22 @@ function (canvas, Entities) {
 	};
 
 	/**
+	 * Returns an array with as first element the x position in pixels
+	 * of the center of the cell in the grid and as second element
+	 * the y position of the center of the cell in the grid.
+	 */
+	LevelClass.prototype.getCoordinatesCornersCell = function (col, row, corner) {
+		var corners = {
+			topleft: {x: this.gridCellWidth * col, y: this.gridCellHeight * row},
+			topright: {x: this.gridCellWidth * col + this.gridCellWidth, y: this.gridCellHeight * row},
+			bottomright: {x: this.gridCellWidth * col + this.gridCellWidth, y: this.gridCellHeight * row + this.gridCellHeight},
+			bottomleft: {x: this.gridCellWidth * col, y: this.gridCellHeight * row + this.gridCellHeight}
+		};
+
+		return corner ? corners[corner] : corners;
+	};
+
+	/**
 	 * Returns the grid coordinates of the cell containing the point (x, y).
 	 */
 	LevelClass.prototype.getGridCellcoodinatesAt = function (x, y) {

@@ -6,8 +6,8 @@ if (typeof (require) != 'undefined') {
  * This module contains the definition of the GridCell entities
  */
 loader.addModule('Entities',
-'Canvas',
-function (canvas) {
+'Canvas', 'Behaviour',
+function (canvas, Behaviour) {
 	"use strict";
 
 	var entities = {},
@@ -29,32 +29,42 @@ function (canvas) {
 			this.y = y;
 			this.w = w;
 			this.h = h;
-			this.texture = this.originalTexture = texture;
+			this.graphic = this.originalTexture = texture;
 			this.state = this.originalState = state;
+
+			if (this.graphic.animations) {
+				Behaviour.setBehaviours(this, ['animated']);
+				Behaviour.animated.setAnimation(this, 'default');
+			}
 		};
 
 		/**
 		 * Draw the gridCell on the screen
 		 */
 		GridCell.prototype.draw = function (x, y) {
-			if (this.texture && typeof this.texture.resource == 'object') {
-				if (this.texture.texture) {
-					canvas.drawTexture(this.texture.resource, x, y, this.w, this.h);
+			if (this.graphic && typeof this.graphic.resource == 'object') {
+				if (this.graphic.texture) {
+					canvas.drawTexture(this.graphic.resource, x, y, this.w, this.h);
 				}
 				else {
-					if (this.texture.background !== undefined) {
-						canvas.drawTexture(this.texture.background.resource, x, y, this.w, this.h);
+					if (this.graphic.background !== undefined) {
+						canvas.drawTexture(this.graphic.background.resource, x, y, this.w, this.h);
 					}
 
-					canvas.drawImage(
-						this.texture.resource,
-						x + (this.w - this.texture.resource.width) / 2,
-						y + (this.h - this.texture.resource.height) / 2
-					);
+					if (this.graphic.animations) {
+						Behaviour.animated.draw(this, x, y);
+					}
+					else {
+						canvas.drawImage(
+							this.graphic.resource,
+							x + (this.w - this.graphic.resource.width) / 2,
+							y + (this.h - this.graphic.resource.height) / 2
+						);
+					}
 				}
 			}
-			else if (this.texture && typeof this.texture.resource == 'string') {
-				canvas.drawRectangle(x, y, this.w, this.h, this.texture.resource);
+			else if (this.graphic && typeof this.graphic.resource == 'string') {
+				canvas.drawRectangle(x, y, this.w, this.h, this.graphic.resource);
 			}
 		};
 
@@ -63,7 +73,7 @@ function (canvas) {
 		 */
 		GridCell.prototype.reset = function () {
 			this.state = this.originalState;
-			this.texture = this.originalTexture;
+			this.graphic = this.originalTexture;
 		};
 
 		/**
@@ -72,7 +82,7 @@ function (canvas) {
 		 */
 		GridCell.prototype.changeStateAndTexture = function (newState, newTexture) {
 			this.state = newState;
-			this.texture = newTexture;
+			this.graphic = newTexture;
 		};
 		/* End GridCell Class */
 	})();

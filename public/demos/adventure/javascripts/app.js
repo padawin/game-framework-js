@@ -24,7 +24,7 @@ function (B, Engine, canvas, Entities, GameEntities, Utils, data, Controls, Leve
 		document.getElementById('game-canvas'),
 		Engine.OPTION_USE_KEYBOARD | Engine.OPTION_USE_MOUSE | Engine.OPTION_FIXED_SIZE_WORLD,
 		function () {
-			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1])
+			var startCell = Engine.getLevel().getCoordinatesCenterCell(data.maps[0].start[0], data.maps[0].start[1]);
 			warrior = new GameEntities.Warrior('MyWarrior', startCell[0], startCell[1]);
 			warrior.setGraphic(data.resources[data.resourcesMap.WARRIOR]);
 

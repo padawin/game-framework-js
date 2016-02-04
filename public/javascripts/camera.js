@@ -6,8 +6,8 @@ if (typeof (require) != 'undefined') {
  * Module to manage a camera to display just a part of the level
  */
 loader.addModule('Camera',
-'B', 'Canvas',
-function (B, canvas) {
+'Canvas',
+function (canvas) {
 	"use strict";
 
 	var camera;
@@ -78,4 +78,3 @@ function (B, canvas) {
 
 	return camera;
 });
-
