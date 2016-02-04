@@ -8,8 +8,8 @@ if (typeof (require) != 'undefined') {
  * This module contains the definition of the Warrior entitie
  */
 loader.addModule('GameEntities',
-'Canvas',
-function (canvas) {
+'Canvas', 'Behaviour',
+function (canvas, Behaviour) {
 	var entities = {},
 		Warrior;
 
@@ -26,6 +26,7 @@ function (canvas) {
 			this.angle = this.originalAngle = 0;
 			this.speed = this.originalSpeed = 0;
 			this.graphicLoaded = false;
+			Behaviour.setBehaviours(this, ['animated']);
 		};
 
 		function _walk (warrior, enable) {
@@ -35,11 +36,11 @@ function (canvas) {
 			}
 			else if (enable) {
 				warrior.speed = 5;
-				warrior.setAnimation('walk');
+				Behaviour.animated.setAnimation(warrior, 'walk');
 			}
 			else {
 				warrior.speed = 0;
-				warrior.setAnimation('stand');
+				Behaviour.animated.setAnimation(warrior, 'stand');
 			}
 		}
 
@@ -70,11 +71,7 @@ function (canvas) {
 			this.x += Math.cos(this.angle) * this.speed;
 			this.y += Math.sin(this.angle) * this.speed;
 
-			this._tick++;
-			if (this._tick == this._timePerFrame) {
-				this._tick = 0;
-				this._frame = (this._frame + 1) % this._framesNb;
-			}
+			Behaviour.animated.updateFrame(this);
 		};
 
 		Warrior.prototype.bumpBack = function () {
@@ -86,7 +83,7 @@ function (canvas) {
 
 		Warrior.prototype.setGraphic = function (graphic) {
 			this.graphic = graphic;
-			this.setAnimation('stand');
+			Behaviour.animated.setAnimation(this, 'stand');
 		};
 
 		/**
@@ -100,27 +97,10 @@ function (canvas) {
 		};
 
 		/**
-		 * Set the warrior's animation
-		 */
-		Warrior.prototype.setAnimation = function (animation) {
-			this.animation = animation;
-			this._frame = 0;
-			this._tick = 0;
-			this._timePerFrame = this.graphic.animations[this.animation].timePerFrame;
-			this._frames = this.graphic.animations[this.animation].frames;
-			this._framesNb = this._frames.length;
-		};
-
-		/**
 		 * Draw the warrior on the screen
 		 */
 		Warrior.prototype.draw = function (x, y) {
-			canvas.drawImage(
-				this.graphic.resource,
-				x - this._frames[this._frame].w / 2,
-				y - this._frames[this._frame].h / 2,
-				this._frames[this._frame]
-			);
+			Behaviour.animated.draw(this, x, y);
 		};
 
 		Warrior.prototype.addKey = function () {
